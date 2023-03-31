@@ -1,0 +1,24 @@
+.image {
+  max-height: 120px;
+  max-width: 240px;
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+}
+.item {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: space-between;
+  min-height: 208px;
+  position: relative;
+}
+
+.name {
+  max-width: 272px;
+  min-height: 48px;
+  overflow: hidden;
+  text-align: center;
+  width: 100%;
+}
