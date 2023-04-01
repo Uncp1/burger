@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import { ingredientType } from '../../utils/types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css'
 
@@ -22,9 +21,7 @@ const IngredientItem = ({ingredient}) => {
 }
 
 IngredientItem.propTypes = {
-  name: PropTypes.oneOf(['Булки', 'Соусы', 'Начинки']).isRequired,
-  type: PropTypes.oneOf(['main', 'bun', 'sauce']).isRequired,
-  items: PropTypes.arrayOf().isRequired
-}
+  ingredient: ingredientType.isRequired,
+};
 
 export default IngredientItem;

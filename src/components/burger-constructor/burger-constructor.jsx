@@ -1,5 +1,6 @@
 import styles from './burger-constructor.module.css';
-
+import PropTypes from "prop-types";
+import {ingredientType} from "../../utils/types";
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const BurgerConstructor = (props) => {
@@ -8,7 +9,7 @@ const BurgerConstructor = (props) => {
       <div className={styles.cart__list}>
 
         <ConstructorElement
-          extraClass={styles.cart__item_bun}
+          extraClass={styles.cart__item}
           key={"top"}
           type="top"
           isLocked={true}
@@ -36,7 +37,7 @@ const BurgerConstructor = (props) => {
         </ul>
 
         <ConstructorElement
-          extraClass={styles.cart__item_bun}
+          extraClass={styles.cart__item}
           key={"bottom"}
           type="bottom"
           isLocked={true}
@@ -47,7 +48,7 @@ const BurgerConstructor = (props) => {
 
         <div className={styles.cart__checkout}>
           <div className={styles.cart__total}>
-            <p className="text text_type_digits-medium">610</p>
+            <p className="text text_type_digits-medium">9000</p>
 
             <CurrencyIcon type="primary" />
           </div>
@@ -61,5 +62,8 @@ const BurgerConstructor = (props) => {
   )
 
 }  
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(ingredientType).isRequired,
+};
 
 export default BurgerConstructor;

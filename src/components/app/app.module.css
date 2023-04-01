@@ -1,13 +1,11 @@
 .main {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  box-sizing: border-box;
+  max-width: 1240px;
+  margin: auto;
 }
 
 .main__container {
   display: grid;
   gap: 40px;
   grid-template-columns: repeat(2, 1fr);
-  max-width: 1240px;
+  max-width: 100%;
 }

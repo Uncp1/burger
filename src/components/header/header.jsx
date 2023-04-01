@@ -18,7 +18,7 @@ const Header = () => {
             </li>
 
             <li>
-              <HeaderLink text={'Лента заказов'}>
+              <HeaderLink text='Лента заказов'>
                 <ListIcon />
               </HeaderLink>  
             </li>
@@ -30,7 +30,7 @@ const Header = () => {
         </div>
 
         <div className={styles.profile}>
-          <HeaderLink text={'Лента заказов'}>
+          <HeaderLink text='Личный кабинет'>
             <ProfileIcon type="secondary"/>
           </HeaderLink>
         </div>

@@ -5,54 +5,38 @@
 }
 
 .cart__list {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.cart__ingredients::-webkit-scrollbar {
+.cart__list::-webkit-scrollbar {
   width: 8px;
 }
 
-.cart__ingredients::-webkit-scrollbar-track {
+.cart__list::-webkit-scrollbar-track {
   background: #2f2f37;
 }
 
-.cart__ingredients::-webkit-scrollbar-thumb {
+.cart__list::-webkit-scrollbar-thumb {
   background-color: #8585ad;
-}
-
-.cart__ingredients {
-  max-height: 464px;
-  overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 }
 
 .cart__item {
   align-items: center;
   display: flex;
   gap: 8px;
-  justify-content: flex-end;
-  padding-right: 16px;
 }
-
-.cart__item_draggable {
-  cursor: grab;
-}
-
-.cart__item_bun {
-  margin-left: 32px;
+.cart__ingredients {
+  max-height: 464px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .cart__total {
