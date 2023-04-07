@@ -1,22 +1,24 @@
 
 import { useEffect, useState } from 'react';
-import useIngredients  from '../../utils/hooks/use-ingredients.js';
-import useModal from '../../utils/hooks/use-modal.js';
+import useIngredients  from '../../utils/hooks/useIngredients.js';
+import useModal from '../../utils/hooks/useModal.js';
 import clsx from 'clsx';
 import Header from '../header/header.jsx';
-import IngredientInfo from '../ingredient-info/ingredient-info.jsx';
+
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
+
 import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
+import { useCart } from '../../utils/hooks/useCart.js';
 
 import { ingredientsData } from '../../utils/data.js';
 
 const App = () => {
 
   const { ingredients, serverData, error, loading } = useIngredients();
-  const { ingredientDetails, isOrderOpened, isModalOpened, close, open } = useModal();
-
+  const { ingredientInfo, orderInfo, isModalOpened, close, open } = useModal();
+  const { cart } = useCart();
 
   return (
     <>
@@ -28,20 +30,22 @@ const App = () => {
             openModal ={open}
           />
 
-          <BurgerConstructor data ={ingredientsData}/>
+          <BurgerConstructor 
+            openModal ={open}
+            cart ={cart}
+          />
         </div>
       </main>
 
       <Modal
         isModalOpened={isModalOpened}
         close={close}
-        title={'Детали ингредиента'}
-        >
-
-        <IngredientInfo props={ingredientDetails}/>
-      </Modal>
-    </>,
-    document.querySelector('#modal')
+        title={ingredientInfo ? 'Детали ингредиента' : ''}
+        orderInfo={orderInfo}
+        orderNumber={cart.orderNumber}
+        ingredientInfo={ingredientInfo}
+        />
+    </>
   );
 }
 

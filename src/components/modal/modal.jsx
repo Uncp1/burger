@@ -5,6 +5,9 @@ import { createPortal } from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
+import IngredientInfo from '../ingredient-info/ingredient-info.jsx';
+import OrderInfo from '../order-info/order-info.jsx';
+
 const Modal = (props) => {
   return createPortal(
     <>
@@ -26,15 +29,35 @@ const Modal = (props) => {
           <button
             className={styles.modal__close}
             type="button"
-            onClick={() => props.close}
+            onClick={() => props.close()}
             >
             <CloseIcon type="primary"/>
           </button>
         </div>
-        {props.children}   
+
+         {
+          props.ingredientInfo &&
+          <IngredientInfo data={props.ingredientInfo}/>
+        }
+
+        {
+          props.orderInfo &&
+          <OrderInfo 
+          orderInfo = {props.orderInfo}
+          orderNumber={props.orderNumber}
+          />
+        }
+
       </div>      
-    </>
+    </>,
+    document.body
   )
 }
+
+Modal.propTypes = {
+  title: PropTypes.string,
+  isModalOpened: PropTypes.bool.isRequired,
+  close: PropTypes.func.isRequired
+};
 
 export default Modal;

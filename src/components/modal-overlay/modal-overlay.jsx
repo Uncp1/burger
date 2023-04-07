@@ -9,7 +9,7 @@ const ModalOverlay = ({ isModalOpened, close}) => {
         styles.modal__overlay,
         { [styles.modal__overlay_opened]: isModalOpened }
       )}
-      onClick={() => close()}
+      onClick={() => {close()}}
     >
 
     </div>

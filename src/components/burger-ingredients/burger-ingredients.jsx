@@ -56,7 +56,7 @@ const BurgerIngredients = (props) => {
               <li className={`${styles.sublist} pl-4 pr-4`}>
                 {
                  component.items.map(item => (
-                    <IngredientItem ingredient={item} key={item._id}/>
+                    <IngredientItem ingredient={item} key={item._id} openModal={props.openModal}/>
                   ))
                 }
               </li>

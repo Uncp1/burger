@@ -10,6 +10,7 @@
   gap: 16px;
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
 .cart__list::-webkit-scrollbar {
@@ -28,6 +29,8 @@
   align-items: center;
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
+  padding-right: 16px;
 }
 .cart__ingredients {
   max-height: 464px;

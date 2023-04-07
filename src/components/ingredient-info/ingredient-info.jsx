@@ -2,13 +2,14 @@ import { ingredientType } from '../../utils/types.js';
 import styles from './ingredient-info.module.css';
 
 const IngredientInfo = (props) => {
+  
   return(
     <div className={styles.ingredientInfo}>
       <picture className={styles.ingredientInfo__picture}>
         <img
           className={styles.ingredientInfo__image}
-          alt={props.name}
-          src={props.image}
+          alt={props.data.name}
+          src={props.data.image}
         />
       </picture>
       <div
@@ -17,7 +18,7 @@ const IngredientInfo = (props) => {
         <h4
           className={`${styles.ingredientInfo__title} 'text' 'text_type_main-medium'`}
         >
-          {props.name}
+          {props.data.name}
         </h4>
         <div
           className={`
@@ -33,24 +34,28 @@ const IngredientInfo = (props) => {
           <span>Жиры, г</span>
           <span>Углеводы, г</span>
           <span className='text_type_digits-default'>
-              {props.calories}
+              {props.data.calories}
           </span>
 
           <span className='text_type_digits-default'>
-              {props.proteins}
+              {props.data.proteins}
           </span>
 
           <span className='text_type_digits-default'>
-            {props.fat}
+            {props.data.fat}
           </span>
 
           <span className='text_type_digits-default'>
-              {props.carbohydrates}
+              {props.data.carbohydrates}
           </span>
         </div>
       </div>
     </div>
   )
 }
+
+IngredientInfo.propTypes = {
+  ingredient: ingredientType || null
+};
 
 export default IngredientInfo;

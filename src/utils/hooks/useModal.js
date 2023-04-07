@@ -2,22 +2,22 @@ import { useEffect, useState } from 'react';
 
 const useModal = () => {
   const [isModalOpened, setModalState] = useState(false);
-  const [ingredientDetails, setIngredientDetails] = useState(null);
-  const [isOrderOpened, setOrderOpened] = useState(false);
+  const [ingredientInfo, setIngredientInfo] = useState(null);
+  const [orderInfo, setOrderInfo] = useState(null);
 
   const close = () => {
-    if (isOrderOpened) setOrderOpened(false);
-    if (ingredientDetails !== null) setIngredientDetails(null);
+    if (orderInfo !== null) setOrderInfo(null);
+    if (ingredientInfo !== null) setIngredientInfo(null);
     setModalState(false);
   };
 
   const open = (type, value) => {
     if (type === 'ingredient') {
-      setIngredientDetails(value);
+      setIngredientInfo(value);
       setModalState(true);
     }
     if (type === 'cart') {
-      setOrderOpened(value);
+      setOrderInfo(value);
       setModalState(true);
     }
   };
@@ -26,7 +26,7 @@ const useModal = () => {
     if (!isModalOpened) return;
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [isModalOpened]);
+  }, []);
 
   const handleEscape = (e) => (e.key === 'Escape') && close();
 
@@ -35,8 +35,8 @@ const useModal = () => {
     close,
     open,
     isModalOpened,
-    ingredientDetails,
-    isOrderOpened,
+    ingredientInfo,
+    orderInfo,
   };
 }
 
