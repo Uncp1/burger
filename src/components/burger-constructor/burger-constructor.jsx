@@ -3,29 +3,27 @@ import PropTypes from "prop-types";
 import { cartType } from '../../utils/types.js';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-const BurgerConstructor = (props) => {
+const BurgerConstructor = ({ cart, openModal }) => {
   return (
     <section className={`${styles.cart} mt-25`}>
       <div className={styles.cart__list}>
 
         <ConstructorElement
           extraClass={styles.cart__item}
-          key={"top"}
           type="top"
           isLocked={true}
           text="Краторная булка N-200i (верх)"
           price={1255}
-          thumbnail={props.cart.bun.image}
+          thumbnail={cart.bun.image}
         />
 
         <ul className={styles.cart__ingredients}>
-          {props.cart.ingredients
-            .map((item) => {
+          {cart.ingredients
+            .map((item, index) => {
               return (
-                <li key={item._id} className={styles.cart__item}>
+                <li key={item._id + index} className={styles.cart__item}>
                   <DragIcon type="primary" />
                   <ConstructorElement
-                    key={item._id}
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
@@ -37,12 +35,11 @@ const BurgerConstructor = (props) => {
 
         <ConstructorElement
           extraClass={styles.cart__item}
-          key={"bottom"}
           type="bottom"
           isLocked={true}
           text="Краторная булка N-200i (низ)"
           price={1255}
-          thumbnail={props.cart.bun.image}
+          thumbnail={cart.bun.image}
         />
 
         <div className={styles.cart__checkout}>
@@ -54,7 +51,7 @@ const BurgerConstructor = (props) => {
 
           <Button 
             htmlType="button" type="primary" size="large"
-            onClick={() => props.openModal('cart', true)}
+            onClick={() => openModal('cart', true)}
           >
                 Оформить заказ
             </Button>

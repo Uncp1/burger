@@ -1,15 +1,16 @@
 import { ingredientType } from '../../utils/types.js';
 import styles from './ingredient-info.module.css';
 
-const IngredientInfo = (props) => {
+const IngredientInfo = ({ data }) => {
   
+  console.log(data)
   return(
     <div className={styles.ingredientInfo}>
       <picture className={styles.ingredientInfo__picture}>
         <img
           className={styles.ingredientInfo__image}
-          alt={props.data.name}
-          src={props.data.image}
+          alt={data.name}
+          src={data.image}
         />
       </picture>
       <div
@@ -18,7 +19,7 @@ const IngredientInfo = (props) => {
         <h4
           className={`${styles.ingredientInfo__title} 'text' 'text_type_main-medium'`}
         >
-          {props.data.name}
+          {data.name}
         </h4>
         <div
           className={`
@@ -34,19 +35,19 @@ const IngredientInfo = (props) => {
           <span>Жиры, г</span>
           <span>Углеводы, г</span>
           <span className='text_type_digits-default'>
-              {props.data.calories}
+              {data.calories}
           </span>
 
           <span className='text_type_digits-default'>
-              {props.data.proteins}
+              {data.proteins}
           </span>
 
           <span className='text_type_digits-default'>
-            {props.data.fat}
+            {data.fat}
           </span>
 
           <span className='text_type_digits-default'>
-              {props.data.carbohydrates}
+              {data.carbohydrates}
           </span>
         </div>
       </div>
@@ -55,7 +56,7 @@ const IngredientInfo = (props) => {
 }
 
 IngredientInfo.propTypes = {
-  ingredient: ingredientType || null
+  data: ingredientType.isRequired
 };
 
 export default IngredientInfo;

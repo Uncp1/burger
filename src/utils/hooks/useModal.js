@@ -26,7 +26,7 @@ const useModal = () => {
     if (!isModalOpened) return;
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, []);
+  }, [isModalOpened]);
 
   const handleEscape = (e) => (e.key === 'Escape') && close();
 

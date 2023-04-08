@@ -6,7 +6,7 @@ const IngredientItem = ({ingredient, openModal}) => {
   const {name, price, image} = ingredient;
 
   return (
-    <li 
+    <div 
       className={styles.item}
       onClick={()=> openModal('ingredient', ingredient)}
     >
@@ -19,7 +19,7 @@ const IngredientItem = ({ingredient, openModal}) => {
       <CurrencyIcon type="primary" />
     
       <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
-    </li>
+    </div>
   )
 }
 

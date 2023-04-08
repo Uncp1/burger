@@ -6,8 +6,7 @@ import { ingredientType } from "../../utils/types";
 
 import IngredientItem from '../ingredient-item/ingredient-item';
 
-const BurgerIngredients = (props) => {
- 
+const BurgerIngredients = ({ ingredients, openModal }) => {
   const [currentTab, setCurrentTab] = useState('Булки');
 
   function changeActiveTab(string) {
@@ -49,14 +48,14 @@ const BurgerIngredients = (props) => {
       </ul>
       <div className={styles.list}>
         {
-          props.ingredients.map((component, index)  => (
+          ingredients.map((component, index)  => (
             <ul key={index}>
               <h2 className="text text_type_main-medium">{component.name}</h2>
 
               <li className={`${styles.sublist} pl-4 pr-4`}>
                 {
                  component.items.map(item => (
-                    <IngredientItem ingredient={item} key={item._id} openModal={props.openModal}/>
+                    <IngredientItem ingredient={item} key={item._id} openModal={openModal}/>
                   ))
                 }
               </li>
@@ -70,7 +69,8 @@ const BurgerIngredients = (props) => {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientType).isRequired,
+  ingredients: PropTypes.array.isRequired,
+  openModal: PropTypes.func.isRequired
 };
 
 export default BurgerIngredients;

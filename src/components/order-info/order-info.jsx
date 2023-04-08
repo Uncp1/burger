@@ -2,11 +2,11 @@ import styles from './order-info.module.css';
 import { CheckMarkIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 
-const OrderInfo = (props) => {
+const OrderInfo = ({ orderNumber }) => {
   return (
     <div className={`${styles.order} mt-4`}>
       <span className="text text_type_digits-large">
-        {props.orderNumber}
+        {orderNumber}
       </span>
 
       <span

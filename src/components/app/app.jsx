@@ -1,22 +1,18 @@
 
-import { useEffect, useState } from 'react';
 import useIngredients  from '../../utils/hooks/useIngredients.js';
 import useModal from '../../utils/hooks/useModal.js';
 import clsx from 'clsx';
 import Header from '../header/header.jsx';
-
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
-
 import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
 import { useCart } from '../../utils/hooks/useCart.js';
 
-import { ingredientsData } from '../../utils/data.js';
 
 const App = () => {
 
-  const { ingredients, serverData, error, loading } = useIngredients();
+  const { ingredients  } = useIngredients();
   const { ingredientInfo, orderInfo, isModalOpened, close, open } = useModal();
   const { cart } = useCart();
 

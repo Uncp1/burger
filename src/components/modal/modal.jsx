@@ -8,43 +8,43 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 import IngredientInfo from '../ingredient-info/ingredient-info.jsx';
 import OrderInfo from '../order-info/order-info.jsx';
 
-const Modal = (props) => {
+const Modal = ({isModalOpened, close, title, ingredientInfo, orderInfo, orderNumber}) => {
   return createPortal(
     <>
       <ModalOverlay
-        isModalOpened={props.isModalOpened}
-        close={props.close}
+        isModalOpened={isModalOpened}
+        close={close}
       />
 
       <div
-          className={clsx(styles.modal, { [styles.modal_opened]: props.isModalOpened })}
+          className={clsx(styles.modal, { [styles.modal_opened]: isModalOpened })}
           onClick={(e) => e.stopPropagation()}
           >
 
         <div className={styles.modal__header}>
           <h3 className={clsx(styles.modal__title, 'text text_type_main-large')}>
-            {props.title}
+            {title}
           </h3>
           
           <button
             className={styles.modal__close}
             type="button"
-            onClick={() => props.close()}
+            onClick={() => close()}
             >
             <CloseIcon type="primary"/>
           </button>
         </div>
 
          {
-          props.ingredientInfo &&
-          <IngredientInfo data={props.ingredientInfo}/>
+          ingredientInfo &&
+          <IngredientInfo data={ingredientInfo}/>
         }
 
         {
-          props.orderInfo &&
+          orderInfo &&
           <OrderInfo 
-          orderInfo = {props.orderInfo}
-          orderNumber={props.orderNumber}
+          orderInfo = {orderInfo}
+          orderNumber={orderNumber}
           />
         }
 
