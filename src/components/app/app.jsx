@@ -1,59 +1,46 @@
 
-import { useEffect, useState } from 'react';
+import useIngredients  from '../../utils/hooks/useIngredients.js';
+import useModal from '../../utils/hooks/useModal.js';
 import clsx from 'clsx';
 import Header from '../header/header.jsx';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients.jsx';
 import BurgerConstructor from '../burger-constructor/burger-constructor.jsx';
+import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
+import { useCart } from '../../utils/hooks/useCart.js';
 
-import { ingredientsData } from '../../utils/data.js';
 
 const App = () => {
-  console.log(ingredientsData);
-  /*
-  const [components, setComponents] = useState([
-    {
-      name: 'Булки',
-      type: 'bun',
-      items: []
-    },
-    {
-      name: 'Соусы',
-      type: 'sauce',
-      items: []
-    },
-    {
-      name: 'Начинки',
-      type: 'main',
-      items: []
-    }
-  ]);
 
-  useEffect(() => createComponentsArray(ingredientsData), [ingredientsData]);
-
-
-  function createComponentsArray(data) {
-    const updatedComponents = [...components];
-    data.forEach(ingredient => {
-      updatedComponents.forEach((component, index) =>
-        (!updatedComponents[index].items.includes(ingredient)
-          && component.type === ingredient.type)
-          ? updatedComponents[index].items.push(ingredient)
-          : null
-      );
-    });
-    setComponents(updatedComponents);
-  }; */
+  const { ingredients  } = useIngredients();
+  const { ingredientInfo, orderInfo, isModalOpened, close, open } = useModal();
+  const { cart } = useCart();
 
   return (
     <>
       <Header />
       <main className={clsx(styles.main, 'pb-10')}>
         <div className={styles.main__container}>
-          <BurgerIngredients data ={ingredientsData}/>
-          <BurgerConstructor data ={ingredientsData}/>
+          <BurgerIngredients
+            ingredients={ingredients}
+            openModal ={open}
+          />
+
+          <BurgerConstructor 
+            openModal ={open}
+            cart ={cart}
+          />
         </div>
       </main>
+
+      <Modal
+        isModalOpened={isModalOpened}
+        close={close}
+        title={ingredientInfo ? 'Детали ингредиента' : ''}
+        orderInfo={orderInfo}
+        orderNumber={cart.orderNumber}
+        ingredientInfo={ingredientInfo}
+        />
     </>
   );
 }
