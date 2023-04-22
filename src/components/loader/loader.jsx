@@ -1,0 +1,40 @@
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import styles from './loader.module.css';
+
+const Loader = ({ loadingText }) => {
+  return (
+    <div className={styles.loader}>
+      <div className={styles.loader__circle}>
+        <div className={styles.loader__inner}></div>
+      </div>
+
+      <div className={styles.loader__circle}>
+        <div className={styles.loader__inner}></div>
+      </div>
+
+      <div className={styles.loader__circle}>
+        <div className={styles.loader__inner}></div>
+      </div>
+
+      <div className={styles.loader__circle}>
+        <div className={styles.loader__inner}></div>
+      </div>
+      
+      <div className={styles.loader__circle}>
+        <div className={styles.loader__inner}></div>
+      </div>
+
+      <p className={`text text_type_main-medium ${styles.loader__text}`}>
+        { loadingText }
+      </p>
+    </div>
+  );
+};
+
+
+Loader.propTypes = {
+  loading: PropTypes.bool.isRequired
+};
+
+export default Loader;

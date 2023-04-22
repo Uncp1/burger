@@ -20,7 +20,6 @@ const useIngredients = () => {
     }
   ]);
 
-  const [serverData, setServerData] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -41,9 +40,7 @@ const useIngredients = () => {
         setLoading(true);
         const { data } = await api.getIngredients();
         updateIngredients(data);
-        setServerData(data);
         setLoading(false);
-        //console.log(ingredients);
       } catch (e) {
         setError(e);
       }
@@ -51,7 +48,7 @@ const useIngredients = () => {
     void loadData();
   }, []);
 
-  return { ingredients, serverData, error, loading };
+  return { ingredients, error, loading };
 }
 
 export default useIngredients;

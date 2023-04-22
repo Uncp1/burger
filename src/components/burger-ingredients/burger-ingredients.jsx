@@ -1,12 +1,14 @@
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './burger-ingredients.module.css'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types";
+import { IngredientsContext } from '../../context/ingredientsContext';
 
 import IngredientItem from '../ingredient-item/ingredient-item';
 
-const BurgerIngredients = ({ ingredients, openModal }) => {
+const BurgerIngredients = ({  openModal }) => {
+  const { ingredients } = useContext(IngredientsContext);
+
   const [currentTab, setCurrentTab] = useState('Булки');
 
   function changeActiveTab(string) {
@@ -69,7 +71,6 @@ const BurgerIngredients = ({ ingredients, openModal }) => {
 }
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.array.isRequired,
   openModal: PropTypes.func.isRequired
 };
 

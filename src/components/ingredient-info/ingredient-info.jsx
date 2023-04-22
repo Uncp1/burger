@@ -3,7 +3,6 @@ import styles from './ingredient-info.module.css';
 
 const IngredientInfo = ({ data }) => {
   
-  console.log(data)
   return(
     <div className={styles.ingredientInfo}>
       <picture className={styles.ingredientInfo__picture}>

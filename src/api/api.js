@@ -21,9 +21,12 @@ const Api = (baseUrl, headers) => {
     return request('ingredients');
   };
 
-  const createOrder = () => {
-    return 345436;
-  };
+  const createOrder = (order) => {
+    return request('orders', {
+      method: 'POST',
+      body: JSON.stringify(order)
+    })
+  }
 
   return { getIngredients, createOrder };
 };
