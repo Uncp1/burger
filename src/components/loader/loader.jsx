@@ -34,7 +34,7 @@ const Loader = ({ loadingText }) => {
 
 
 Loader.propTypes = {
-  loading: PropTypes.bool.isRequired
+  loadingText: PropTypes.string.isRequired
 };
 
 export default Loader;

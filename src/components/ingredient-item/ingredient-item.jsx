@@ -1,6 +1,7 @@
 import { ingredientType } from '../../utils/types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './ingredient-item.module.css'
+import PropTypes from "prop-types";
 import { useContext } from 'react';
 import { CartContext } from '../../context/cartContext';
 
@@ -64,6 +65,7 @@ const IngredientItem = ({ingredient, openModal}) => {
 
 IngredientItem.propTypes = {
   ingredient: ingredientType.isRequired,
+  openModal: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;

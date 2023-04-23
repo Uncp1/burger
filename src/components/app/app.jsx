@@ -8,14 +8,14 @@ import Modal from '../modal/modal.jsx';
 import styles from './app.module.css';
 import { CartContext } from '../../context/cartContext.js';
 import { useCart } from '../../utils/hooks/useCart';
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { IngredientsContext } from '../../context/ingredientsContext.js';
 import Loader from '../loader/loader.jsx';
 
 
 const App = () => {
   
-  const { ingredients,  updateIngredients, loading  } = useIngredients();
+  const { ingredients, loading  } = useIngredients();
   const ingredientsValue = useMemo(() => {
     return { ingredients };
   }, [ingredients]);
@@ -62,9 +62,3 @@ const App = () => {
 }
 
 export default App;
-
-/*
- 
-
-
-*/
