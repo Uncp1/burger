@@ -1,24 +1,21 @@
-import { ingredientType } from '../../utils/types.js';
-import styles from './ingredient-info.module.css';
+import { ingredientType } from "../../utils/types.js";
+import styles from "./ingredient-info.module.css";
 
-const IngredientInfo = ({ data }) => {
-  
-  return(
+const IngredientInfo = ({ modalData }) => {
+  return (
     <div className={styles.ingredientInfo}>
       <picture className={styles.ingredientInfo__picture}>
         <img
           className={styles.ingredientInfo__image}
-          alt={data.name}
-          src={data.image}
+          alt={modalData.name}
+          src={modalData.image}
         />
       </picture>
-      <div
-        className={`${styles.ingredientInfo__content} 'mt-4'`}
-      >
+      <div className={`${styles.ingredientInfo__content} 'mt-4'`}>
         <h4
           className={`${styles.ingredientInfo__title} 'text' 'text_type_main-medium'`}
         >
-          {data.name}
+          {modalData.name}
         </h4>
         <div
           className={`
@@ -33,29 +30,23 @@ const IngredientInfo = ({ data }) => {
           <span>Белки, г</span>
           <span>Жиры, г</span>
           <span>Углеводы, г</span>
-          <span className='text_type_digits-default'>
-              {data.calories}
-          </span>
+          <span className="text_type_digits-default">{modalData.calories}</span>
 
-          <span className='text_type_digits-default'>
-              {data.proteins}
-          </span>
+          <span className="text_type_digits-default">{modalData.proteins}</span>
 
-          <span className='text_type_digits-default'>
-            {data.fat}
-          </span>
+          <span className="text_type_digits-default">{modalData.fat}</span>
 
-          <span className='text_type_digits-default'>
-              {data.carbohydrates}
+          <span className="text_type_digits-default">
+            {modalData.carbohydrates}
           </span>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 IngredientInfo.propTypes = {
-  data: ingredientType.isRequired
+  modalData: ingredientType.isRequired,
 };
 
 export default IngredientInfo;

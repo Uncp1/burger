@@ -1,14 +1,22 @@
-import { ingredientType } from '../../utils/types';
-import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './ingredient-item.module.css'
+import { ingredientType } from "../../utils/types";
+import {
+  Counter,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./ingredient-item.module.css";
 import PropTypes from "prop-types";
-import { useContext } from 'react';
-import { CartContext } from '../../context/cartContext';
+import { useContext } from "react";
+import { CartContext } from "../../context/cartContext";
+import { openModal } from "../../services/slices/modal-slice";
+import { useSelector } from "react-redux";
 
-const IngredientItem = ({ingredient, openModal}) => {
-  const {name, price, image} = ingredient;
+const IngredientItem = ({ ingredient }) => {
+  const { name, price, image } = ingredient;
 
-  const { cart } = useContext(CartContext);
+  const cart = useSelector((state) => state.cart);
+
+  /*
+
 
   function setIngredientsState() {
     
@@ -35,37 +43,40 @@ const IngredientItem = ({ingredient, openModal}) => {
 
 
   const ingredientsState = setIngredientsState() || false;
-  const bunState = setBunState() || false;
-  
+  const bunState = setBunState() || false; */
+
   return (
-    <div 
+    <li
       className={styles.item}
-      onClick={()=> openModal('ingredient', ingredient)}
+      onClick={() => openModal("ingredient", ingredient)}
     >
-      {
+      <img className={`pl-4 pr-4 ${styles.image}`} src={image} alt={name}></img>
+
+      <p className="text text_type_digits-default">{price}</p>
+
+      <CurrencyIcon type="primary" />
+
+      <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
+    </li>
+  );
+};
+
+IngredientItem.propTypes = {
+  ingredient: ingredientType.isRequired,
+};
+
+export default IngredientItem;
+
+/*
+
+{
         (ingredientsState || bunState) && (
           <Counter
-            count={countIngredient(ingredient.type)} 
+            //count={countIngredient(ingredient.type)} 
             size="default" 
             extraClass="m-1" 
           />
         )
       }
 
-      <img className={`pl-4 pr-4 ${styles.image}`} src={image} alt={name}></img>
-
-      <p className="text text_type_digits-default">{price}</p>
-
-      <CurrencyIcon type="primary" />
-    
-      <h3 className={`text text_type_main-default ${styles.name}`}>{name}</h3>
-    </div>
-  )
-}
-
-IngredientItem.propTypes = {
-  ingredient: ingredientType.isRequired,
-  openModal: PropTypes.func.isRequired,
-};
-
-export default IngredientItem;
+*/

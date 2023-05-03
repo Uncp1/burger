@@ -2,13 +2,17 @@ import styles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 import { CartContext } from '../../context/cartContext.js';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useContext, useCallback, useEffect  } from 'react';
+import { useCallback, useEffect  } from 'react';
 import { api } from '../../api/api';
+import { useDispatch, useSelector } from 'react-redux';
 
-const BurgerConstructor = ({ openModal }) => {
-  const { cart, changeCheckout, checkout } = useContext(CartContext);
+const BurgerConstructor = () => {
+  //const { cart, changeCheckout, checkout } = useContext(CartContext);
 
-  const changeSum = useCallback(() => {
+  const dispatch = useDispatch();
+  const cart = useSelector((state => state.cart));
+
+  /* const changeSum = useCallback(() => {
     const sum = [];
 
     if (cart.bun !== null && cart.bun) {
@@ -21,15 +25,15 @@ const BurgerConstructor = ({ openModal }) => {
     }
 
     return sum;
-  }, [cart]);
+  }, [cart]); */
 
 
   useEffect(() => {
-    const sum = changeSum();
-    const amount = sum.reduce((acc, curr) => acc + curr);
-    changeCheckout({ type: 'add', value: amount });
-    return () => changeCheckout({ type: 'reset' });
-  }, [cart, changeCheckout, changeSum]);
+    //const sum = changeSum();
+   // const amount = sum.reduce((acc, curr) => acc + curr);
+   // changeCheckout({ type: 'add', value: amount });
+    //return () => changeCheckout({ type: 'reset' });
+  }, [cart]);
 
   const createOrder = () => {
     const orderDetails = { 'ingredients': [] };
@@ -44,20 +48,23 @@ const BurgerConstructor = ({ openModal }) => {
       const order = createOrder();
       const res = await api.createOrder(order);
       cart.orderNumber = res.order.number.toString();
-      if (cart.orderNumber !== null) openModal('cart', true);
+      if (cart.orderNumber !== null) {}//openModal('cart', true);
       else console.error('Ошибка в формировании номера заказа.');
       cart.ingredients = [];
       cart.bun = null;
-      changeCheckout({ type: 'reset' });
+      //changeCheckout({ type: 'reset' });
     } catch (e) {
       console.log(e);
     }
   };
+
+
+  console.log(cart.bun);
   return (
    
     <section className={`${styles.cart} mt-25`}>
       {
-          cart.bun === null
+          !cart.bun
             ?
             <h2 className='text text_type_main-large'>
               Выберите булку
@@ -106,7 +113,7 @@ const BurgerConstructor = ({ openModal }) => {
 
         <div className={styles.cart__checkout}>
           <div className={styles.cart__total}>
-            <p className="text text_type_digits-medium">{checkout.cartPrice}</p>
+            <p className="text text_type_digits-medium">{cart.cartPrice}</p>
 
             <CurrencyIcon type="primary" />
           </div>
