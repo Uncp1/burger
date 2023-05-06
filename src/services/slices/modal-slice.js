@@ -10,12 +10,16 @@ const modalSlice = createSlice({
   },
   reducers: {
     openModal(state, action) {
+      action.payload.type === "order"
+        ? (state.isOrderConfirmation = true)
+        : (state.isIngrefientInfo = true);
       state.modalData = action.payload;
       state.isModalOpen = true;
     },
     closeModal(state) {
-      state.modalData = null;
       state.isModalOpen = false;
+      state.isIngrefientInfo = false;
+      state.modalData = null;
     },
   },
 });

@@ -4,17 +4,24 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient-item.module.css";
-import PropTypes from "prop-types";
-import { useContext } from "react";
-import { CartContext } from "../../context/cartContext";
 import { openModal } from "../../services/slices/modal-slice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useDrag } from "react-dnd";
 
 const IngredientItem = ({ ingredient }) => {
   const { name, price, image } = ingredient;
+  const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
 
+  function handleClick() {
+    dispatch(openModal(ingredient));
+  }
+
+  const [, dragRef] = useDrag({
+    type: "ingredient",
+    item: ingredient,
+  });
   /*
 
 
@@ -46,10 +53,7 @@ const IngredientItem = ({ ingredient }) => {
   const bunState = setBunState() || false; */
 
   return (
-    <li
-      className={styles.item}
-      onClick={() => openModal("ingredient", ingredient)}
-    >
+    <li ref={dragRef} className={styles.item} onClick={() => handleClick()}>
       <img className={`pl-4 pr-4 ${styles.image}`} src={image} alt={name}></img>
 
       <p className="text text_type_digits-default">{price}</p>

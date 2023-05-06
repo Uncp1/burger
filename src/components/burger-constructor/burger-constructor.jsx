@@ -1,136 +1,145 @@
-import styles from './burger-constructor.module.css';
-import PropTypes from "prop-types";
-import { CartContext } from '../../context/cartContext.js';
-import { ConstructorElement, DragIcon, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useCallback, useEffect  } from 'react';
-import { api } from '../../api/api';
-import { useDispatch, useSelector } from 'react-redux';
+import styles from "./burger-constructor.module.css";
+import {
+  ConstructorElement,
+  DragIcon,
+  CurrencyIcon,
+  Button,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { useMemo, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../services/slices/order-slice";
+import { useDrop } from "react-dnd";
+import { openModal } from "../../services/slices/modal-slice";
+import {
+  addCartItem,
+  emptyCart,
+  removeCartItem,
+  sortCartItem,
+} from "../../services/slices/cart-slice";
+import { v4 as uuidv4 } from "uuid";
+import CartElement from "../cart-element/cart-element";
 
 const BurgerConstructor = () => {
-  //const { cart, changeCheckout, checkout } = useContext(CartContext);
-
   const dispatch = useDispatch();
-  const cart = useSelector((state => state.cart));
+  const { cart } = useSelector((state) => state.cart);
+  const isButtonDisabled = useMemo(
+    () => !!(cart.bun === null || cart.ingredients.length === 0),
+    [cart]
+  );
 
-  /* const changeSum = useCallback(() => {
-    const sum = [];
-
-    if (cart.bun !== null && cart.bun) {
-      sum.push(cart.bun.price);
-      sum.push(cart.bun.price);
-    }
-
-    if (cart.ingredients.length > 0) {
-      cart.ingredients.forEach(item => sum.push(item.price));
-    }
-
-    return sum;
-  }, [cart]); */
-
-
-  useEffect(() => {
-    //const sum = changeSum();
-   // const amount = sum.reduce((acc, curr) => acc + curr);
-   // changeCheckout({ type: 'add', value: amount });
-    //return () => changeCheckout({ type: 'reset' });
-  }, [cart]);
-
-  const createOrder = () => {
-    const orderDetails = { 'ingredients': [] };
-    cart.ingredients.forEach(item => orderDetails.ingredients.push(item._id));
-    orderDetails.ingredients.push(cart.bun._id);
-    orderDetails.ingredients.push(cart.bun._id);
-    return orderDetails;
-  };
- 
   const handleCreateOrder = async () => {
-    try {
-      const order = createOrder();
-      const res = await api.createOrder(order);
-      cart.orderNumber = res.order.number.toString();
-      if (cart.orderNumber !== null) {}//openModal('cart', true);
-      else console.error('Ошибка в формировании номера заказа.');
-      cart.ingredients = [];
-      cart.bun = null;
-      //changeCheckout({ type: 'reset' });
-    } catch (e) {
-      console.log(e);
-    }
+    console.log(cart);
+    await dispatch(createOrder(cart));
+    dispatch(openModal({ type: "order" }));
+    dispatch(emptyCart());
   };
 
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(ingredient) {
+      dispatch(
+        addCartItem({
+          ...ingredient,
+          _id: uuidv4(),
+        })
+      );
+    },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
+  });
 
-  console.log(cart.bun);
+  const findCartItem = useCallback(
+    (id) => {
+      const ingredient = cart.ingredients.find((item) => item._id === id);
+      return {
+        ingredient,
+        index: cart.ingredients.indexOf(ingredient),
+      };
+    },
+    [cart]
+  );
+
+  const moveCartItem = useCallback(
+    (id, atIndex) => {
+      const { ingredient, index } = findCartItem(id);
+      dispatch(removeCartItem({ index, _id: id }));
+      dispatch(sortCartItem({ index, atIndex, ingredient }));
+    },
+    [dispatch, findCartItem]
+  );
+
+  const cartPrice = useMemo(() => {
+    if (cart.bun !== null) {
+      const bunPrice = cart.bun.price;
+      const ingredientsPrice = cart.ingredients.reduce(
+        (acc, current) => acc + current.price,
+        0
+      );
+      return bunPrice + ingredientsPrice + bunPrice;
+    } else {
+      return 0;
+    }
+  }, [cart.bun, cart.ingredients]);
+
   return (
-   
-    <section className={`${styles.cart} mt-25`}>
-      {
-          !cart.bun
-            ?
-            <h2 className='text text_type_main-large'>
-              Выберите булку
-            </h2>
+    <section className={`${styles.cart} mt-25`} ref={dropTarget}>
+      {!cart.bun ? (
+        <h2 className="text text_type_main-large">Выберите булку</h2>
+      ) : (
+        <div className={styles.cart__list}>
+          <ConstructorElement
+            extraClass={styles.cart__item}
+            type="top"
+            isLocked={true}
+            text="Краторная булка N-200i (верх)"
+            price={cart.bun.price}
+            thumbnail={cart.bun.image}
+          />
 
-            :<div className={styles.cart__list}>
-              <ConstructorElement
-                extraClass={styles.cart__item}
-                type="top"
-                isLocked={true}
-                text="Краторная булка N-200i (верх)"
-                price={cart.bun.price}
-                thumbnail={cart.bun.image}
-              />
+          <ul className={styles.cart__ingredients}>
+            {cart.ingredients.map((item, index) => {
+              return (
+                <CartElement
+                  moveCartItem={moveCartItem}
+                  key={item._id}
+                  index={index}
+                  ingredient={item}
+                />
+              );
+            })}
+          </ul>
 
-              <ul className={styles.cart__ingredients}>
-                {cart.ingredients
-                  .map((item, index) => {
-                    return (
-                      <li key={item._id + index} className={styles.cart__item}>
-                        <DragIcon type="primary" />
-                        <ConstructorElement
-                          dragable 
-                          text={item.name}
-                          price={item.price}
-                          thumbnail={item.image}
-                        />
-                      </li>
-                    );
-                  })}
-              </ul>
-              
-
-              <ConstructorElement
-                extraClass={styles.cart__item}
-                type="bottom"
-                isLocked={true}
-                text="Краторная булка N-200i (низ)"
-                price={cart.bun.price}
-                thumbnail={cart.bun.image}
-              />
-            </div>
-      }
-
-       
-
-        <div className={styles.cart__checkout}>
-          <div className={styles.cart__total}>
-            <p className="text text_type_digits-medium">{cart.cartPrice}</p>
-
-            <CurrencyIcon type="primary" />
-          </div>
-
-          <Button 
-            htmlType="button" type="primary" size="large"
-            onClick={handleCreateOrder}
-          >
-            Оформить заказ
-          </Button>
+          <ConstructorElement
+            extraClass={styles.cart__item}
+            type="bottom"
+            isLocked={true}
+            text="Краторная булка N-200i (низ)"
+            price={cart.bun.price}
+            thumbnail={cart.bun.image}
+          />
         </div>
+      )}
+
+      <div className={styles.cart__checkout}>
+        <div className={styles.cart__total}>
+          <p className="text text_type_digits-medium">{cartPrice}</p>
+
+          <CurrencyIcon type="primary" />
+        </div>
+
+        <Button
+          htmlType="button"
+          type="primary"
+          size="large"
+          onClick={handleCreateOrder}
+          disabled={isButtonDisabled}
+        >
+          Оформить заказ
+        </Button>
+      </div>
     </section>
-    
-  )
-}  
-BurgerConstructor.propTypes = {
-  openModal: PropTypes.func.isRequired,
+  );
 };
 
 export default BurgerConstructor;

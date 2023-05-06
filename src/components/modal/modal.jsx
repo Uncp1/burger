@@ -15,7 +15,6 @@ const Modal = ({ title }) => {
     useSelector((state) => state.modal);
 
   const dispatch = useDispatch();
-
   return createPortal(
     <>
       <ModalOverlay />
@@ -40,7 +39,7 @@ const Modal = ({ title }) => {
           </button>
         </div>
 
-        {isIngrefientInfo && <IngredientInfo modalData={modalData} />}
+        {isIngrefientInfo && <IngredientInfo ingredient={modalData} />}
 
         {isOrderConfirmation && <OrderInfo />}
       </div>
@@ -51,9 +50,6 @@ const Modal = ({ title }) => {
 
 Modal.propTypes = {
   title: PropTypes.string,
-  isModalOpen: PropTypes.bool.isRequired,
-  close: PropTypes.func.isRequired,
 };
 
 export default Modal;
-//

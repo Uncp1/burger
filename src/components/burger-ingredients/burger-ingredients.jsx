@@ -1,51 +1,65 @@
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./burger-ingredients.module.css";
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useCallback, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { InView } from "react-intersection-observer";
 
 import IngredientItem from "../ingredient-item/ingredient-item";
 import IngredientsList from "../ingredient-type/ingredients-list";
 
-const BurgerIngredients = ({ openModal }) => {
+const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredients);
-
-  console.log(ingredients);
 
   const buns = ingredients.filter((item) => item.type === "bun");
   const sauces = ingredients.filter((item) => item.type === "sauce");
   const main = ingredients.filter((item) => item.type === "main");
 
   const bunList = buns.map((item) => (
-    <IngredientItem key={item._id} ingredient={item} openModal={openModal} />
+    <IngredientItem key={item._id} ingredient={item} />
   ));
   const sauceList = sauces.map((item) => (
-    <IngredientItem key={item._id} ingredient={item} openModal={openModal} />
+    <IngredientItem key={item._id} ingredient={item} />
   ));
   const mainList = main.map((item) => (
-    <IngredientItem key={item._id} ingredient={item} openModal={openModal} />
+    <IngredientItem key={item._id} ingredient={item} />
   ));
 
-  const [currentTab, setCurrentTab] = useState("Булки");
-
-  function changeActiveTab(string) {
-    setCurrentTab(string);
-  }
-
+  const [currentTab, setCurrentTab] = useState("bun");
   const [tabList] = useState([
     {
       value: "Булки",
-      click: () => changeActiveTab("Булки"),
+      type: "bun",
     },
     {
       value: "Соусы",
-      click: () => changeActiveTab("Соусы"),
+      type: "sauce",
     },
     {
       value: "Начинки",
-      click: () => changeActiveTab("Начинки"),
+      type: "main",
     },
   ]);
+
+  const tabsRef = useRef(null);
+  const setTabRef = () =>
+    !tabsRef.current ? (tabsRef.current = {}) : tabsRef.current;
+
+  const scrollItems = useCallback((index) => {
+    const ref = setTabRef();
+    ref.get(index).scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+      inline: "center",
+    });
+  }, []);
+
+  const handleTabClick = useCallback(
+    (value, index) => {
+      setCurrentTab(value);
+      scrollItems(index);
+    },
+    [scrollItems]
+  );
 
   return (
     <section>
@@ -78,23 +92,19 @@ const BurgerIngredients = ({ openModal }) => {
   );
 };
 
-BurgerIngredients.propTypes = {
-  openModal: PropTypes.func.isRequired,
-};
-
 export default BurgerIngredients;
 /*
 
-<ul>
-        <IngredientsList type={"buns"} title={"Булки"}>
+<ul className={styles.list}>
+        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"buns"} title={"Булки"}>
           {bunList}
         </IngredientsList>
 
-        <IngredientsList type={"sauce"} title={"Соусы"}>
+        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"sauce"} title={"Соусы"}>
           {sauceList}
         </IngredientsList>
 
-        <IngredientsList type={"main"} title={"Начинки"}>
+        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"main"} title={"Начинки"}>
           {mainList}
         </IngredientsList>
       </ul>

@@ -1,21 +1,21 @@
 import { ingredientType } from "../../utils/types.js";
 import styles from "./ingredient-info.module.css";
 
-const IngredientInfo = ({ modalData }) => {
+const IngredientInfo = ({ ingredient }) => {
   return (
     <div className={styles.ingredientInfo}>
       <picture className={styles.ingredientInfo__picture}>
         <img
           className={styles.ingredientInfo__image}
-          alt={modalData.name}
-          src={modalData.image}
+          alt={ingredient.name}
+          src={ingredient.image}
         />
       </picture>
       <div className={`${styles.ingredientInfo__content} 'mt-4'`}>
         <h4
           className={`${styles.ingredientInfo__title} 'text' 'text_type_main-medium'`}
         >
-          {modalData.name}
+          {ingredient.name}
         </h4>
         <div
           className={`
@@ -30,14 +30,18 @@ const IngredientInfo = ({ modalData }) => {
           <span>Белки, г</span>
           <span>Жиры, г</span>
           <span>Углеводы, г</span>
-          <span className="text_type_digits-default">{modalData.calories}</span>
-
-          <span className="text_type_digits-default">{modalData.proteins}</span>
-
-          <span className="text_type_digits-default">{modalData.fat}</span>
+          <span className="text_type_digits-default">
+            {ingredient.calories}
+          </span>
 
           <span className="text_type_digits-default">
-            {modalData.carbohydrates}
+            {ingredient.proteins}
+          </span>
+
+          <span className="text_type_digits-default">{ingredient.fat}</span>
+
+          <span className="text_type_digits-default">
+            {ingredient.carbohydrates}
           </span>
         </div>
       </div>
@@ -46,7 +50,7 @@ const IngredientInfo = ({ modalData }) => {
 };
 
 IngredientInfo.propTypes = {
-  modalData: ingredientType.isRequired,
+  ingredient: ingredientType.isRequired,
 };
 
 export default IngredientInfo;
