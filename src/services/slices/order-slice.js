@@ -1,12 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../../api/api";
 
-export const createOrder = createAsyncThunk("createOrder", async (cart) => {
+export const createOrder = createAsyncThunk("createOrder", async (orderIds) => {
   try {
-    const bunId = cart.bun._id;
-    const ingredientsIdsArray = cart.ingredients.map((item) => item._id);
-    const orderIds = [bunId, ...ingredientsIdsArray, bunId];
-    console.log(orderIds);
     return await api.createOrder(orderIds);
   } catch (err) {
     console.log(err);
@@ -21,7 +17,17 @@ const orderSlice = createSlice({
     orderIds: [],
     orderFetchRequest: false,
   },
-  reducers: {},
+  reducers: {
+    createOrder(state, action) {
+      const ids = action.payload.ingredients.map((item) => ids.push(item._id));
+      ids.unshift(action.payload.bun._id);
+      ids.push(action.payload.bun._id);
+      state.orderIds = ids;
+    },
+    resetOrder(state) {
+      state.orderIds = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {

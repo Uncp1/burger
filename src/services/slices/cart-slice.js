@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
   name: "cartSlice",
   initialState: {
-    ingredientsCounter: {},
+    counter: {},
     cart: {
       bun: null,
       ingredients: [],
@@ -11,13 +11,25 @@ const cartSlice = createSlice({
   },
   reducers: {
     addCartItem(state, action) {
-      if (action.payload.type === "bun") {
-        state.cart.bun = action.payload;
-      } else {
-        state.cart.ingredients.push(action.payload);
-      }
+      const ingredientId = action.payload._id;
+      const ingrCounter = state.counter[ingredientId];
+      const isIngredientInCart = Object.keys(state.counter).includes(
+        ingredientId
+      );
+
+      isIngredientInCart
+        ? (state.counter[action.payload._id] = ingrCounter + 1)
+        : (state.counter[action.payload._id] = 1);
+
+      action.payload.type === "bun"
+        ? (state.cart.bun = action.payload)
+        : state.cart.ingredients.push(action.payload);
     },
     removeCartItem(state, action) {
+      const ingredientId = action.payload._id;
+      const ingrCounter = state.counter[ingredientId];
+      state.counter[action.payload._id] = ingrCounter - 1;
+
       state.cart.ingredients.splice(action.payload.index, 1);
     },
     sortCartItem(state, action) {
@@ -30,6 +42,7 @@ const cartSlice = createSlice({
     emptyCart(state) {
       state.cart.bun = null;
       state.cart.ingredients = [];
+      state.counter = {};
     },
   },
 });

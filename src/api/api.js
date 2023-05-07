@@ -24,7 +24,6 @@ const Api = (baseUrl, headers) => {
   };
 
   const createOrder = (order) => {
-    console.log(JSON.stringify(order));
     return request("orders", {
       method: "POST",
       body: JSON.stringify(order),

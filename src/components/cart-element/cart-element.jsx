@@ -4,7 +4,6 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./cart-element.module.css";
-import clsx from "clsx";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { removeCartItem } from "../../services/slices/cart-slice";
@@ -44,11 +43,9 @@ const CartElement = ({ ingredient, index, moveCartItem }) => {
 
   return (
     <li
-      className={clsx(
-        styles.item,
-        styles.item_draggable,
+      className={`${styles.item} ${styles.item_draggable} ${
         isDragging && styles.item_dragging
-      )}
+      }`}
       ref={ref}
     >
       <DragIcon type="primary" />

@@ -28,7 +28,6 @@ const BurgerConstructor = () => {
   );
 
   const handleCreateOrder = async () => {
-    console.log(cart);
     await dispatch(createOrder(cart));
     dispatch(openModal({ type: "order" }));
     dispatch(emptyCart());
@@ -40,7 +39,7 @@ const BurgerConstructor = () => {
       dispatch(
         addCartItem({
           ...ingredient,
-          _id: uuidv4(),
+          _uid: uuidv4(),
         })
       );
     },
@@ -102,7 +101,7 @@ const BurgerConstructor = () => {
               return (
                 <CartElement
                   moveCartItem={moveCartItem}
-                  key={item._id}
+                  key={item._uid}
                   index={index}
                   ingredient={item}
                 />
