@@ -13,7 +13,7 @@ const IngredientItem = ({ ingredient }) => {
   const { name, price, image } = ingredient;
   const dispatch = useDispatch();
 
-  const { cart, counter } = useSelector((state) => state.cart);
+  const { counter } = useSelector((state) => state.cart);
 
   function handleClick() {
     dispatch(openModal(ingredient));

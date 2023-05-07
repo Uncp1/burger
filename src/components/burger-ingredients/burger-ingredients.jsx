@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { InView } from "react-intersection-observer";
 
 import IngredientItem from "../ingredient-item/ingredient-item";
-import IngredientsList from "../ingredient-type/ingredients-list";
+import IngredientsType from "../ingredient-type/ingredients-type";
 
 const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredients);
@@ -41,36 +41,32 @@ const BurgerIngredients = () => {
   ]);
 
   const tabsRef = useRef(null);
-  const setTabRef = () =>
-    !tabsRef.current ? (tabsRef.current = {}) : tabsRef.current;
+  const getRefs = () =>
+    !tabsRef.current ? (tabsRef.current = new Map()) : tabsRef.current;
 
-  const scrollItems = useCallback((index) => {
-    const ref = setTabRef();
-    ref.get(index).scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-      inline: "center",
-    });
+  const scrollToId = useCallback((itemKey) => {
+    const refs = getRefs().get(itemKey);
+    refs.scrollIntoView();
   }, []);
 
   const handleTabClick = useCallback(
     (value, index) => {
       setCurrentTab(value);
-      scrollItems(index);
+      scrollToId(index);
     },
-    [scrollItems]
+    [scrollToId]
   );
 
   return (
     <section>
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
       <ul className={styles.tabs}>
-        {tabList.map((tab) => (
+        {tabList.map((tab, index) => (
           <li key={tab.value}>
             <Tab
               value={tab.value}
               active={currentTab === tab.value}
-              onClick={tab.click}
+              onClick={(currentTab) => handleTabClick(currentTab, index)}
             >
               {tab.value}
             </Tab>
@@ -78,34 +74,37 @@ const BurgerIngredients = () => {
         ))}
       </ul>
 
-      <div className={styles.list}>
-        <h2 className="text text_type_main-medium">Булки</h2>
-        <ul className={`${styles.sublist} pl-4 pr-4`}>{bunList}</ul>
-
-        <h2 className="text text_type_main-medium">Соусы</h2>
-        <ul className={`${styles.sublist} pl-4 pr-4`}>{sauceList}</ul>
-
-        <h2 className="text text_type_main-medium">Начинка</h2>
-        <ul className={`${styles.sublist} pl-4 pr-4`}>{mainList}</ul>
-      </div>
+      <ul className={styles.list}>
+        {tabList.map((tab, index) => (
+          <InView
+            as="li"
+            key={index}
+            className={styles.ingredients__column}
+            data-type={tab.type}
+            onChange={(inView, entry) => {
+              const refs = getRefs();
+              refs.set(index, entry.target);
+              if (inView) {
+                setCurrentTab(entry.target.dataset.type);
+              }
+            }}
+          >
+            <IngredientsType
+              className="pl-4 pr-4"
+              type={tab.type}
+              name={tab.value}
+            >
+              {tab.type === "bun"
+                ? bunList
+                : tab.type === "sauce"
+                ? sauceList
+                : mainList}
+            </IngredientsType>
+          </InView>
+        ))}
+      </ul>
     </section>
   );
 };
 
 export default BurgerIngredients;
-/*
-
-<ul className={styles.list}>
-        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"buns"} title={"Булки"}>
-          {bunList}
-        </IngredientsList>
-
-        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"sauce"} title={"Соусы"}>
-          {sauceList}
-        </IngredientsList>
-
-        <IngredientsList className={`${styles.sublist} pl-4 pr-4`} type={"main"} title={"Начинки"}>
-          {mainList}
-        </IngredientsList>
-      </ul>
-*/

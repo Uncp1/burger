@@ -1,4 +1,4 @@
-.tabs{
+.tabs {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   list-style: none;
@@ -6,7 +6,7 @@
   padding: 0;
 }
 
-.list{
+.list {
   overflow: overlay;
   scrollbar-gutter: stable;
   position: relative;
@@ -18,7 +18,6 @@
   max-height: 756px;
 }
 
-
 .list::-webkit-scrollbar {
   width: 8px;
   overflow: visible;
@@ -29,13 +28,5 @@
 }
 
 .list::-webkit-scrollbar-track {
-  background: #2F2F37;
-}
-
-.sublist{
-  display: grid;
-  gap: 32px 24px;
-  grid-template-columns: repeat(2, minmax(272px, 1fr));
-  margin: 0;
-  padding: 0 16px;
+  background: #2f2f37;
 }
