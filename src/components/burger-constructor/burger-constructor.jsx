@@ -1,7 +1,6 @@
 import styles from "./burger-constructor.module.css";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";

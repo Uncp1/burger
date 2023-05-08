@@ -62,10 +62,10 @@ const BurgerIngredients = () => {
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
       <ul className={styles.tabs}>
         {tabList.map((tab, index) => (
-          <li key={tab.value}>
+          <li key={tab.type}>
             <Tab
               value={tab.value}
-              active={currentTab === tab.value}
+              active={currentTab === tab.type}
               onClick={(currentTab) => handleTabClick(currentTab, index)}
             >
               {tab.value}

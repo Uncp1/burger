@@ -17,6 +17,11 @@ const cartSlice = createSlice({
         ingredientId
       );
 
+      state.cart.bun !== null &&
+        action.payload.type === "bun" &&
+        state.cart.bun !== action.payload &&
+        (state.counter[state.cart.bun._id] = 0);
+
       isIngredientInCart
         ? (state.counter[action.payload._id] = ingrCounter + 1)
         : (state.counter[action.payload._id] = 1);
@@ -33,6 +38,16 @@ const cartSlice = createSlice({
       state.cart.ingredients.splice(action.payload.index, 1);
     },
     sortCartItem(state, action) {
+      const ingredientId = action.payload.ingredient._id;
+      const ingrCounter = state.counter[ingredientId];
+      const isIngredientInCart = Object.keys(state.counter).includes(
+        ingredientId
+      );
+
+      isIngredientInCart
+        ? (state.counter[action.payload.ingredient._id] = ingrCounter + 1)
+        : (state.counter[action.payload.ingredient._id] = 1);
+
       state.cart.ingredients.splice(
         action.payload.atIndex,
         0,

@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-
+import { useEffect, useCallback } from "react";
 import IngredientInfo from "../ingredient-info/ingredient-info.jsx";
 import OrderInfo from "../order-info/order-info.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +15,21 @@ const Modal = ({ title }) => {
     useSelector((state) => state.modal);
 
   const dispatch = useDispatch();
+
+  const handleEscape = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.key === "Escape" && dispatch(closeModal());
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    if (!isModalOpen) return;
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [handleEscape, isModalOpen]);
+
   return createPortal(
     <>
       <ModalOverlay />
