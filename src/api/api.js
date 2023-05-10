@@ -1,8 +1,8 @@
 const serverConfig = {
   baseUrl: `https://norma.nomoreparties.space/api`,
   headers: {
-    authorization: '',
-    'Content-Type': 'application/json',
+    authorization: "",
+    "Content-Type": "application/json",
   },
 };
 
@@ -14,15 +14,20 @@ const Api = (baseUrl, headers) => {
       ...options,
     });
     const json = await res.json();
-    return res.ok ? json : Promise.reject(JSON.parse(JSON.stringify(res.json())));
+    return res.ok
+      ? json
+      : Promise.reject(JSON.parse(JSON.stringify(res.json())));
   };
 
   const getIngredients = () => {
-    return request('ingredients');
+    return request("ingredients");
   };
 
-  const createOrder = () => {
-    return 345436;
+  const createOrder = (order) => {
+    return request("orders", {
+      method: "POST",
+      body: JSON.stringify(order),
+    });
   };
 
   return { getIngredients, createOrder };

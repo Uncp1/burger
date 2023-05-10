@@ -1,76 +1,110 @@
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './burger-ingredients.module.css'
-import { useState } from 'react';
-import PropTypes from "prop-types";
-import { ingredientType } from "../../utils/types";
+import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./burger-ingredients.module.css";
+import { useCallback, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { InView } from "react-intersection-observer";
 
-import IngredientItem from '../ingredient-item/ingredient-item';
+import IngredientItem from "../ingredient-item/ingredient-item";
+import IngredientsType from "../ingredient-type/ingredients-type";
 
-const BurgerIngredients = ({ ingredients, openModal }) => {
-  const [currentTab, setCurrentTab] = useState('Булки');
+const BurgerIngredients = () => {
+  const { ingredients } = useSelector((state) => state.ingredients);
 
-  function changeActiveTab(string) {
-    setCurrentTab(string);
-  }
+  const buns = ingredients.filter((item) => item.type === "bun");
+  const sauces = ingredients.filter((item) => item.type === "sauce");
+  const main = ingredients.filter((item) => item.type === "main");
 
+  const bunList = buns.map((item) => (
+    <IngredientItem key={item._id} ingredient={item} />
+  ));
+  const sauceList = sauces.map((item) => (
+    <IngredientItem key={item._id} ingredient={item} />
+  ));
+  const mainList = main.map((item) => (
+    <IngredientItem key={item._id} ingredient={item} />
+  ));
+
+  const [currentTab, setCurrentTab] = useState("bun");
   const [tabList] = useState([
     {
-      value: 'Булки',
-      click: () => changeActiveTab('Булки')
+      value: "Булки",
+      type: "bun",
     },
     {
-      value: 'Соусы',
-      click: () => changeActiveTab('Соусы')
+      value: "Соусы",
+      type: "sauce",
     },
     {
-      value: 'Начинки',
-      click: () => changeActiveTab('Начинки')
-    }
+      value: "Начинки",
+      type: "main",
+    },
   ]);
+
+  const tabsRef = useRef(null);
+  const getRefs = () =>
+    !tabsRef.current ? (tabsRef.current = new Map()) : tabsRef.current;
+
+  const scrollToId = useCallback((itemKey) => {
+    const refs = getRefs().get(itemKey);
+    refs.scrollIntoView();
+  }, []);
+
+  const handleTabClick = useCallback(
+    (value, index) => {
+      setCurrentTab(value);
+      scrollToId(index);
+    },
+    [scrollToId]
+  );
 
   return (
     <section>
       <h1 className="text text_type_main-large mt-10">Соберите бургер</h1>
       <ul className={styles.tabs}>
-        {
-          tabList.map(tab => (
-            <li key={tab.value}>
-              <Tab
-                value={tab.value}
-                active={currentTab === tab.value}
-                onClick={tab.click}
-              >
-                {tab.value}
-              </Tab>
-            </li>
-          ))
-        }
+        {tabList.map((tab, index) => (
+          <li key={tab.type}>
+            <Tab
+              value={tab.value}
+              active={currentTab === tab.type}
+              onClick={(currentTab) => handleTabClick(currentTab, index)}
+            >
+              {tab.value}
+            </Tab>
+          </li>
+        ))}
       </ul>
-      <div className={styles.list}>
-        {
-          ingredients.map((component, index)  => (
-            <ul key={index}>
-              <h2 className="text text_type_main-medium">{component.name}</h2>
 
-              <li className={`${styles.sublist} pl-4 pr-4`}>
-                {
-                 component.items.map(item => (
-                    <IngredientItem ingredient={item} key={item._id} openModal={openModal}/>
-                  ))
-                }
-              </li>
-            
-            </ul>
-           ))
-        } 
-    </div>    
-    </section> 
-  )
-}
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.array.isRequired,
-  openModal: PropTypes.func.isRequired
+      <ul className={styles.list}>
+        {tabList.map((tab, index) => (
+          <InView
+            as="li"
+            key={index}
+            className={styles.ingredients__column}
+            data-type={tab.type}
+            onChange={(inView, entry) => {
+              const refs = getRefs();
+              refs.set(index, entry.target);
+              if (inView) {
+                setCurrentTab(entry.target.dataset.type);
+              }
+            }}
+          >
+            <IngredientsType
+              className="pl-4 pr-4"
+              type={tab.type}
+              name={tab.value}
+            >
+              {tab.type === "bun"
+                ? bunList
+                : tab.type === "sauce"
+                ? sauceList
+                : mainList}
+            </IngredientsType>
+          </InView>
+        ))}
+      </ul>
+    </section>
+  );
 };
 
 export default BurgerIngredients;
