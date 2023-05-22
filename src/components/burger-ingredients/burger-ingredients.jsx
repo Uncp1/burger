@@ -9,6 +9,7 @@ import IngredientsType from "../ingredient-type/ingredients-type";
 
 const BurgerIngredients = () => {
   const { ingredients } = useSelector((state) => state.ingredients);
+  console.log(ingredients);
 
   const buns = ingredients.filter((item) => item.type === "bun");
   const sauces = ingredients.filter((item) => item.type === "sauce");
