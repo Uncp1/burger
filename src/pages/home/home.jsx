@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import Header from "../../components/header/header";
+
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor.jsx";
 import Loader from "../../components/loader/loader.jsx";
@@ -23,8 +23,6 @@ const HomePage = () => {
 
   return (
     <>
-      <Header />
-
       <main className={clsx(styles.main, "pb-10")}>
         {!loading && ingredients.length > 0 ? (
           <div className={styles.main__container}>
