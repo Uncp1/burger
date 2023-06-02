@@ -4,6 +4,7 @@ import NotFound404 from "./not-found/not-found";
 import RegisterPage from "./register/register";
 import ResetPage from "./reset/reset";
 import LayoutPage from "./layout";
+import ProfilePage from "./profile/profile";
 
 export {
   HomePage,
@@ -12,4 +13,5 @@ export {
   RegisterPage,
   ResetPage,
   LayoutPage,
+  ProfilePage,
 };

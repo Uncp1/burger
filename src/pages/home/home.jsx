@@ -1,5 +1,3 @@
-import clsx from "clsx";
-
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor.jsx";
 import Loader from "../../components/loader/loader.jsx";
@@ -23,7 +21,7 @@ const HomePage = () => {
 
   return (
     <>
-      <main className={clsx(styles.main, "pb-10")}>
+      <main className={`pb-10 ${styles.main}`}>
         {!loading && ingredients.length > 0 ? (
           <div className={styles.main__container}>
             <DndProvider backend={HTML5Backend}>

@@ -1,10 +1,6 @@
-import {
-  Button,
-  EmailInput,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from "react";
+import styles from "./register.module.css";
+import LoginForm from "../../components/login-form/login-form";
 
 const RegisterPage = () => {
   const [value, setValue] = useState({
@@ -20,32 +16,9 @@ const RegisterPage = () => {
     e.preventDefault();
   };
   return (
-    <div>
-      <form onSubmit={onSubmit}>
-        <h1>Регистрация</h1>
-        <Input
-          type={"text"}
-          onChange={onChange}
-          value={value.name}
-          placeholder={"Имя"}
-          name={"name"}
-          size={"default"}
-        />
-        <EmailInput
-          onChange={onChange}
-          value={value.email}
-          name={"email"}
-          placeholder="Почта"
-        />
-        <PasswordInput
-          onChange={onChange}
-          value={value.password}
-          name={"password"}
-          placeholder="Пароль"
-        />
-        <Button>Зарегестрироваться</Button>
-      </form>
-    </div>
+    <main>
+      <LoginForm type="register" />
+    </main>
   );
 };
 

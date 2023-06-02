@@ -5,6 +5,7 @@ import {
   Input,
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import LoginForm from "../../components/login-form/login-form";
 
 const ResetPage = () => {
   const dispatch = useDispatch();
@@ -23,12 +24,9 @@ const ResetPage = () => {
   };
 
   return (
-    <>
-      <h1>Восстановление пароля</h1>
-      <PasswordInput />
-      <Input />
-      <Button />
-    </>
+    <main>
+      <LoginForm type={"reset"} />
+    </main>
   );
 };
 

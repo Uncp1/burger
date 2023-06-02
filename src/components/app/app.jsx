@@ -6,6 +6,7 @@ import {
   RegisterPage,
   ResetPage,
   LayoutPage,
+  ProfilePage,
 } from "../../pages";
 
 const App = () => {
@@ -16,8 +17,8 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<HomePage />} />
-          <Route path="/reset-password" element={<ResetPage />} />
-          <Route path="/profile" element={<HomePage />} />
+          <Route path="/reset" element={<ResetPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="*" element={<NotFound404 />} />
           <Route path="/" element={<HomePage />} />
         </Route>
