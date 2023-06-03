@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./register.module.css";
 import LoginForm from "../../components/login-form/login-form";
+import LoginLinks from "../../components/login-links/login-links";
 
 const RegisterPage = () => {
   const [value, setValue] = useState({
@@ -16,8 +17,9 @@ const RegisterPage = () => {
     e.preventDefault();
   };
   return (
-    <main>
+    <main className={styles.container}>
       <LoginForm type="register" />
+      <LoginLinks type="register" />
     </main>
   );
 };

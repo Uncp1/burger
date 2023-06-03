@@ -5,18 +5,21 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styles from "./login-form.module.css";
 
-const LoginForm = ({ type }) => {
+const LoginForm = ({ type, handleChange }) => {
+  const { email, name, password } = useSelector((store) => store.user);
+
   const formContent = () => {
     switch (type) {
       case "login":
         return (
           <>
             <h1 className="text text_type_main-large">Вход</h1>
-            <EmailInput />
-            <PasswordInput />
+            <EmailInput onChange={handleChange} />
+            <PasswordInput onChange={handleChange} />
             <NavLink to={"/"}>
               <Button htmlType="button" type="primary" size="medium">
                 Войти
@@ -29,6 +32,7 @@ const LoginForm = ({ type }) => {
           <>
             <h1 className="text text_type_main-large">Регистрация</h1>
             <Input
+              onChange={handleChange}
               type={"text"}
               //onChange={onChange}
               //value={value.name}
@@ -37,12 +41,14 @@ const LoginForm = ({ type }) => {
               size={"default"}
             />
             <EmailInput
+              onChange={handleChange}
               //onChange={onChange}
               //value={value.email}
               name={"email"}
               placeholder="Почта"
             />
             <PasswordInput
+              onChange={handleChange}
               //onChange={onChange}
               //value={value.password}
               name={"password"}
@@ -59,9 +65,14 @@ const LoginForm = ({ type }) => {
       case "profile":
         return (
           <>
-            <Input type={"text"} placeholder={"Имя"} icon={"EditIcon"} />
-            <EmailInput icon={"EditIcon"} />
-            <PasswordInput icon={"EditIcon"} />
+            <Input
+              onChange={handleChange}
+              type={"text"}
+              placeholder={"Имя"}
+              icon={"EditIcon"}
+            />
+            <EmailInput onChange={handleChange} icon={"EditIcon"} />
+            <PasswordInput onChange={handleChange} icon={"EditIcon"} />
           </>
         );
       case "forgot":
@@ -70,8 +81,8 @@ const LoginForm = ({ type }) => {
         return (
           <>
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
-            <PasswordInput />
-            <Input />
+            <PasswordInput onChange={handleChange} />
+            <Input onChange={handleChange} />
             <NavLink to="/login">
               <Button htmlType="button" type="primary" size="medium">
                 Сохранить
