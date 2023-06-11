@@ -1,15 +1,10 @@
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./profile.module.css";
-import {
-  Button,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import LoginForm from "../../components/login-form/login-form";
 import ProfileNavigation from "../../components/profile-navigation/profile-navigation";
 
 const ProfilePage = () => {
+  const { isUserLoggedIn } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   return (

@@ -13,7 +13,6 @@ export const setCookie = (name, value, time) => {
   const date = new Date();
   date.setTime(date.getTime() + time * 1000);
   const expires = "expires=" + date.toUTCString();
-  //console.log(document.cookie);
   document.cookie = name + "=" + (value || "") + "; " + expires + "; path=/";
   //console.log(name + "=" + (value || "") + "; " + expires + "; path=/");
 };

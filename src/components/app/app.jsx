@@ -15,14 +15,42 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LayoutPage />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/forgot-password" element={<HomePage />} />
-          <Route path="/reset" element={<ResetPage />} />
+          <Route
+            path="/login"
+            element={
+              <ProtectedRoute redirect="/" anonymous={true}>
+                <LoginPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <ProtectedRoute redirect="/" anonymous={true}>
+                <RegisterPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <ProtectedRoute redirect="/" anonymous={true}>
+                <ResetPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reset"
+            element={
+              <ProtectedRoute redirect="/" anonymous={true}>
+                <ResetPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
-              <ProtectedRoute redirect="/login">
+              <ProtectedRoute redirect="/login" anonymous={false}>
                 <ProfilePage />
               </ProtectedRoute>
             }
