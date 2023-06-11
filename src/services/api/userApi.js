@@ -1,3 +1,5 @@
+import { getCookie, setCookie } from "../../utils/cookies";
+
 const serverConfig = {
   baseUrl: `https://norma.nomoreparties.space/api`,
   headers: {
@@ -14,21 +16,51 @@ const userApi = (baseUrl, headers) => {
       ...options,
     });
     const json = await res.json();
+    console.log(json);
     return res.ok
       ? json
       : Promise.reject(JSON.parse(JSON.stringify(res.json())));
   };
 
-  const loginUser = (email, password) => {
-    return request("auth/register", {
+  const loginUser = ({ email, password }) => {
+    return request("auth/login", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
   };
 
-  return { loginUser };
+  const logoutUser = ({ token }) => {
+    return request("auth/logout", {
+      method: "POST",
+      body: JSON.stringify({ token }),
+    });
+  };
+
+  const registerUser = ({ email, password, name }) => {
+    console.log(email, password, name);
+    return request("auth/register", {
+      method: "POST",
+      body: JSON.stringify({ email, password, name }),
+    });
+  };
+
+  const forgotPassword = ({ email }) => {
+    return request("password-reset", {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+  };
+
+  const resetPassword = ({ password, token }) => {
+    return request("password-reset/reset", {
+      method: "POST",
+      body: JSON.stringify({ password, token }),
+    });
+  };
+
+  return { loginUser, registerUser, logoutUser, forgotPassword, resetPassword };
 };
-export const { loginUser } = userApi(
+export const { loginUser, registerUser } = userApi(
   serverConfig.baseUrl,
   serverConfig.headers
 );

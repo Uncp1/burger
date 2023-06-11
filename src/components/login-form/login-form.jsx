@@ -9,22 +9,49 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styles from "./login-form.module.css";
 
-const LoginForm = ({ type, handleChange }) => {
-  const { email, name, password } = useSelector((store) => store.user);
-
+const LoginForm = ({
+  type,
+  handleChange,
+  handleSubmit,
+  inputValues,
+  errors,
+  isValid,
+}) => {
   const formContent = () => {
     switch (type) {
       case "login":
         return (
           <>
             <h1 className="text text_type_main-large">Вход</h1>
-            <EmailInput onChange={handleChange} />
-            <PasswordInput onChange={handleChange} />
-            <NavLink to={"/"}>
-              <Button htmlType="button" type="primary" size="medium">
-                Войти
-              </Button>
-            </NavLink>
+            <EmailInput
+              value={inputValues.email}
+              placeholder={"E-mail"}
+              name={"email"}
+              error={!!errors.email}
+              errorText={errors.email}
+              onChange={handleChange}
+              required
+            />
+            <PasswordInput
+              value={inputValues.password}
+              onChange={handleChange}
+              placeholder={"Пароль"}
+              name={"password"}
+              error={!!errors.password}
+              errorText={errors.password}
+              minLength={2}
+              maxLength={20}
+              required
+            />
+
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              disabled={!isValid}
+            >
+              Войти
+            </Button>
           </>
         );
       case "register":
@@ -32,34 +59,41 @@ const LoginForm = ({ type, handleChange }) => {
           <>
             <h1 className="text text_type_main-large">Регистрация</h1>
             <Input
-              onChange={handleChange}
+              value={inputValues.name}
               type={"text"}
-              //onChange={onChange}
-              //value={value.name}
               placeholder={"Имя"}
               name={"name"}
-              size={"default"}
+              error={false}
+              errorText={"Ошибка"}
+              onChange={handleChange}
+              minLength={2}
+              maxLength={20}
+              required
             />
             <EmailInput
-              onChange={handleChange}
-              //onChange={onChange}
-              //value={value.email}
+              value={inputValues.email}
+              placeholder={"E-mail"}
               name={"email"}
-              placeholder="Почта"
+              error={!!errors.email}
+              errorText={errors.email}
+              onChange={handleChange}
+              required
             />
             <PasswordInput
+              value={inputValues.password}
               onChange={handleChange}
-              //onChange={onChange}
-              //value={value.password}
+              placeholder={"Пароль"}
               name={"password"}
-              placeholder="Пароль"
+              error={!!errors.password}
+              errorText={errors.password}
+              minLength={2}
+              maxLength={20}
+              required
             />
 
-            <NavLink to={"/"}>
-              <Button htmlType="button" type="primary" size="medium">
-                Зарегестрироваться
-              </Button>
-            </NavLink>
+            <Button htmlType="submit" type="primary" size="medium">
+              Зарегестрироваться
+            </Button>
           </>
         );
       case "profile":
@@ -83,11 +117,10 @@ const LoginForm = ({ type, handleChange }) => {
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
             <PasswordInput onChange={handleChange} />
             <Input onChange={handleChange} />
-            <NavLink to="/login">
-              <Button htmlType="button" type="primary" size="medium">
-                Сохранить
-              </Button>
-            </NavLink>
+
+            <Button htmlType="submit" type="primary" size="medium">
+              Сохранить
+            </Button>
           </>
         );
       default:
@@ -95,7 +128,11 @@ const LoginForm = ({ type, handleChange }) => {
     }
   };
 
-  return <form className={styles.form}>{formContent()}</form>;
+  return (
+    <form onSubmit={handleSubmit} className={styles.form}>
+      {formContent()}
+    </form>
+  );
 };
 
 LoginForm.propTypes = {

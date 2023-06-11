@@ -8,6 +8,7 @@ import {
   LayoutPage,
   ProfilePage,
 } from "../../pages";
+import ProtectedRoute from "../protected-route/protected-route";
 
 const App = () => {
   return (
@@ -18,7 +19,14 @@ const App = () => {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<HomePage />} />
           <Route path="/reset" element={<ResetPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute redirect="/login">
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<NotFound404 />} />
           <Route path="/" element={<HomePage />} />
         </Route>

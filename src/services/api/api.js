@@ -1,5 +1,3 @@
-import { getCookie } from "../../utils/tokens";
-
 const serverConfig = {
   baseUrl: `https://norma.nomoreparties.space/api`,
   headers: {
@@ -31,26 +29,6 @@ const Api = (baseUrl, headers) => {
       body: JSON.stringify(order),
     });
   };
-
-  /*
-  const updateToken = () => {};
-  const register = ({ email, password, name }) => {
-    return request("auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password,
-        name,
-      }),
-    });
-  };
-
-  const resetPassword = (email) => {
-    return request("password-reset", {
-      method: "POST",
-      body: JSON.stringify(email),
-    });
-  }; */
 
   return { getIngredients, createOrder };
 };
