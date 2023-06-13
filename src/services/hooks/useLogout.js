@@ -12,7 +12,7 @@ export const useLogout = () => {
     isUserLoggedIn &&
       refreshToken &&
       dispatch(fetchLogout({ token: refreshToken }));
-  }, [dispatch, isLogin, refreshToken]);
+  }, [dispatch, isUserLoggedIn, refreshToken]);
 
   return { handleLogout };
 };

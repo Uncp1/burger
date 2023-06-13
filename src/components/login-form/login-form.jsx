@@ -104,19 +104,35 @@ const LoginForm = ({
               type={"text"}
               placeholder={"Имя"}
               icon={"EditIcon"}
+              value={user.user.name}
             />
             <EmailInput onChange={handleChange} icon={"EditIcon"} />
             <PasswordInput onChange={handleChange} icon={"EditIcon"} />
           </>
         );
       case "forgot":
-        return <></>;
+        return (
+          <>
+            <h1 className="text text_type_main-large">Восстановление пароля</h1>
+            <EmailInput
+              value={inputValues.email}
+              onChange={handleChange}
+              icon={"EditIcon"}
+            />
+          </>
+        );
       case "reset":
         return (
           <>
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
-            <PasswordInput onChange={handleChange} />
-            <Input onChange={handleChange} />
+            <PasswordInput
+              placeholder={"Введите новый пароль"}
+              onChange={handleChange}
+            />
+            <Input
+              placeholder={"Введите код из письма"}
+              onChange={handleChange}
+            />
 
             <Button htmlType="submit" type="primary" size="medium">
               Сохранить
@@ -127,7 +143,7 @@ const LoginForm = ({
         return <h1>a secret dark place</h1>;
     }
   };
-
+  const { user } = useSelector((store) => store.user);
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       {formContent()}

@@ -4,7 +4,7 @@ import LoginForm from "../../components/login-form/login-form";
 import ProfileNavigation from "../../components/profile-navigation/profile-navigation";
 
 const ProfilePage = () => {
-  const { isUserLoggedIn } = useSelector((store) => store.user);
+  const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   return (

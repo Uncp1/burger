@@ -5,6 +5,7 @@ import RegisterPage from "./register/register";
 import ResetPage from "./reset/reset";
 import LayoutPage from "./layout";
 import ProfilePage from "./profile/profile";
+import ForgotPasswordPage from "./forgot/forgot";
 
 export {
   HomePage,
@@ -14,4 +15,5 @@ export {
   ResetPage,
   LayoutPage,
   ProfilePage,
+  ForgotPasswordPage,
 };

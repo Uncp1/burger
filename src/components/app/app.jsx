@@ -7,6 +7,7 @@ import {
   ResetPage,
   LayoutPage,
   ProfilePage,
+  ForgotPasswordPage,
 } from "../../pages";
 import ProtectedRoute from "../protected-route/protected-route";
 
@@ -35,7 +36,7 @@ const App = () => {
             path="/forgot-password"
             element={
               <ProtectedRoute redirect="/" anonymous={true}>
-                <ResetPage />
+                <ForgotPasswordPage />
               </ProtectedRoute>
             }
           />

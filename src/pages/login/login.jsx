@@ -3,7 +3,7 @@ import styles from "./login.module.css";
 import LoginForm from "../../components/login-form/login-form";
 import LoginLinks from "../../components/login-links/login-links";
 import { useDispatch } from "react-redux";
-import { fetchLogin } from "../../services/slices/user-slice";
+import { fetchLogin, updateUser } from "../../services/slices/user-slice";
 import { useCallback, useState, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
 

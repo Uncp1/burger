@@ -15,8 +15,7 @@ export const updateUserData = (user, accessToken, refreshToken, dispatch) => {
     dispatch(
       updateUser({
         token: { refreshToken, accessToken, expiresAt },
-        email: user.email,
-        name: user.name,
+        user: user,
       })
     );
     console.log(user);

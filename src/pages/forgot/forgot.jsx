@@ -1,8 +1,8 @@
-import styles from "./login.module.css";
+import styles from "./forgot.module.css";
 import LoginForm from "../../components/login-form/login-form";
 import LoginLinks from "../../components/login-links/login-links";
 import { useDispatch } from "react-redux";
-import { fetchLogin } from "../../services/slices/user-slice";
+import { fetchForgotPassword } from "../../services/slices/user-slice";
 import { useCallback, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
 
@@ -18,13 +18,12 @@ const ForgotPasswordPage = () => {
     (e) => {
       e.preventDefault();
       dispatch(
-        fetchLogin({
+        fetchForgotPassword({
           email: inputValues.email,
-          password: inputValues.password,
         })
       );
     },
-    [inputValues.email, inputValues.password, dispatch]
+    [inputValues.email, dispatch]
   );
 
   return (

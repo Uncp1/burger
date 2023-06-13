@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import styles from "./reset.module.css";
 import {
   Button,
   Input,
@@ -24,7 +25,7 @@ const ResetPage = () => {
   };
 
   return (
-    <main>
+    <main className={styles.main}>
       <LoginForm type={"reset"} />
     </main>
   );
