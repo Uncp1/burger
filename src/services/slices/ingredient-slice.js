@@ -30,7 +30,6 @@ const ingredientSlice = createSlice({
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.loading = false;
         state.ingredients = action.payload;
-        console.log("bbuuuuubaa");
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.error = action.error.message;

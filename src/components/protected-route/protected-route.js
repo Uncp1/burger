@@ -1,13 +1,8 @@
-import { Component, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, Route } from "react-router-dom";
-import { useAuth } from "../../services/hooks/useAuth";
+import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children, redirect, anonymous }) => {
-  //const { isUserLoggedIn } = useAuth();
   const { isUserLoggedIn } = useSelector((store) => store.user);
-  console.log(useSelector((store) => store.user));
-  console.log(isUserLoggedIn);
 
   if (isUserLoggedIn && anonymous) {
     return <Navigate to={redirect} />;

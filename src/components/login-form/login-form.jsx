@@ -96,20 +96,7 @@ const LoginForm = ({
             </Button>
           </>
         );
-      case "profile":
-        return (
-          <>
-            <Input
-              onChange={handleChange}
-              type={"text"}
-              placeholder={"Имя"}
-              icon={"EditIcon"}
-              value={user.user.name}
-            />
-            <EmailInput onChange={handleChange} icon={"EditIcon"} />
-            <PasswordInput onChange={handleChange} icon={"EditIcon"} />
-          </>
-        );
+
       case "forgot":
         return (
           <>
@@ -143,7 +130,7 @@ const LoginForm = ({
         return <h1>a secret dark place</h1>;
     }
   };
-  const { user } = useSelector((store) => store.user);
+
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
       {formContent()}

@@ -6,6 +6,7 @@ import ResetPage from "./reset/reset";
 import LayoutPage from "./layout";
 import ProfilePage from "./profile/profile";
 import ForgotPasswordPage from "./forgot/forgot";
+import IngredientPage from "./ingredient-page/ingredient-page";
 
 export {
   HomePage,
@@ -16,4 +17,5 @@ export {
   LayoutPage,
   ProfilePage,
   ForgotPasswordPage,
+  IngredientPage,
 };

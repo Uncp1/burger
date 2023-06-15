@@ -14,7 +14,7 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(fetchIngredients());
-  }, []);
+  }, [dispatch]);
 
   const { ingredients, loading } = useSelector((state) => state.ingredients);
   const { isOrderConfirmation } = useSelector((state) => state.modal);

@@ -58,9 +58,27 @@ const userApi = (baseUrl, headers) => {
     });
   };
 
-  return { loginUser, registerUser, logoutUser, forgotPassword, resetPassword };
+  const patchUser = (data) => {
+    return request("auth/user", {
+      method: "PATCH",
+      body: JSON.stringify(data),
+    });
+  };
+
+  return {
+    loginUser,
+    registerUser,
+    logoutUser,
+    forgotPassword,
+    resetPassword,
+    patchUser,
+  };
 };
-export const { loginUser, registerUser } = userApi(
-  serverConfig.baseUrl,
-  serverConfig.headers
-);
+export const {
+  loginUser,
+  registerUser,
+  logoutUser,
+  forgotPassword,
+  resetPassword,
+  patchUser,
+} = userApi(serverConfig.baseUrl, serverConfig.headers);

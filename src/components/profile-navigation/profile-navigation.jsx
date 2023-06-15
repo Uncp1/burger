@@ -1,15 +1,27 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { useLogout } from "../../services/hooks/useLogout";
+import { fetchLogout } from "../../services/slices/user-slice";
+import { getCookie } from "../../utils/cookies";
 import styles from "./profile-navigation.module.css";
 
 const ProfileNavigation = () => {
-  const handleLogout = useLogout();
+  const dispatch = useDispatch();
+  const { isUserLoggedIn } = useSelector((store) => store.user);
+
+  const refreshToken = getCookie("refreshToken");
+  const handleLogout = useCallback(() => {
+    isUserLoggedIn &&
+      refreshToken &&
+      dispatch(fetchLogout({ token: refreshToken }));
+  }, [dispatch, isUserLoggedIn, refreshToken]);
   return (
     <nav>
       <ul className={styles.list}>
         <li className={styles.item}>
           <NavLink
+            to="/profile"
             className={`page__link text text_type_main-medium ${styles.link}`}
           >
             Профиль
@@ -17,6 +29,7 @@ const ProfileNavigation = () => {
         </li>
         <li className={styles.item}>
           <NavLink
+            to="/profile/orders"
             className={`page__link text text_type_main-medium ${styles.link}`}
           >
             {" "}

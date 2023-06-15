@@ -2,11 +2,9 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./profile.module.css";
 import LoginForm from "../../components/login-form/login-form";
 import ProfileNavigation from "../../components/profile-navigation/profile-navigation";
+import { Outlet } from "react-router-dom";
 
 const ProfilePage = () => {
-  const { user } = useSelector((store) => store.user);
-  const dispatch = useDispatch();
-
   return (
     <main className={styles.container}>
       <div className={styles.menu}>
@@ -17,6 +15,8 @@ const ProfilePage = () => {
       </div>
 
       <LoginForm type="profile" />
+
+      <Outlet />
     </main>
   );
 };

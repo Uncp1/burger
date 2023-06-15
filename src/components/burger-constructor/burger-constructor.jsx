@@ -8,7 +8,7 @@ import { useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../services/slices/order-slice";
 import { useDrop } from "react-dnd";
-import { openModal } from "../../services/slices/modal-slice";
+import { openModalOrder } from "../../services/slices/modal-slice";
 import {
   addCartItem,
   emptyCart,
@@ -28,7 +28,7 @@ const BurgerConstructor = () => {
 
   const handleCreateOrder = async () => {
     await dispatch(createOrder(cart));
-    dispatch(openModal({ type: "order" }));
+    dispatch(openModalOrder());
     dispatch(emptyCart());
   };
 

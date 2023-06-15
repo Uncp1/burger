@@ -8,59 +8,70 @@ import {
   LayoutPage,
   ProfilePage,
   ForgotPasswordPage,
+  IngredientPage,
 } from "../../pages";
+import ModalNotification from "../modal-notification/modal-notification";
 import ProtectedRoute from "../protected-route/protected-route";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LayoutPage />}>
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute redirect="/" anonymous={true}>
-                <LoginPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <ProtectedRoute redirect="/" anonymous={true}>
-                <RegisterPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <ProtectedRoute redirect="/" anonymous={true}>
-                <ForgotPasswordPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/reset"
-            element={
-              <ProtectedRoute redirect="/" anonymous={true}>
-                <ResetPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute redirect="/login" anonymous={false}>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<NotFound404 />} />
-          <Route path="/" element={<HomePage />} />
-        </Route>
-      </Routes>
-    </Router>
+    <>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LayoutPage />}>
+            <Route
+              path="/login"
+              element={
+                <ProtectedRoute redirect="/" anonymous={true}>
+                  <LoginPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <ProtectedRoute redirect="/" anonymous={true}>
+                  <RegisterPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <ProtectedRoute redirect="/" anonymous={true}>
+                  <ForgotPasswordPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/reset"
+              element={
+                <ProtectedRoute redirect="/" anonymous={true}>
+                  <ResetPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute redirect="/login" anonymous={false}>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<NotFound404 />} />
+              <Route path="/profile/orders" element={<NotFound404 />} />
+            </Route>
+            <Route path="/ingredients/:id" element={<IngredientPage />} />
+
+            <Route path="*" element={<NotFound404 />} />
+            <Route path="/" element={<HomePage />} />
+          </Route>
+        </Routes>
+      </Router>
+
+      <ModalNotification></ModalNotification>
+    </>
   );
 };
 
