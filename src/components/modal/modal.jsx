@@ -4,22 +4,18 @@ import clsx from "clsx";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import { useEffect, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../services/slices/modal-slice";
+import { useEffect, useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
 
-const Modal = ({ title, children }) => {
+const Modal = ({ title, children, handleModalClose }) => {
   const { notificationData, isModalOpen } = useSelector((state) => state.modal);
-
-  const dispatch = useDispatch();
 
   const handleEscape = useCallback(
     (e) => {
-      console.log(e);
       e.preventDefault();
-      e.key === "Escape" && dispatch(closeModal());
+      e.key === "Escape" && handleModalClose();
     },
-    [dispatch]
+    [handleModalClose]
   );
 
   useEffect(() => {
@@ -34,7 +30,7 @@ const Modal = ({ title, children }) => {
         <></>
       ) : (
         <>
-          <ModalOverlay />
+          <ModalOverlay handleModalClose={handleModalClose} />
 
           <div
             className={clsx(styles.modal, {
@@ -56,7 +52,7 @@ const Modal = ({ title, children }) => {
                 className={styles.modal__close}
                 type="button"
                 aria-label="Закрыть модальное окно"
-                onClick={() => dispatch(closeModal())}
+                onClick={() => handleModalClose()}
               >
                 <CloseIcon type="primary" />
               </button>
@@ -74,6 +70,7 @@ const Modal = ({ title, children }) => {
 Modal.propTypes = {
   title: PropTypes.string,
   children: PropTypes.node,
+  handleModalClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

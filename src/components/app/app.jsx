@@ -1,10 +1,11 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
+  useNavigate,
 } from "react-router-dom";
 import {
   HomePage,
@@ -26,13 +27,14 @@ import Modal from "../modal/modal";
 import IngredientInfo from "../ingredient-info/ingredient-info";
 import OrderInfo from "../order-info/order-info";
 import { fetchIngredients } from "../../services/slices/ingredient-slice";
+import { closeModal } from "../../services/slices/modal-slice";
 
 const App = () => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((store) => store.ingredients);
   const { modalOrder, modalIngredient } = useSelector((state) => state.modal);
   const { user, isUserLoggedIn, token } = useSelector((store) => store.user);
-
+  const navigate = useNavigate();
   const location = useLocation();
   const background =
     modalIngredient || modalOrder ? location?.state?.background : null;
@@ -58,7 +60,22 @@ const App = () => {
       dispatch(fetchGetUser());
     }
   }, [dispatch, isTokenExpired, user, ingredients, isUserLoggedIn]);
-  console.log(background, location);
+
+  const previousUrl = useMemo(
+    () =>
+      location.state && location.state.background
+        ? location?.state?.background
+        : null,
+    [location]
+  );
+  const handleModalClose = useCallback(() => {
+    dispatch(closeModal());
+    (modalIngredient || modalOrder) &&
+      navigate(previousUrl, {
+        replace: true,
+        state: { background: null },
+      });
+  }, [dispatch, modalIngredient, modalOrder, navigate, previousUrl]);
   return (
     <>
       <Routes location={background || location}>
@@ -115,7 +132,10 @@ const App = () => {
 
       <ModalNotification></ModalNotification>
 
-      <Modal title={modalOrder ? "Идентификатор заказа" : "Детали ингредиента"}>
+      <Modal
+        handleModalClose={handleModalClose}
+        title={modalOrder ? "Идентификатор заказа" : "Детали ингредиента"}
+      >
         {background && modalIngredient && (
           <IngredientInfo ingredient={modalIngredient} />
         )}
