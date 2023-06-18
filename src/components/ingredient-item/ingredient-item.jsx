@@ -4,10 +4,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./ingredient-item.module.css";
-import {
-  openModal,
-  openModalIngredient,
-} from "../../services/slices/modal-slice";
+import { openModalIngredient } from "../../services/slices/modal-slice";
 import { useDispatch, useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
 import { useCallback, useMemo } from "react";
@@ -23,9 +20,9 @@ const IngredientItem = ({ ingredient }) => {
 
   const handleClick = useCallback(() => {
     dispatch(openModalIngredient(ingredient));
-    /*navigate(`/ingredients/${ingredient._id}`, {
+    navigate(`/ingredients/${ingredient._id}`, {
       state: { background: location },
-    }); */
+    });
   }, [dispatch, location, navigate, ingredient]);
 
   const [, dragRef] = useDrag({

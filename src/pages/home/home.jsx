@@ -1,23 +1,13 @@
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients.jsx";
 import BurgerConstructor from "../../components/burger-constructor/burger-constructor.jsx";
 import Loader from "../../components/loader/loader.jsx";
-import Modal from "../../components/modal/modal";
 import styles from "./home.module.css";
-import { fetchIngredients } from "../../services/slices/ingredient-slice";
-import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const HomePage = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
-
   const { ingredients, loading } = useSelector((state) => state.ingredients);
-  const { isOrderConfirmation } = useSelector((state) => state.modal);
 
   return (
     <>
@@ -33,12 +23,6 @@ const HomePage = () => {
           <Loader loadingText={"Идет загрузка..."}></Loader>
         )}
       </main>
-
-      <Modal
-        title={
-          isOrderConfirmation ? "Идентификатор заказа" : "Детали ингредиента"
-        }
-      />
     </>
   );
 };

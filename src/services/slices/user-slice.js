@@ -1,7 +1,8 @@
 import { getCookie } from "../../utils/cookies";
-import { updateCookie } from "../../utils/updateUserData";
+import { updateCookie } from "../../utils/update-cookie";
 import {
   forgotPassword,
+  getUser,
   loginUser,
   logoutUser,
   patchUser,
@@ -9,11 +10,7 @@ import {
   resetPassword,
 } from "../api/userApi";
 import { setCookie } from "../../utils/cookies";
-import { useLogout } from "../hooks/useLogout";
-import {
-  showMessageTimeout,
-  useShowMessageTimeout,
-} from "../../utils/messages";
+import { showMessageTimeout } from "../../utils/messages";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 const initialState = {
@@ -22,12 +19,25 @@ const initialState = {
     name: null,
     password: null,
   },
+  token: {
+    accessToken: getCookie("accessToken") || null,
+    refreshToken: getCookie("refreshToken") || null,
+    expiresAt: getCookie("expiresAt") || null,
+  },
   isUserLoggedIn: !!getCookie("accessToken") || false,
   accessToken: null,
   refreshToken: null,
   error: "",
   message: "",
   errorMessage: "",
+  request: {
+    fetch: false,
+    error: false,
+    message: false,
+    success: false,
+  },
+  isEmailSubmitted: false,
+  isPasswordChanged: false,
 };
 
 export const fetchLogin = createAsyncThunk(
@@ -65,43 +75,70 @@ export const fetchLogout = createAsyncThunk("fetchLogout", async () => {
 });
 export const fetchRegister = createAsyncThunk(
   "fetchRegister",
-  async ({ name, email, password }) => {
-    try {
-      return await registerUser({ name, email, password });
-    } catch (err) {
-      console.log(err);
-      return err.message;
-    }
+  ({ name, email, password }, { dispatch }) => {
+    registerUser({ name, email, password })
+      .then((res) => {
+        const { user, accessToken, refreshToken } = res;
+        updateCookie({ user, accessToken, refreshToken });
+        dispatch(
+          updateUser({
+            refreshToken: refreshToken,
+            accessToken: accessToken,
+            user: user,
+          })
+        );
+      })
+      .then(() => {
+        showMessageTimeout(
+          "Пользователь успешно создан. Добро пожаловать",
+          dispatch
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
   }
 );
 export const fetchForgotPassword = createAsyncThunk(
   "fetchForgotPassword",
-  async ({ email }) => {
-    try {
-      return await forgotPassword({ email });
-    } catch (err) {
-      console.log(err);
-      return err.message;
-    }
+  ({ email }, { dispatch }) => {
+    forgotPassword({ email })
+      .then(() => {
+        showMessageTimeout(
+          "На указанную почту успешно отправлено письмо с кодом для сброса пароля",
+          dispatch
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
   }
 );
 export const fetchResetPassword = createAsyncThunk(
   "fetchResetPassword",
-  async ({ password, token }) => {
-    try {
-      return await resetPassword({ password, token });
-    } catch (err) {
-      console.log(err);
-      return err.message;
-    }
+  async ({ password, token }, { dispatch }) => {
+    resetPassword({ password, token })
+      .then(() => {
+        showMessageTimeout("Пароль успешно востановлен", dispatch);
+      })
+      .catch((err) => {
+        console.log(err);
+        return err.message;
+      });
   }
+);
+
+export const fetchGetUser = createAsyncThunk("profile/fetchGetUser", () =>
+  getUser().catch((err) => console.log(err))
 );
 
 export const fetchUpdateUser = createAsyncThunk(
   "fetchUpdateUser",
-  async (data) => {
+  async ({ name, email, password }) => {
     try {
-      return await patchUser(data);
+      return await patchUser({ name, email, password });
     } catch (err) {
       console.log(err);
       return err.message;
@@ -114,11 +151,10 @@ const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     updateUser(state, action) {
-      state.user = {
-        ...state.user,
-        ...action.payload,
-      };
+      state.user = action.payload.user;
       state.isUserLoggedIn = !!getCookie("accessToken");
+      state.refreshToken = action.payload.refreshToken;
+      state.accessToken = action.payload.accessToken;
     },
     logOut: (state) => {
       state.user = null;
@@ -129,19 +165,13 @@ const userSlice = createSlice({
     //login
     builder
       .addCase(fetchLogin.pending, (state) => {
-        //state.profileFetchRequest = true;
-        //state.profileFetchFailed = false;
         state.message = "";
         state.errorMessage = "";
       })
       .addCase(fetchLogin.fulfilled, (state, action) => {})
       .addCase(fetchLogin.rejected, (state, action) => {
-        //state.profileFetchRequest = false;
-        //state.profileFetchFailed = true;
+        console.log(action);
         state.errorMessage = action.payload.message;
-        // (action.payload.message === SERVER_RESPOND_INCORRECT_VALUES)
-        // ? state.errorMessage = ERROR_LOGIN
-        // : state.errorMessage = action.payload.message;
       })
       //register
       .addCase(fetchRegister.pending, (state, action) => {
@@ -171,20 +201,57 @@ const userSlice = createSlice({
       })
       .addCase(fetchLogout.rejected, () => {})
       //forgot
-      .addCase(fetchForgotPassword.pending, (state) => {})
-      .addCase(fetchForgotPassword.fulfilled, (state, action) => {})
+      .addCase(fetchForgotPassword.pending, (state, action) => {
+        state.isEmailSubmitted = action.payload;
+        state.request = {
+          ...initialState.request,
+          fetch: true,
+        };
+      })
+      .addCase(fetchForgotPassword.fulfilled, (state, action) => {
+        state.isPasswordChanged = action.payload;
+        state.request = {
+          ...state.request,
+          fetch: false,
+          message: true,
+          success: true,
+        };
+        console.log(state);
+      })
       .addCase(fetchForgotPassword.rejected, () => {})
       //reset
       .addCase(fetchResetPassword.pending, (state) => {})
       .addCase(fetchResetPassword.fulfilled, (state, action) => {})
       .addCase(fetchResetPassword.rejected, () => {})
+
+      // Get user
+      .addCase(fetchGetUser.pending, (state) => {
+        //console.log(state);
+        // state.getUserRequest = {};
+      })
+      .addCase(fetchGetUser.fulfilled, (state, action) => {
+        const { user } = action.payload;
+        const { email, name } = user;
+
+        state.user = {
+          ...state.user,
+          email,
+          name,
+        };
+        state.isUserLoggedIn = true;
+      })
       //updateUser
-      .addCase(fetchUpdateUser.pending, (state) => {})
+      .addCase(fetchUpdateUser.pending, (state) => {
+        state.request = true;
+      })
       .addCase(fetchUpdateUser.fulfilled, (state, action) => {
         const { user } = action.payload;
         state.user = user;
+        state.request = false;
       })
-      .addCase(fetchUpdateUser.rejected, () => {});
+      .addCase(fetchUpdateUser.rejected, (state) => {
+        state.request = false;
+      });
   },
 });
 

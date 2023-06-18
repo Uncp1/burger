@@ -26,7 +26,7 @@ const RegisterPage = () => {
         })
       );
     },
-    [dispatch, inputValues.email, inputValues.password, inputValues.name]
+    [dispatch, inputValues]
   );
 
   return (

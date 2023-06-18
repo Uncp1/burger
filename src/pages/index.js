@@ -5,6 +5,7 @@ import RegisterPage from "./register/register";
 import ResetPage from "./reset/reset";
 import LayoutPage from "./layout";
 import ProfilePage from "./profile/profile";
+import ProfileForm from "./profile/profile-form/profile-form";
 import ForgotPasswordPage from "./forgot/forgot";
 import IngredientPage from "./ingredient-page/ingredient-page";
 
@@ -18,4 +19,5 @@ export {
   ProfilePage,
   ForgotPasswordPage,
   IngredientPage,
+  ProfileForm,
 };

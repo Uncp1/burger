@@ -5,14 +5,11 @@ import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { useEffect, useCallback } from "react";
-import IngredientInfo from "../ingredient-info/ingredient-info.jsx";
-import OrderInfo from "../order-info/order-info.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../services/slices/modal-slice";
 
-const Modal = ({ title }) => {
-  const { ingredientData, orderData, notificationData, isModalOpen } =
-    useSelector((state) => state.modal);
+const Modal = ({ title, children }) => {
+  const { notificationData, isModalOpen } = useSelector((state) => state.modal);
 
   const dispatch = useDispatch();
 
@@ -27,7 +24,6 @@ const Modal = ({ title }) => {
 
   useEffect(() => {
     if (!isModalOpen) return;
-    console.log(isModalOpen);
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [handleEscape, isModalOpen]);
@@ -66,9 +62,7 @@ const Modal = ({ title }) => {
               </button>
             </div>
 
-            {!!ingredientData && <IngredientInfo ingredient={ingredientData} />}
-
-            {!!orderData && <OrderInfo />}
+            {children}
           </div>
         </>
       )}
@@ -79,6 +73,7 @@ const Modal = ({ title }) => {
 
 Modal.propTypes = {
   title: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default Modal;

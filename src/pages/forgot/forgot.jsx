@@ -1,14 +1,16 @@
 import styles from "./forgot.module.css";
 import LoginForm from "../../components/login-form/login-form";
 import LoginLinks from "../../components/login-links/login-links";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchForgotPassword } from "../../services/slices/user-slice";
 import { useCallback, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
   const { inputValues, handleChange, errors, isValid, resetForm } = useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     resetForm();
@@ -22,8 +24,9 @@ const ForgotPasswordPage = () => {
           email: inputValues.email,
         })
       );
+      navigate("/reset");
     },
-    [inputValues.email, dispatch]
+    [inputValues.email, dispatch, navigate]
   );
 
   return (
@@ -36,6 +39,7 @@ const ForgotPasswordPage = () => {
         handleSubmit={handleSubmit}
         isValid={isValid}
       />
+
       <LoginLinks type={"login"} />
     </main>
   );

@@ -1,32 +1,38 @@
 import { useDispatch } from "react-redux";
-import { useState } from "react";
 import styles from "./reset.module.css";
-import {
-  Button,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
 import LoginForm from "../../components/login-form/login-form";
+import LoginLinks from "../../components/login-links/login-links";
+import { fetchResetPassword } from "../../services/slices/user-slice";
+import { useForm } from "../../services/hooks/useForm";
+import { useNavigate } from "react-router-dom";
 
 const ResetPage = () => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState({
-    password: "",
-    code: "",
-  });
+  const navigate = useNavigate();
+  const { inputValues, handleChange, errors, isValid } = useForm();
 
-  const onChange = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
-  };
-
-  const onSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    //dispatch(resetPassword(value.password, value.code));
+    dispatch(
+      fetchResetPassword({
+        password: inputValues.password,
+        token: inputValues.token,
+      })
+    );
+    navigate("/login");
   };
 
   return (
     <main className={styles.main}>
-      <LoginForm type={"reset"} />
+      <LoginForm
+        handleChange={handleChange}
+        inputValues={inputValues}
+        type={"reset"}
+        errors={errors}
+        isValid={isValid}
+        handleSubmit={handleSubmit}
+      />
+      <LoginLinks type="reset" />
     </main>
   );
 };

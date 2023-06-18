@@ -1,4 +1,5 @@
-import { getCookie, setCookie } from "../../utils/cookies";
+import { getCookie } from "../../utils/cookies";
+import { updateCookie } from "../../utils/update-cookie";
 
 const serverConfig = {
   baseUrl: `https://norma.nomoreparties.space/api`,
@@ -9,17 +10,50 @@ const serverConfig = {
 };
 
 const userApi = (baseUrl, headers) => {
-  const request = async (endpoint, options = {}) => {
+  const request = (endpoint, options, token) => {
     const url = `${baseUrl}/${endpoint}`;
-    const res = await fetch(url, {
-      headers: headers,
+    return fetch(url, {
+      headers: {
+        ...headers,
+        authorization: token || getCookie("accessToken"),
+      },
       ...options,
+    }).then((res) => {
+      const json = res.json();
+      return res.ok
+        ? json
+        : Promise.reject(JSON.parse(JSON.stringify(res.json())));
     });
-    const json = await res.json();
-    console.log(json);
-    return res.ok
-      ? json
-      : Promise.reject(JSON.parse(JSON.stringify(res.json())));
+  };
+
+  const userDataRequest = async (endpoint, options) => {
+    const tokenUrl = `auth/token`;
+    const access = getCookie("accessToken");
+    const token = getCookie("refreshToken");
+
+    if (access) {
+      return request(endpoint, options, access);
+    }
+    if (!access && token) {
+      const res = request(tokenUrl, {
+        method: "POST",
+        body: JSON.stringify({ token }),
+      });
+
+      return res
+        .then((res) => {
+          const { accessToken, refreshToken } = res;
+          updateCookie({
+            request: true,
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+          });
+          return request(endpoint, options, getCookie("accessToken"));
+        })
+        .catch((res) => {
+          console.log(res);
+        });
+    }
   };
 
   const loginUser = ({ email, password }) => {
@@ -37,7 +71,6 @@ const userApi = (baseUrl, headers) => {
   };
 
   const registerUser = ({ email, password, name }) => {
-    console.log(email, password, name);
     return request("auth/register", {
       method: "POST",
       body: JSON.stringify({ email, password, name }),
@@ -58,8 +91,10 @@ const userApi = (baseUrl, headers) => {
     });
   };
 
+  const getUser = () => userDataRequest("auth/user");
   const patchUser = (data) => {
-    return request("auth/user", {
+    console.log(data);
+    return userDataRequest("auth/user", {
       method: "PATCH",
       body: JSON.stringify(data),
     });
@@ -72,6 +107,7 @@ const userApi = (baseUrl, headers) => {
     forgotPassword,
     resetPassword,
     patchUser,
+    getUser,
   };
 };
 export const {
@@ -81,4 +117,5 @@ export const {
   forgotPassword,
   resetPassword,
   patchUser,
+  getUser,
 } = userApi(serverConfig.baseUrl, serverConfig.headers);

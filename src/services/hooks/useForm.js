@@ -19,11 +19,14 @@ export const useForm = () => {
     setIsValid(form.checkValidity());
   };
 
-  const resetForm = useCallback(() => {
-    setInputValues({});
-    setErrors({});
-    setIsValid(false);
-  }, [setInputValues, setErrors, setIsValid]);
+  const resetForm = useCallback(
+    (newValues = {}) => {
+      setInputValues(newValues);
+      setErrors({});
+      setIsValid(false);
+    },
+    [setInputValues, setErrors, setIsValid]
+  );
 
   return {
     inputValues,

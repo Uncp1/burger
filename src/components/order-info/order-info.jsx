@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 const OrderInfo = () => {
   const { orderNumber } = useSelector((state) => state.order);
-
   return (
     <div className={`${styles.order} mt-4`}>
       <span className="text text_type_digits-large">{orderNumber}</span>

@@ -103,9 +103,22 @@ const LoginForm = ({
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
             <EmailInput
               value={inputValues.email}
+              placeholder={"E-mail"}
+              name={"email"}
+              error={!!errors.email}
+              errorText={errors.email}
               onChange={handleChange}
-              icon={"EditIcon"}
+              required
             />
+
+            <Button
+              htmlType="submit"
+              type="primary"
+              size="medium"
+              disabled={!isValid}
+            >
+              Восстановить
+            </Button>
           </>
         );
       case "reset":
@@ -114,11 +127,20 @@ const LoginForm = ({
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
             <PasswordInput
               placeholder={"Введите новый пароль"}
+              value={inputValues.password}
               onChange={handleChange}
+              name={"password"}
+              error={!!errors.password}
+              errorText={errors.password}
+              minLength={2}
+              maxLength={20}
+              required
             />
             <Input
+              value={inputValues.token}
               placeholder={"Введите код из письма"}
               onChange={handleChange}
+              name="token"
             />
 
             <Button htmlType="submit" type="primary" size="medium">
