@@ -1,9 +1,28 @@
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookies";
-import { useEffect, useState } from "react";
 
 export const useAuth = () => {
-  //const token = getCookie("accessToken")
-  const [token, setToken] = useState(getCookie("accessToken"));
-  useEffect(() => {});
-  return token;
+  const { token } = useSelector((store) => store.user);
+
+  const location = useLocation();
+  const isTokenExpired = useMemo(() => {
+    if (token) {
+      const expiresAt = getCookie("expiresAt");
+      return Date.now() >= expiresAt;
+    } else {
+      return true;
+    }
+  }, [token]);
+
+  const previousUrl = useMemo(
+    () =>
+      location.state && location.state.background
+        ? location?.state?.background
+        : null,
+    [location]
+  );
+
+  return { previousUrl, isTokenExpired };
 };

@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { api } from "../api/api";
+import { getIngredients } from "../api/api";
 
 export const fetchIngredients = createAsyncThunk(
   "fetchIngredients",
   async () => {
     try {
-      const responce = await api.getIngredients();
+      const responce = await getIngredients();
       return responce.data;
     } catch (err) {
       console.log(err);

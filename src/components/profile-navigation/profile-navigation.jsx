@@ -38,6 +38,7 @@ const ProfileNavigation = () => {
         </li>
         <li className={styles.item}>
           <Button
+            htmlType="button"
             onClick={handleLogout}
             className={`page__link text text_type_main-medium ${styles.button} ${styles.link}`}
           >

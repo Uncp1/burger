@@ -92,7 +92,7 @@ const ProfileForm = () => {
           type={"text"}
           placeholder={"Имя"}
           icon={"EditIcon"}
-          value={inputValues.name}
+          value={inputValues.name || ""}
           onIconClick={onIconNameClick}
           disabled={!isEdited.name}
           ref={inputNameRef}
@@ -104,7 +104,7 @@ const ProfileForm = () => {
           name="email"
           icon={"EditIcon"}
           placeholder={"Почта"}
-          value={inputValues.email}
+          value={inputValues.email || ""}
           onIconClick={onIconEmailClick}
           disabled={!isEdited.email}
           ref={inputEmailRef}
@@ -114,7 +114,7 @@ const ProfileForm = () => {
           name="password"
           onChange={handleChange}
           icon={"EditIcon"}
-          value={inputValues.password}
+          value={inputValues.password || ""}
           onIconClick={onIconPasswordClick}
           disabled={!isEdited.password}
           ref={inputPasswordRef}

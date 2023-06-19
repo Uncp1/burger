@@ -174,9 +174,7 @@ const userSlice = createSlice({
         state.errorMessage = action.payload.message;
       })
       //register
-      .addCase(fetchRegister.pending, (state, action) => {
-        console.log(action, "bubaaaaa");
-      })
+      .addCase(fetchRegister.pending, (state, action) => {})
       .addCase(fetchRegister.fulfilled, (state, action) => {
         const { user, accessToken, refreshToken } = action.payload;
 
@@ -187,9 +185,7 @@ const userSlice = createSlice({
         setCookie("accessToken", accessToken, { expires: 1200 });
         setCookie("refreshToken", refreshToken, { expires: 1200 });
       })
-      .addCase(fetchRegister.rejected, (action) => {
-        console.log(action);
-      })
+      .addCase(fetchRegister.rejected, (action) => {})
 
       //logout
       .addCase(fetchLogout.pending, (state) => {})
@@ -216,7 +212,6 @@ const userSlice = createSlice({
           message: true,
           success: true,
         };
-        console.log(state);
       })
       .addCase(fetchForgotPassword.rejected, () => {})
       //reset
@@ -225,10 +220,7 @@ const userSlice = createSlice({
       .addCase(fetchResetPassword.rejected, () => {})
 
       // Get user
-      .addCase(fetchGetUser.pending, (state) => {
-        //console.log(state);
-        // state.getUserRequest = {};
-      })
+      .addCase(fetchGetUser.pending, (state) => {})
       .addCase(fetchGetUser.fulfilled, (state, action) => {
         const { user } = action.payload;
         const { email, name } = user;

@@ -12,9 +12,9 @@ const ModalNotification = () => {
 
   const dispatch = useDispatch();
 
-  const handleModalClose = useCallback(() => {
+  const handleModalClose = () => {
     dispatch(closeModal());
-  }, [dispatch]);
+  };
 
   return createPortal(
     <div

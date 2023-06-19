@@ -19,7 +19,7 @@ const IngredientPage = () => {
       <IngredientInfo ingredient={ingredient} />
     </section>
   ) : (
-    <Loader />
+    <Loader loadingText="Идет загрузка" />
   );
 };
 

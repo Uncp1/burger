@@ -5,8 +5,6 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
 import styles from "./login-form.module.css";
 
 const LoginForm = ({
@@ -24,7 +22,7 @@ const LoginForm = ({
           <>
             <h1 className="text text_type_main-large">Вход</h1>
             <EmailInput
-              value={inputValues.email}
+              value={inputValues.email || ""}
               placeholder={"E-mail"}
               name={"email"}
               error={!!errors.email}
@@ -33,7 +31,7 @@ const LoginForm = ({
               required
             />
             <PasswordInput
-              value={inputValues.password}
+              value={inputValues.password || ""}
               onChange={handleChange}
               placeholder={"Пароль"}
               name={"password"}
@@ -59,7 +57,7 @@ const LoginForm = ({
           <>
             <h1 className="text text_type_main-large">Регистрация</h1>
             <Input
-              value={inputValues.name}
+              value={inputValues.name || ""}
               type={"text"}
               placeholder={"Имя"}
               name={"name"}
@@ -71,7 +69,7 @@ const LoginForm = ({
               required
             />
             <EmailInput
-              value={inputValues.email}
+              value={inputValues.email || ""}
               placeholder={"E-mail"}
               name={"email"}
               error={!!errors.email}
@@ -80,7 +78,7 @@ const LoginForm = ({
               required
             />
             <PasswordInput
-              value={inputValues.password}
+              value={inputValues.password || ""}
               onChange={handleChange}
               placeholder={"Пароль"}
               name={"password"}
@@ -102,7 +100,7 @@ const LoginForm = ({
           <>
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
             <EmailInput
-              value={inputValues.email}
+              value={inputValues.email || ""}
               placeholder={"E-mail"}
               name={"email"}
               error={!!errors.email}
@@ -127,7 +125,7 @@ const LoginForm = ({
             <h1 className="text text_type_main-large">Восстановление пароля</h1>
             <PasswordInput
               placeholder={"Введите новый пароль"}
-              value={inputValues.password}
+              value={inputValues.password || ""}
               onChange={handleChange}
               name={"password"}
               error={!!errors.password}
@@ -137,7 +135,7 @@ const LoginForm = ({
               required
             />
             <Input
-              value={inputValues.token}
+              value={inputValues.token || ""}
               placeholder={"Введите код из письма"}
               onChange={handleChange}
               name="token"

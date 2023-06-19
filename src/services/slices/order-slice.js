@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { api } from "../api/api";
+import { postOrder } from "../api/api";
 
 export const createOrder = createAsyncThunk("createOrder", async (cart) => {
   try {
@@ -7,7 +7,7 @@ export const createOrder = createAsyncThunk("createOrder", async (cart) => {
     cart.ingredients.map((item) => orderIds.push(item._id));
     orderIds.unshift(cart.bun._id);
     orderIds.push(cart.bun._id);
-    return await api.createOrder({ ingredients: orderIds });
+    return await postOrder({ ingredients: orderIds });
   } catch (err) {
     console.log(err);
     return err.message;

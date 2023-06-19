@@ -28,46 +28,26 @@ import IngredientInfo from "../ingredient-info/ingredient-info";
 import OrderInfo from "../order-info/order-info";
 import { fetchIngredients } from "../../services/slices/ingredient-slice";
 import { closeModal } from "../../services/slices/modal-slice";
+import { useAuth } from "../../services/hooks/useAuth";
 
 const App = () => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((store) => store.ingredients);
   const { modalOrder, modalIngredient } = useSelector((state) => state.modal);
   const { user, isUserLoggedIn, token } = useSelector((store) => store.user);
+  const { isTokenExpired, previousUrl } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const background =
     modalIngredient || modalOrder ? location?.state?.background : null;
 
-  const isTokenExpired = useMemo(() => {
-    if (token) {
-      const expiresAt = getCookie("expiresAt");
-      return Date.now() >= expiresAt;
-    } else {
-      return true;
-    }
-  }, [token]);
-
   useEffect(() => {
-    dispatch(fetchIngredients());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (
-      (!isUserLoggedIn && isTokenExpired) ||
-      (isUserLoggedIn && (!user.name || !user.email))
-    ) {
-      dispatch(fetchGetUser());
+    if (ingredients && ingredients.length === 0) {
+      dispatch(fetchIngredients());
     }
-  }, [dispatch, isTokenExpired, user, ingredients, isUserLoggedIn]);
+    if (isTokenExpired || isUserLoggedIn) dispatch(fetchGetUser());
+  }, [dispatch, isTokenExpired, isUserLoggedIn, ingredients]);
 
-  const previousUrl = useMemo(
-    () =>
-      location.state && location.state.background
-        ? location?.state?.background
-        : null,
-    [location]
-  );
   const handleModalClose = useCallback(() => {
     dispatch(closeModal());
     (modalIngredient || modalOrder) &&

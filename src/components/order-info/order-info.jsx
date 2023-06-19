@@ -20,7 +20,12 @@ const OrderInfo = () => {
         Идентификатор заказа
       </span>
 
-      <CheckMarkIcon type="primary" extraClass={styles.order__mark} />
+      <div className={styles.icon}>
+        <div className={styles.icon__mark}></div>
+        <div className={`${styles.icon__layer} ${styles.layer_size_s}`}></div>
+        <div className={`${styles.icon__layer} ${styles.layer_size_m}`}></div>
+        <div className={`${styles.icon__layer} ${styles.layer_size_l}`}></div>
+      </div>
 
       <span className="text text_type_main-default mt-15 mb-2">
         Ваш заказ начали готовить
