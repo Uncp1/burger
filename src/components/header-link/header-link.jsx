@@ -1,24 +1,26 @@
 import clsx from "clsx";
 import styles from "./header-link.module.css";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const HeaderLink = ({ text, children, active, address }) => {
+const HeaderLink = ({ text, children, address }) => {
   return (
-    <Link
+    <NavLink
       to={address}
-      className={clsx(
-        styles.link,
-        active && styles.link_active,
-        "pt-4",
-        "pr-5",
-        "pb-4",
-        "pl-5"
-      )}
+      className={({ isActive }) =>
+        clsx(
+          styles.link,
+          isActive ? styles.link_active : "",
+          "pt-4",
+          "pr-5",
+          "pb-4",
+          "pl-5"
+        )
+      }
     >
       {children}
       <span className="ml-2">{text}</span>
-    </Link>
+    </NavLink>
   );
 };
 

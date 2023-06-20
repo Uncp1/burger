@@ -1,20 +1,33 @@
 .link {
   background-color: transparent;
-  color: #8585AD;
+  color: #8585ad;
   cursor: pointer;
   display: flex;
   margin: 0;
   text-decoration: none;
-  transition: color .25s ease, opacity .25s ease, transform .25s ease;
+  transition: color 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
 }
 
 .link:hover {
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .link:focus {
-  /*transform: scale(1.1); */
-  opacity: .8;
-  color: #F2F2F3;
+  transform: scale(1.1);
+  opacity: 0.8;
+  color: #f2f2f3;
 }
 
+.link_active {
+  color: #f2f2f3;
+}
+
+.link_active:hover {
+  cursor: default;
+  opacity: 1;
+}
+
+.link_active:focus {
+  transform: scale(1);
+  opacity: 1;
+}

@@ -1,18 +1,16 @@
+export const deleteCookie = (name) => {
+  document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+};
+
 export const getCookie = (name) => {
   const regex = /([.$?*|{}()[\]\\/+^])/g;
 
   const matches = document.cookie.match(
     new RegExp("(?:^|; )" + name.replace(regex, "\\$1") + "=([^;]*)")
   );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
+  return matches ? decodeURIComponent(matches[1]) : deleteCookie(name);
 };
 
-/* export const setCookie = (name, value, time) => {
-  const date = new Date();
-  date.setTime(date.getTime() + time * 1000);
-  const expires = "expires=" + date.toUTCString();
-  document.cookie = name + "=" + (value || "") + "; " + expires + "; path=/";
-}; */
 export const setCookie = (name, value, props = {}) => {
   props = {
     path: "/",

@@ -1,14 +1,15 @@
 import styles from "./order-info.module.css";
-import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector } from "react-redux";
 
 const OrderInfo = () => {
   const { orderNumber } = useSelector((state) => state.order);
   return (
     <div className={`${styles.order} mt-4`}>
-      <span className="text text_type_digits-large">{orderNumber}</span>
+      <span className={`text text_type_digits-large ${styles.order__number}`}>
+        {orderNumber}
+      </span>
 
-      <span
+      <h3
         className={`
           ${styles.order__text}
           'text'
@@ -18,7 +19,7 @@ const OrderInfo = () => {
         `}
       >
         Идентификатор заказа
-      </span>
+      </h3>
 
       <div className={styles.icon}>
         <div className={styles.icon__mark}></div>

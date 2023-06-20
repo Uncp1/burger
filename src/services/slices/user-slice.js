@@ -1,4 +1,4 @@
-import { getCookie } from "../../utils/cookies";
+import { deleteCookie, getCookie } from "../../utils/cookies";
 import { updateCookie } from "../../utils/update-cookie";
 import {
   forgotPassword,
@@ -192,8 +192,9 @@ const userSlice = createSlice({
       .addCase(fetchLogout.fulfilled, (state, action) => {
         state.user = {};
         state.isUserLoggedIn = false;
-        setCookie("accessToken", "", { expires: 1 });
-        setCookie("refreshToken", "", { expires: 1 });
+        deleteCookie("accessToken");
+        deleteCookie("refreshToken");
+        deleteCookie("expiresAt");
       })
       .addCase(fetchLogout.rejected, () => {})
       //forgot
@@ -222,15 +223,17 @@ const userSlice = createSlice({
       // Get user
       .addCase(fetchGetUser.pending, (state) => {})
       .addCase(fetchGetUser.fulfilled, (state, action) => {
-        const { user } = action.payload;
-        const { email, name } = user;
+        if (!!action.payload) {
+          const { user } = action.payload;
+          const { email, name } = user;
 
-        state.user = {
-          ...state.user,
-          email,
-          name,
-        };
-        state.isUserLoggedIn = true;
+          state.user = {
+            ...state.user,
+            email,
+            name,
+          };
+          state.isUserLoggedIn = true;
+        }
       })
       //updateUser
       .addCase(fetchUpdateUser.pending, (state) => {

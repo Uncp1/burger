@@ -7,6 +7,7 @@ import {
 import clsx from "clsx";
 import styles from "./header.module.css";
 import HeaderLink from "../header-link/header-link";
+import { NavLink } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -24,21 +25,21 @@ const Header = () => {
           <ul className={styles.navigation}>
             <li>
               <HeaderLink address="/" text="Конструктор">
-                <BurgerIcon />
+                <BurgerIcon type="primary" />
               </HeaderLink>
             </li>
 
             <li>
-              <HeaderLink address="/" text="Лента заказов">
-                <ListIcon />
+              <HeaderLink address="/feed" text="Лента заказов">
+                <ListIcon type="secondary" />
               </HeaderLink>
             </li>
           </ul>
         </nav>
 
-        <div className={styles.logo}>
+        <NavLink to="/" className={styles.logo}>
           <Logo />
-        </div>
+        </NavLink>
 
         <div className={styles.profile}>
           <HeaderLink address="/profile" text="Личный кабинет">

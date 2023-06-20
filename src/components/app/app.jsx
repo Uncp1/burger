@@ -32,9 +32,7 @@ import { useAuth } from "../../services/hooks/useAuth";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { ingredients } = useSelector((store) => store.ingredients);
   const { modalOrder, modalIngredient } = useSelector((state) => state.modal);
-  const { user, isUserLoggedIn, token } = useSelector((store) => store.user);
   const { isTokenExpired, previousUrl } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -42,11 +40,9 @@ const App = () => {
     modalIngredient || modalOrder ? location?.state?.background : null;
 
   useEffect(() => {
-    if (ingredients && ingredients.length === 0) {
-      dispatch(fetchIngredients());
-    }
-    if (isTokenExpired || isUserLoggedIn) dispatch(fetchGetUser());
-  }, [dispatch, isTokenExpired, isUserLoggedIn, ingredients]);
+    dispatch(fetchIngredients());
+    dispatch(fetchGetUser());
+  }, [dispatch]);
 
   const handleModalClose = useCallback(() => {
     dispatch(closeModal());
