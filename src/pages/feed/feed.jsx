@@ -19,7 +19,7 @@ const FeedPage = () => {
     return () => dispatch(wsConnectionClosed());
   }, [dispatch]);
 
-  return orders ? (
+  return orders && orders.length > 0 ? (
     <section className={styles.section}>
       <h2 className="text text_type_main-large">Лента заказов</h2>
       <div className={styles.feed}>

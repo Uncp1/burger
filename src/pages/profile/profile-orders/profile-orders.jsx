@@ -7,15 +7,16 @@ import {
   wsConnectionStart,
 } from "../../../services/slices/webSocket-slice";
 import { wssProfile } from "../../../utils/config";
+import { getCookie } from "../../../utils/cookies";
 
 const ProfileOrders = () => {
   const { orders } = useSelector((store) => store.websocket);
-  const { accessToken } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const tokenWithoutBearer = accessToken?.replace("Bearer ", "");
+  const tokenWithoutBearer = getCookie("accessToken").replace("Bearer ", "");
 
   useEffect(() => {
     dispatch(wsConnectionStart(`${wssProfile}?token=${tokenWithoutBearer}`));
+    return () => dispatch(wsConnectionClosed());
   }, [dispatch, tokenWithoutBearer]);
 
   return (

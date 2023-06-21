@@ -10,3 +10,5 @@ export const postOrder = (order) => {
     body: JSON.stringify(order),
   });
 };
+
+export const getOrder = ({ orderNumber }) => request(`orders/${orderNumber}`);

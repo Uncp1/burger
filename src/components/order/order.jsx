@@ -4,15 +4,34 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import clsx from "clsx";
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { openModalOrderFromHistory } from "../../services/slices/modal-slice";
 import styles from "./order.module.css";
 
 const Order = ({ order }) => {
   const date = new Date(order.createdAt);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
   const { ingredients } = useSelector((store) => store.ingredients);
   const orderIngredients = order.ingredients.map((orderIngredientId) =>
     ingredients.find((ingredient) => ingredient._id === orderIngredientId)
   );
+
+  const handleClick = () => {
+    dispatch(openModalOrderFromHistory(order));
+    if (location.pathname === "/feed") {
+      navigate(`/feed/${order.number}`, {
+        state: { background: location },
+      });
+    } else if (location.pathname === "/profile/orders") {
+      navigate(`/profile/orders/${order.number}`, {
+        state: { background: location },
+      });
+    }
+  };
+
   const checkTotalPrice = (ingredientsArray) =>
     ingredientsArray.reduce((prev, current) => prev + current.price, 0);
   const ingredientsOrder = useMemo(
@@ -54,7 +73,7 @@ const Order = ({ order }) => {
     [ingredients, order.ingredients]
   );
   return (
-    <article className={styles.item}>
+    <article onClick={handleClick} className={styles.item}>
       <div className={styles.heading}>
         <div className={styles.numbers}>
           <span className="text text_type_digits-default">{order.number}</span>

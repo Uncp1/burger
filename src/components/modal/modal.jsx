@@ -8,9 +8,8 @@ import { useEffect, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
 
 const Modal = ({ title, children, handleModalClose }) => {
-  const { modalIngredient, notificationData, isModalOpen } = useSelector(
-    (state) => state.modal
-  );
+  const { modalIngredient, modalOrderDetails, notificationData, isModalOpen } =
+    useSelector((state) => state.modal);
 
   const handleEscape = useCallback(
     (e) => {
@@ -41,7 +40,7 @@ const Modal = ({ title, children, handleModalClose }) => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modal__header}>
-              {modalIngredient ? (
+              {modalIngredient || modalOrderDetails ? (
                 <h3
                   className={clsx(
                     styles.modal__title,

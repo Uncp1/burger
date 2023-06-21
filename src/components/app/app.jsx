@@ -20,6 +20,7 @@ import {
   ProfileForm,
   ProfileOrders,
   FeedPage,
+  OrderPage,
 } from "../../pages";
 import ModalNotification from "../modal-notification/modal-notification";
 import ProtectedRoute from "../protected-route/protected-route";
@@ -31,15 +32,18 @@ import OrderInfo from "../order-info/order-info";
 import { fetchIngredients } from "../../services/slices/ingredient-slice";
 import { closeModal } from "../../services/slices/modal-slice";
 import { useAuth } from "../../services/hooks/useAuth";
+import OrderDetails from "../order-details/order-details";
 
 const App = () => {
   const dispatch = useDispatch();
-  const { modalOrder, modalIngredient } = useSelector((state) => state.modal);
+  const { modalOrder, modalIngredient, modalOrderDetails } = useSelector(
+    (state) => state.modal
+  );
   const { isTokenExpired, previousUrl } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const background =
-    modalIngredient || modalOrder ? location?.state?.background : null;
+    modalIngredient || modalOrderDetails ? location?.state?.background : null;
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -48,12 +52,12 @@ const App = () => {
 
   const handleModalClose = useCallback(() => {
     dispatch(closeModal());
-    (modalIngredient || modalOrder) &&
+    (modalIngredient || modalOrderDetails) &&
       navigate(previousUrl, {
         replace: true,
         state: { background: null },
       });
-  }, [dispatch, modalIngredient, modalOrder, navigate, previousUrl]);
+  }, [dispatch, modalIngredient, modalOrderDetails, navigate, previousUrl]);
   return (
     <>
       <Routes location={background || location}>
@@ -91,6 +95,15 @@ const App = () => {
             }
           />
           <Route path="/feed" element={<FeedPage />} />
+          <Route path="/feed/:id" element={<OrderPage />} />
+          <Route
+            path="/profile/orders/:id"
+            element={
+              <ProtectedRoute redirectTo="/login">
+                <OrderPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -113,10 +126,14 @@ const App = () => {
 
       <Modal
         handleModalClose={handleModalClose}
-        title={modalOrder ? "Идентификатор заказа" : "Детали ингредиента"}
+        title={modalOrderDetails ? "Детали заказа" : "Детали ингредиента"}
       >
         {background && modalIngredient && (
           <IngredientInfo ingredient={modalIngredient} />
+        )}
+
+        {background && modalOrderDetails && (
+          <OrderDetails order={modalOrderDetails} />
         )}
 
         {modalOrder && <OrderInfo />}
