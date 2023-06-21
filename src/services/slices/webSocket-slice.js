@@ -4,7 +4,7 @@ const webSocketSlice = createSlice({
   name: "webSocketSlice",
   initialState: {
     wsConnected: false,
-    orders: [],
+    orders: null,
     total: 0,
     totalToday: 0,
   },
