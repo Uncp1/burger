@@ -18,6 +18,8 @@ import {
   ForgotPasswordPage,
   IngredientPage,
   ProfileForm,
+  ProfileOrders,
+  FeedPage,
 } from "../../pages";
 import ModalNotification from "../modal-notification/modal-notification";
 import ProtectedRoute from "../protected-route/protected-route";
@@ -88,6 +90,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path="/feed" element={<FeedPage />} />
           <Route
             path="/profile"
             element={
@@ -97,7 +100,7 @@ const App = () => {
             }
           >
             <Route index element={<ProfileForm />} />
-            <Route path="/profile/orders" element={<NotFound404 />} />
+            <Route path="/profile/orders" element={<ProfileOrders />} />
           </Route>
           <Route path="/ingredients/:id" element={<IngredientPage />} />
 
