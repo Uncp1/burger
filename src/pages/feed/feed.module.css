@@ -1,4 +1,4 @@
-.container {
+.section {
   box-sizing: border-box;
   max-width: 1240px;
   display: flex;
@@ -6,6 +6,7 @@
   justify-content: center;
   gap: 20px;
   padding-top: 40px;
+  margin: auto;
 }
 
 .feed {

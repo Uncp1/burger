@@ -1,23 +1,27 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import Order from "../order/order";
+import styles from "./order-list.module.css";
 
 const OrderList = () => {
   const { orders } = useSelector((store) => store.websocket);
-
-  const feed = useEffect(() => {
-    orders?.map((item) => (
-      <li key={item._id}>
-        <Order order={item} />
-      </li>
-    ));
-  }, [orders]);
+  const feed = useMemo(
+    () =>
+      orders.map((item) => (
+        <li key={item._id}>
+          <Order order={item} />
+        </li>
+      )),
+    [orders]
+  );
 
   return (
-    <ul>
+    <ul className={styles.orders}>
       {feed && feed.length === 0 ? (
         <li className={`text text_type_main-large`}>
-          <h1>Заказы отсутствуют</h1>
+          <h1 className={`text text_type_main-large ${styles.subtitle}`}>
+            Заказы отсутствуют
+          </h1>
         </li>
       ) : (
         <>{feed}</>

@@ -8,6 +8,7 @@ import {
   wsConnectionStart,
 } from "../../services/slices/webSocket-slice";
 import { wssAll } from "../../utils/config";
+import OrderData from "../../components/order-data/order-data";
 
 const FeedPage = () => {
   const dispatch = useDispatch();
@@ -19,12 +20,13 @@ const FeedPage = () => {
   }, [dispatch]);
 
   return orders ? (
-    <div className={styles.container}>
+    <section className={styles.section}>
       <h2 className="text text_type_main-large">Лента заказов</h2>
-      <section className={styles.feed}>
+      <div className={styles.feed}>
         <OrderList />
-      </section>
-    </div>
+        <OrderData />
+      </div>
+    </section>
   ) : (
     <Loader loadingText="Загрузка заказов" />
   );
