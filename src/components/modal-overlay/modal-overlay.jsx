@@ -1,11 +1,10 @@
 import styles from "./modal-overlay.module.css";
 import clsx from "clsx";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../services/slices/modal-slice";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
-const ModalOverlay = () => {
+const ModalOverlay = ({ handleModalClose }) => {
   const { isModalOpen } = useSelector((state) => state.modal);
-  const dispatch = useDispatch();
 
   return (
     <div
@@ -13,10 +12,14 @@ const ModalOverlay = () => {
         [styles.modal__overlay_opened]: isModalOpen,
       })}
       onClick={() => {
-        dispatch(closeModal());
+        handleModalClose();
       }}
     ></div>
   );
+};
+
+ModalOverlay.propTypes = {
+  handleModalClose: PropTypes.func.isRequired,
 };
 
 export default ModalOverlay;

@@ -4,24 +4,20 @@ import clsx from "clsx";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import { useEffect, useCallback } from "react";
-import IngredientInfo from "../ingredient-info/ingredient-info.jsx";
-import OrderInfo from "../order-info/order-info.jsx";
-import { useDispatch, useSelector } from "react-redux";
-import { closeModal } from "../../services/slices/modal-slice";
+import { useEffect, useCallback, useMemo } from "react";
+import { useSelector } from "react-redux";
 
-const Modal = ({ title }) => {
-  const { isModalOpen, isIngrefientInfo, isOrderConfirmation, modalData } =
-    useSelector((state) => state.modal);
-
-  const dispatch = useDispatch();
+const Modal = ({ title, children, handleModalClose }) => {
+  const { modalIngredient, notificationData, isModalOpen } = useSelector(
+    (state) => state.modal
+  );
 
   const handleEscape = useCallback(
     (e) => {
       e.preventDefault();
-      e.key === "Escape" && dispatch(closeModal());
+      e.key === "Escape" && handleModalClose();
     },
-    [dispatch]
+    [handleModalClose]
   );
 
   useEffect(() => {
@@ -32,32 +28,46 @@ const Modal = ({ title }) => {
 
   return createPortal(
     <>
-      <ModalOverlay />
+      {!!notificationData ? (
+        <></>
+      ) : (
+        <>
+          <ModalOverlay handleModalClose={handleModalClose} />
 
-      <div
-        className={clsx(styles.modal, { [styles.modal_opened]: isModalOpen })}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className={styles.modal__header}>
-          <h3
-            className={clsx(styles.modal__title, "text text_type_main-large")}
+          <div
+            className={clsx(styles.modal, {
+              [styles.modal_opened]: isModalOpen,
+            })}
+            onClick={(e) => e.stopPropagation()}
           >
-            {title}
-          </h3>
+            <div className={styles.modal__header}>
+              {modalIngredient ? (
+                <h3
+                  className={clsx(
+                    styles.modal__title,
+                    "text text_type_main-large"
+                  )}
+                >
+                  {title}
+                </h3>
+              ) : (
+                <></>
+              )}
 
-          <button
-            className={styles.modal__close}
-            type="button"
-            onClick={() => dispatch(closeModal())}
-          >
-            <CloseIcon type="primary" />
-          </button>
-        </div>
+              <button
+                className={styles.modal__close}
+                type="button"
+                aria-label="Закрыть модальное окно"
+                onClick={() => handleModalClose()}
+              >
+                <CloseIcon type="primary" />
+              </button>
+            </div>
 
-        {isIngrefientInfo && <IngredientInfo ingredient={modalData} />}
-
-        {isOrderConfirmation && <OrderInfo />}
-      </div>
+            {children}
+          </div>
+        </>
+      )}
     </>,
     document.body
   );
@@ -65,6 +75,8 @@ const Modal = ({ title }) => {
 
 Modal.propTypes = {
   title: PropTypes.string,
+  children: PropTypes.node,
+  handleModalClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

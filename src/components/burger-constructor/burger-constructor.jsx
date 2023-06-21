@@ -8,7 +8,7 @@ import { useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../services/slices/order-slice";
 import { useDrop } from "react-dnd";
-import { openModal } from "../../services/slices/modal-slice";
+import { openModalOrder } from "../../services/slices/modal-slice";
 import {
   addCartItem,
   emptyCart,
@@ -17,20 +17,39 @@ import {
 } from "../../services/slices/cart-slice";
 import { v4 as uuidv4 } from "uuid";
 import CartElement from "../cart-element/cart-element";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
   const { cart } = useSelector((state) => state.cart);
+  const { orderFetchRequest } = useSelector((state) => state.order);
+  const { isUserLoggedIn } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const isButtonDisabled = useMemo(
     () => !!(cart.bun === null || cart.ingredients.length === 0),
     [cart]
   );
 
-  const handleCreateOrder = async () => {
-    await dispatch(createOrder(cart));
-    dispatch(openModal({ type: "order" }));
-    dispatch(emptyCart());
-  };
+  const redirectToLogin = useCallback(() => {
+    navigate("/login", {
+      replace: true,
+      state: { background: location.pathname },
+    });
+  }, [location.pathname, navigate]);
+
+  const dispatchOrder = useCallback(() => {
+    dispatch(createOrder(cart)).then(() => {
+      dispatch(openModalOrder());
+      dispatch(emptyCart());
+    });
+  }, [cart, dispatch]);
+
+  const handleCreateOrder = useCallback(
+    () => (isUserLoggedIn ? dispatchOrder() : redirectToLogin()),
+    [isUserLoggedIn, redirectToLogin, dispatchOrder]
+  );
 
   const [{ isHover }, dropTarget] = useDrop({
     accept: "ingredient",
@@ -133,7 +152,7 @@ const BurgerConstructor = () => {
           onClick={handleCreateOrder}
           disabled={isButtonDisabled}
         >
-          Оформить заказ
+          {orderFetchRequest ? "Оформляем заказ..." : "Оформить заказ"}
         </Button>
       </div>
     </section>

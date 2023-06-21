@@ -1,0 +1,31 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  align-items: center;
+  display: flex;
+  min-height: 64px;
+  width: 100%;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.link {
+  color: #8585ad;
+  transition: color 0.25s ease, opacity 0.25s ease;
+  text-decoration: none;
+}
+
+.link:hover {
+  opacity: 0.8;
+}

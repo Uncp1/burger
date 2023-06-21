@@ -1,0 +1,16 @@
+.container {
+  max-width: 1240px;
+  padding-top: 120px;
+  margin: auto;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  grid-template-columns: minmax(320px, 1fr) 4fr minmax(0, 320px);
+  gap: 60px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
