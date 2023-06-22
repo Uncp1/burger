@@ -1,4 +1,5 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import clsx from "clsx";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -21,21 +22,36 @@ const ProfileNavigation = () => {
       <ul className={styles.list}>
         <li className={styles.item}>
           <NavLink
+            end
             to="/profile"
-            className={`page__link text text_type_main-medium ${styles.link}`}
+            className={({ isActive }) =>
+              clsx(
+                "text",
+                "text_type_main-medium",
+                isActive ? styles.link_active : styles.link
+              )
+            }
           >
             Профиль
           </NavLink>
         </li>
+
         <li className={styles.item}>
           <NavLink
+            end
             to="/profile/orders"
-            className={`page__link text text_type_main-medium ${styles.link}`}
+            className={({ isActive }) =>
+              clsx(
+                "text",
+                "text_type_main-medium",
+                isActive ? styles.link_active : styles.link
+              )
+            }
           >
-            {" "}
             История заказов
           </NavLink>
         </li>
+
         <li className={styles.item}>
           <Button
             htmlType="button"

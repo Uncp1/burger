@@ -1,14 +1,11 @@
-import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children, redirect, anonymous }) => {
-  const { isUserLoggedIn } = useSelector((store) => store.user);
-
-  if (isUserLoggedIn && anonymous) {
+  if (document.cookie && anonymous) {
     return <Navigate to={redirect} />;
   }
 
-  if (!isUserLoggedIn && !anonymous) {
+  if (!document.cookie && !anonymous) {
     return <Navigate to={redirect} />;
   }
 

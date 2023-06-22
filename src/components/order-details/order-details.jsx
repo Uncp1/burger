@@ -30,10 +30,10 @@ const OrderDetails = ({ order }) => {
       }, []),
     [ingredientsArray]
   );
-  const checkTotalPrice = useCallback(
-    (ingredientsArray) =>
-      ingredientsArray.reduce((prev, current) => prev + current.price, 0),
-    []
+
+  const checkTotalPrice = useMemo(
+    () => ingredientsArray.reduce((prev, current) => prev + current.price, 0),
+    [ingredientsArray]
   );
 
   const ingredientList = sortIngredints.map((item, index) => (
@@ -93,7 +93,7 @@ const OrderDetails = ({ order }) => {
         />
         <span className={clsx(styles.price)}>
           <span className="text text_type_digits-default">
-            {checkTotalPrice(ingredientsArray)}
+            {checkTotalPrice}
           </span>
           <CurrencyIcon type="primary" />
         </span>

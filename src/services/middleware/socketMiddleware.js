@@ -11,7 +11,7 @@ export const socketMiddleware = (wsActions) => (store) => {
       socket = new WebSocket(payload);
     }
 
-    if (type === wsInit && socket?.readyState === 1) {
+    if (type === onClose && socket?.readyState === 1) {
       socket.close();
     }
 
@@ -46,6 +46,8 @@ export const socketMiddleware = (wsActions) => (store) => {
       };
 
       socket.onclose = () => {
+        socket.close();
+        socket = null;
         dispatch({ type: onClose });
       };
     }

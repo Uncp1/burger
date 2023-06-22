@@ -29,3 +29,9 @@
 .link:hover {
   opacity: 0.8;
 }
+
+.link_active {
+  transition: color 0.25s ease;
+  text-decoration: none;
+  color: #f2f2f3;
+}
