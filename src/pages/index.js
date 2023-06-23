@@ -8,6 +8,9 @@ import ProfilePage from "./profile/profile";
 import ProfileForm from "./profile/profile-form/profile-form";
 import ForgotPasswordPage from "./forgot/forgot";
 import IngredientPage from "./ingredient-page/ingredient-page";
+import ProfileOrders from "./profile/profile-orders/profile-orders";
+import FeedPage from "./feed/feed";
+import OrderPage from "./order/order";
 
 export {
   HomePage,
@@ -20,4 +23,7 @@ export {
   ForgotPasswordPage,
   IngredientPage,
   ProfileForm,
+  ProfileOrders,
+  FeedPage,
+  OrderPage,
 };

@@ -152,7 +152,7 @@ const userSlice = createSlice({
   reducers: {
     updateUser(state, action) {
       state.user = action.payload.user;
-      state.isUserLoggedIn = !!getCookie("accessToken");
+      state.isUserLoggedIn = !!document.cookie;
       state.refreshToken = action.payload.refreshToken;
       state.accessToken = action.payload.accessToken;
     },
@@ -180,7 +180,7 @@ const userSlice = createSlice({
 
         state.user = user;
         state.user.password = action.meta.arg.password;
-        state.isUserLoggedIn = !!getCookie("accessToken");
+        state.isUserLoggedIn = true;
 
         setCookie("accessToken", accessToken, { expires: 1200 });
         setCookie("refreshToken", refreshToken, { expires: 1200 });

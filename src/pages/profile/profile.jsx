@@ -1,12 +1,11 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styles from "./profile.module.css";
-import LoginForm from "../../components/login-form/login-form";
 import ProfileNavigation from "../../components/profile-navigation/profile-navigation";
 import { Outlet } from "react-router-dom";
 import Loader from "../../components/loader/loader";
 
 const ProfilePage = () => {
-  const { isUserLoggedIn, user } = useSelector((store) => store.user);
+  const { isUserLoggedIn } = useSelector((store) => store.user);
 
   return isUserLoggedIn ? (
     <main className={styles.container}>

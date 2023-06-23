@@ -5,6 +5,7 @@ const initialState = {
   isModalOpen: false,
   modalIngredient: false,
   modalOrder: false,
+  modalOrderDetails: null,
 };
 
 const modalSlice = createSlice({
@@ -19,6 +20,10 @@ const modalSlice = createSlice({
       state.isModalOpen = true;
       state.modalOrder = true;
     },
+    openModalOrderFromHistory(state, action) {
+      state.modalOrderDetails = action.payload;
+      state.isModalOpen = true;
+    },
     openModalNotification(state, action) {
       state.notificationData = action.payload;
       state.isModalOpen = true;
@@ -28,6 +33,7 @@ const modalSlice = createSlice({
       state.isModalOpen = null;
       state.modalIngredient = false;
       state.modalOrder = false;
+      state.modalOrderDetails = null;
     },
   },
 });
@@ -38,6 +44,7 @@ export const {
   openModalOrder,
   openModalNotification,
   closeModal,
+  openModalOrderFromHistory,
 } = actions;
 
 export default modalSlice.reducer;

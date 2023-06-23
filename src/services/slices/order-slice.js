@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { postOrder } from "../api/api";
+import { getOrder, postOrder } from "../api/api";
 
 export const createOrder = createAsyncThunk("createOrder", async (cart) => {
   try {
@@ -14,14 +14,32 @@ export const createOrder = createAsyncThunk("createOrder", async (cart) => {
   }
 });
 
+export const fetchGetOrder = createAsyncThunk(
+  "order/getOrder",
+  (orderNumber, { dispatch, rejectWithValue }) => {
+    return getOrder({ orderNumber })
+      .then((res) => {
+        const { orders } = res;
+        dispatch(setOrder(orders[0]));
+        return res;
+      })
+      .catch((e) => rejectWithValue(e));
+  }
+);
+
 const orderSlice = createSlice({
   name: "orderSlice",
   initialState: {
     orderNumber: null,
     orderIds: [],
     orderFetchRequest: false,
+    order: null,
   },
-  reducers: {},
+  reducers: {
+    setOrder(state, action) {
+      state.order = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createOrder.pending, (state) => {
@@ -37,5 +55,8 @@ const orderSlice = createSlice({
       });
   },
 });
+
+const { actions } = orderSlice;
+export const { setOrder } = actions;
 
 export default orderSlice.reducer;
