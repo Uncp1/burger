@@ -18,6 +18,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import CartElement from "../cart-element/cart-element";
 import { useLocation, useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -100,7 +101,14 @@ const BurgerConstructor = () => {
   }, [cart.bun, cart.ingredients]);
 
   return (
-    <section className={`${styles.cart} mt-25`} ref={dropTarget}>
+    <section
+      className={clsx(
+        styles.cart,
+        "mt-25",
+        isHover && styles.cart__list_hover_active
+      )}
+      ref={dropTarget}
+    >
       {!cart.bun ? (
         <h2 className="text text_type_main-large">Выберите булку</h2>
       ) : (
