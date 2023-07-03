@@ -112,15 +112,17 @@ const BurgerConstructor = () => {
       {!cart.bun ? (
         <h2 className="text text_type_main-large">Выберите булку</h2>
       ) : (
-        <div className={styles.cart__list}>
-          <ConstructorElement
-            extraClass={styles.cart__item}
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={cart.bun.price}
-            thumbnail={cart.bun.image}
-          />
+        <ul className={styles.cart__list}>
+          <li className={styles.cart__item}>
+            <ConstructorElement
+              extraClass={styles.cart__bun}
+              type="top"
+              isLocked={true}
+              text="Краторная булка N-200i (верх)"
+              price={cart.bun.price}
+              thumbnail={cart.bun.image}
+            />
+          </li>
 
           <ul className={styles.cart__ingredients}>
             {cart.ingredients.map((item, index) => {
@@ -135,15 +137,17 @@ const BurgerConstructor = () => {
             })}
           </ul>
 
-          <ConstructorElement
-            extraClass={styles.cart__item}
-            type="bottom"
-            isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={cart.bun.price}
-            thumbnail={cart.bun.image}
-          />
-        </div>
+          <li className={styles.cart__item}>
+            <ConstructorElement
+              extraClass={styles.cart__bun}
+              type="bottom"
+              isLocked={true}
+              text="Краторная булка N-200i (низ)"
+              price={cart.bun.price}
+              thumbnail={cart.bun.image}
+            />
+          </li>
+        </ul>
       )}
 
       <div className={styles.cart__checkout}>

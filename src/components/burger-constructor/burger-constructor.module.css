@@ -13,24 +13,20 @@
   list-style: none;
 }
 
-.cart__list::-webkit-scrollbar {
+.cart__ingredients::-webkit-scrollbar {
   width: 8px;
 }
 
-.cart__list::-webkit-scrollbar-track {
+.cart__ingredients::-webkit-scrollbar-track {
   background: #2f2f37;
 }
 
-.cart__list::-webkit-scrollbar-thumb {
+.cart__ingredients::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
 
-.cart__item {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-  justify-content: flex-end;
-  padding-right: 16px;
+.cart__bun {
+  margin-left: 32px;
 }
 .cart__ingredients {
   max-height: 464px;
@@ -40,6 +36,14 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.cart__item {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding-right: 16px;
 }
 
 .cart__total {
