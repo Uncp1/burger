@@ -112,6 +112,7 @@ const ProfileForm = () => {
         />
         <Input
           name="password"
+          placeholder={"Пароль"}
           onChange={handleChange}
           icon={"EditIcon"}
           value={inputValues.password || ""}

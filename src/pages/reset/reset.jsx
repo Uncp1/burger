@@ -12,7 +12,7 @@ import {
 const ResetPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { inputValues, handleChange, errors, isValid } = useForm();
+  const { inputValues, handleChange, errors } = useForm();
 
   const handleSubmit = (e) => {
     e.preventDefault();

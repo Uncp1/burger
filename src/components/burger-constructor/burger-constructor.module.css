@@ -29,7 +29,7 @@
   margin-left: 32px;
 }
 .cart__ingredients {
-  max-height: 464px;
+  max-height: calc(100vh - 88px - 125px - 208px - 104px);
   overflow-y: auto;
   margin: 0;
   padding: 0;
