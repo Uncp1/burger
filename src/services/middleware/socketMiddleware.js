@@ -47,7 +47,6 @@ export const socketMiddleware = (wsActions) => (store) => {
 
       socket.onclose = () => {
         socket.close();
-        socket = null;
         dispatch({ type: onClose });
       };
     }

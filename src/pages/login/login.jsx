@@ -1,10 +1,14 @@
 import styles from "./login.module.css";
-import LoginForm from "../../components/login-form/login-form";
-import LoginLinks from "../../components/login-links/login-links";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../services/slices/user-slice";
 import { useCallback, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
+import {
+  Button,
+  EmailInput,
+  PasswordInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink } from "react-router-dom";
 
 const LoginPage = () => {
   const { inputValues, handleChange, errors, isValid, resetForm } = useForm();
@@ -29,15 +33,54 @@ const LoginPage = () => {
 
   return (
     <main className={styles.main}>
-      <LoginForm
-        type={"login"}
-        errors={errors}
-        inputValues={inputValues}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        isValid={isValid}
-      />
-      <LoginLinks type={"login"} />
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h1 className="text text_type_main-large">Вход</h1>
+        <EmailInput
+          value={inputValues.email || ""}
+          placeholder={"E-mail"}
+          name={"email"}
+          error={!!errors.email}
+          errorText={errors.email}
+          onChange={handleChange}
+          required
+        />
+        <PasswordInput
+          value={inputValues.password || ""}
+          onChange={handleChange}
+          placeholder={"Пароль"}
+          name={"password"}
+          error={!!errors.password}
+          errorText={errors.password}
+          minLength={2}
+          maxLength={20}
+          required
+        />
+
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          disabled={!isValid}
+        >
+          Войти
+        </Button>
+      </form>
+
+      <div className={`text text_type_main-small ${styles.container}`}>
+        <p className={styles.item}>
+          Вы — новый пользователь?
+          <NavLink to="/register" className={styles.link}>
+            Зарегистрироваться
+          </NavLink>
+        </p>
+
+        <p className={styles.item}>
+          Забыли пароль?
+          <NavLink to="/forgot-password" className={styles.link}>
+            Восстановить пароль
+          </NavLink>
+        </p>
+      </div>
     </main>
   );
 };
