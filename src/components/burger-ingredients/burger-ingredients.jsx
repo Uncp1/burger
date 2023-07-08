@@ -25,17 +25,18 @@ const BurgerIngredients = () => {
   ));
 
   const [currentTab, setCurrentTab] = useState("bun");
+
   const [tabList] = useState([
     {
-      value: "Булки",
+      name: "Булки",
       type: "bun",
     },
     {
-      value: "Соусы",
+      name: "Соусы",
       type: "sauce",
     },
     {
-      value: "Начинки",
+      name: "Начинки",
       type: "main",
     },
   ]);
@@ -46,12 +47,12 @@ const BurgerIngredients = () => {
 
   const scrollToId = useCallback((itemKey) => {
     const refs = getRefs().get(itemKey);
-    refs.scrollIntoView();
+    refs.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   const handleTabClick = useCallback(
-    (value, index) => {
-      setCurrentTab(value);
+    (type, index) => {
+      setCurrentTab(type);
       scrollToId(index);
     },
     [scrollToId]
@@ -64,11 +65,11 @@ const BurgerIngredients = () => {
         {tabList.map((tab, index) => (
           <li key={tab.type}>
             <Tab
-              value={tab.value}
+              value={tab.type}
               active={currentTab === tab.type}
               onClick={(currentTab) => handleTabClick(currentTab, index)}
             >
-              {tab.value}
+              {tab.name}
             </Tab>
           </li>
         ))}
@@ -79,7 +80,6 @@ const BurgerIngredients = () => {
           <InView
             as="li"
             key={index}
-            className={styles.ingredients__column}
             data-type={tab.type}
             onChange={(inView, entry) => {
               const refs = getRefs();
@@ -88,11 +88,12 @@ const BurgerIngredients = () => {
                 setCurrentTab(entry.target.dataset.type);
               }
             }}
+            threshold="0.2"
           >
             <IngredientsType
               className="pl-4 pr-4"
               type={tab.type}
-              name={tab.value}
+              name={tab.name}
             >
               {tab.type === "bun"
                 ? bunList

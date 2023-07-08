@@ -18,6 +18,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import CartElement from "../cart-element/cart-element";
 import { useLocation, useNavigate } from "react-router-dom";
+import clsx from "clsx";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
@@ -100,19 +101,28 @@ const BurgerConstructor = () => {
   }, [cart.bun, cart.ingredients]);
 
   return (
-    <section className={`${styles.cart} mt-25`} ref={dropTarget}>
+    <section
+      className={clsx(
+        styles.cart,
+        "mt-25",
+        isHover && styles.cart__list_hover_active
+      )}
+      ref={dropTarget}
+    >
       {!cart.bun ? (
         <h2 className="text text_type_main-large">Выберите булку</h2>
       ) : (
-        <div className={styles.cart__list}>
-          <ConstructorElement
-            extraClass={styles.cart__item}
-            type="top"
-            isLocked={true}
-            text="Краторная булка N-200i (верх)"
-            price={cart.bun.price}
-            thumbnail={cart.bun.image}
-          />
+        <ul className={styles.cart__list}>
+          <li className={styles.cart__item}>
+            <ConstructorElement
+              extraClass={styles.cart__bun}
+              type="top"
+              isLocked={true}
+              text="Краторная булка N-200i (верх)"
+              price={cart.bun.price}
+              thumbnail={cart.bun.image}
+            />
+          </li>
 
           <ul className={styles.cart__ingredients}>
             {cart.ingredients.map((item, index) => {
@@ -127,15 +137,17 @@ const BurgerConstructor = () => {
             })}
           </ul>
 
-          <ConstructorElement
-            extraClass={styles.cart__item}
-            type="bottom"
-            isLocked={true}
-            text="Краторная булка N-200i (низ)"
-            price={cart.bun.price}
-            thumbnail={cart.bun.image}
-          />
-        </div>
+          <li className={styles.cart__item}>
+            <ConstructorElement
+              extraClass={styles.cart__bun}
+              type="bottom"
+              isLocked={true}
+              text="Краторная булка N-200i (низ)"
+              price={cart.bun.price}
+              thumbnail={cart.bun.image}
+            />
+          </li>
+        </ul>
       )}
 
       <div className={styles.cart__checkout}>
