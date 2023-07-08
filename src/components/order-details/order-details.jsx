@@ -1,6 +1,6 @@
 import styles from "./order-details.module.css";
 import { useSelector } from "react-redux";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import {
   CurrencyIcon,
   FormattedDate,

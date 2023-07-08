@@ -1,11 +1,13 @@
 import styles from "./forgot.module.css";
-import LoginForm from "../../components/login-form/login-form";
-import LoginLinks from "../../components/login-links/login-links";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchForgotPassword } from "../../services/slices/user-slice";
 import { useCallback, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  Button,
+  EmailInput,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const ForgotPasswordPage = () => {
   const dispatch = useDispatch();
@@ -31,16 +33,36 @@ const ForgotPasswordPage = () => {
 
   return (
     <main className={styles.main}>
-      <LoginForm
-        type={"forgot"}
-        errors={errors}
-        inputValues={inputValues}
-        handleChange={handleChange}
-        handleSubmit={handleSubmit}
-        isValid={isValid}
-      />
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <h1 className="text text_type_main-large">Восстановление пароля</h1>
+        <EmailInput
+          value={inputValues.email || ""}
+          placeholder={"E-mail"}
+          name={"email"}
+          error={!!errors.email}
+          errorText={errors.email}
+          onChange={handleChange}
+          required
+        />
 
-      <LoginLinks type={"login"} />
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          disabled={!isValid}
+        >
+          Восстановить
+        </Button>
+      </form>
+
+      <div className={`text text_type_main-small ${styles.container}`}>
+        <p className={styles.item}>
+          Вспомнили пароль?
+          <NavLink to="/login" className={styles.link}>
+            Войти
+          </NavLink>
+        </p>
+      </div>
     </main>
   );
 };
