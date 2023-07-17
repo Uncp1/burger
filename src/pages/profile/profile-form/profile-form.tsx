@@ -2,13 +2,13 @@ import {
   Button,
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FC, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks/hooks";
 import { useForm } from "../../../services/hooks/useForm";
 import { fetchUpdateUser } from "../../../services/slices/user-slice";
 import styles from "./profile-form.module.css";
 
-const ProfileForm = () => {
+const ProfileForm: FC = () => {
   const [isEdited, setEdit] = useState({
     name: false,
     email: false,

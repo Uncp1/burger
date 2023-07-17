@@ -1,6 +1,19 @@
 import { setCookie } from "./cookies";
+import { TUSer } from "./types";
 
-export const updateCookie = ({ user, request, accessToken, refreshToken }) => {
+interface IUpdateCookie {
+  user: TUSer;
+  request?: boolean;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export const updateCookie = ({
+  user,
+  request,
+  accessToken,
+  refreshToken,
+}: IUpdateCookie) => {
   if (user !== null || request) {
     const expiresAt = Date.now() + 1000000;
     setCookie("accessToken", accessToken, { expires: 2000 });

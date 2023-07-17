@@ -5,7 +5,6 @@ import { TUSer } from "../../utils/types";
 import { updateCookie } from "../../utils/update-cookie";
 import { loginUser, logoutUser } from "../api/userApi";
 import { AppDispatch, RootState } from "../store";
-import { updateUser } from "./user-slice";
 
 interface IFormPromise {
   accessToken: string;
@@ -35,33 +34,36 @@ export const fetchLogin = createAsyncThunk<
   IFormPromise,
   IFormInput,
   { state: RootState; dispatch: AppDispatch }
->("fetchLogin", (userData, { dispatch }) => {
+>("fetchLogin", async (userData, { dispatch }) => {
   const { email, password } = userData;
-  loginUser({ email, password })
-    .then((res) => {
-      const { user, accessToken, refreshToken } = res;
-      updateCookie({ user, accessToken, refreshToken });
-      dispatch(
-        updateUser({
-          refreshToken: refreshToken,
-          accessToken: accessToken,
-          user: user,
-        })
-      );
-    })
-    .then(() => {
-      showMessageTimeout("Вход выполнен успешно", dispatch);
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+  try {
+    const res = await loginUser({ email, password });
+    const { user, accessToken, refreshToken } = res;
+    updateCookie({ user, accessToken, refreshToken });
+    dispatch(
+      updateUser({
+        refreshToken: refreshToken,
+        accessToken: accessToken,
+        user: user,
+      })
+    );
+    showMessageTimeout("Вход выполнен успешно", dispatch);
+    return { user, accessToken, refreshToken, success: true };
+  } catch (err) {
+    console.log(err);
+    return Promise.reject(err);
+  }
 });
 
-export const fetchLogout = createAsyncThunk("fetchLogout", async () => {
+export const fetchLogout = createAsyncThunk<
+  IFormPromise,
+  { state: RootState; dispatch: AppDispatch }
+>("fetchLogout", async ({ dispatch }) => {
   try {
     const token = getCookie("refreshToken");
-    return await logoutUser({ token });
+    const res = await logoutUser({ token });
+    dispatch(logOut());
+    return res;
   } catch (err) {
     console.log(err);
     return err;
@@ -118,3 +120,6 @@ const loginSlice = createSlice({
       .addCase(fetchLogout.rejected, () => {});
   },
 });
+
+export const { updateUser, logOut } = loginSlice.actions;
+export default loginSlice.reducer;
