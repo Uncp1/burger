@@ -1,11 +1,11 @@
 import { useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { getCookie } from "../../utils/cookies";
 import { fetchLogout } from "../slices/user-slice";
+import { useAppDispatch, useAppSelector } from "./hooks";
 
 export const useLogout = () => {
-  const dispatch = useDispatch();
-  const { isUserLoggedIn } = useSelector((store) => store.user);
+  const dispatch = useAppDispatch();
+  const { isUserLoggedIn } = useAppSelector((store) => store.user);
 
   const refreshToken = getCookie("refreshToken");
   const handleLogout = useCallback(() => {

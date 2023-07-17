@@ -1,10 +1,10 @@
 import { useMemo } from "react";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { getCookie } from "../../utils/cookies";
+import { useAppSelector } from "./hooks";
 
 export const useAuth = () => {
-  const { token } = useSelector((store) => store.user);
+  const { token } = useAppSelector((store) => store.user);
 
   const location = useLocation();
   const isTokenExpired = useMemo(() => {
