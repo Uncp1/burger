@@ -13,19 +13,20 @@ export const createOrder = createAsyncThunk<TOrderPromise, TCart>(
   "createOrder",
   async (cart) => {
     try {
-      const orderIds = [];
-      cart.ingredients.map((item) => orderIds.push(item._id));
-      orderIds.unshift(cart.bun._id);
-      orderIds.push(cart.bun._id);
-      return await postOrder({ ingredients: orderIds });
+      if (cart.ingredients && cart.bun) {
+        const orderIds: string[] = cart.ingredients.map((item) => item._id);
+        orderIds.unshift(cart.bun._id);
+        orderIds.push(cart.bun._id);
+        return await postOrder({ order: orderIds });
+      }
     } catch (err) {
       console.log(err);
-      //return err.message;
+      return err;
     }
   }
 );
 
-export const fetchGetOrder = createAsyncThunk(
+export const fetchGetOrder = createAsyncThunk<TOrderPromise, number>(
   "order/getOrder",
   (orderNumber, { dispatch, rejectWithValue }) => {
     return getOrder({ orderNumber })

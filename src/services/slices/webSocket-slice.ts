@@ -19,7 +19,7 @@ const webSocketSlice = createSlice({
   name: "webSocketSlice",
   initialState: initialState,
   reducers: {
-    wsConnectionStart() {
+    wsConnectionStart(_state, _action: PayloadAction<string>) {
       return undefined;
     },
     wsConnectionSuccess(state) {

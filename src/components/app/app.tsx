@@ -1,11 +1,5 @@
-import { FC, useCallback, useEffect, useMemo } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { FC, useCallback, useEffect } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import {
   HomePage,
   LoginPage,
@@ -23,7 +17,6 @@ import {
 } from "../../pages";
 import ModalNotification from "../modal-notification/modal-notification";
 import ProtectedRoute from "../protected-route/protected-route";
-import { getCookie } from "../../utils/cookies";
 import { fetchGetUser } from "../../services/slices/user-slice";
 import Modal from "../modal/modal";
 import IngredientInfo from "../ingredient-info/ingredient-info";
@@ -125,7 +118,7 @@ const App: FC = () => {
       <ModalNotification></ModalNotification>
 
       <Modal
-        handleModalClose={handleModalClose()}
+        handleModalClose={handleModalClose}
         title={modalOrderDetails ? "Детали заказа" : "Детали ингредиента"}
       >
         {background && modalIngredient && (

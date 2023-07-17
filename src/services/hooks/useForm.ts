@@ -1,7 +1,14 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, ChangeEvent } from "react";
+
+interface IValues {
+  name?: string;
+  password?: string;
+  email?: string;
+  token?: string;
+}
 
 export const useForm = () => {
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<IValues>({
     email: "",
     password: "",
     name: "",
@@ -9,14 +16,14 @@ export const useForm = () => {
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target;
     const name = target.name;
     const value = target.value;
     const form = target.closest("form");
     setInputValues({ ...inputValues, [name]: value });
     setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(form.checkValidity());
+    form && setIsValid(form.checkValidity());
   };
 
   const resetForm = useCallback(

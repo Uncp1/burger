@@ -1,13 +1,13 @@
 import styles from "./forgot.module.css";
 import { fetchForgotPassword } from "../../services/slices/user-slice";
 import { FC, FormEvent, useCallback, useEffect } from "react";
-import { useForm } from "../../services/hooks/useForm";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Button,
   EmailInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useAppDispatch } from "../../services/hooks/hooks";
+import { useForm } from "../../services/hooks/useForm";
 
 const ForgotPasswordPage: FC = () => {
   const dispatch = useAppDispatch();

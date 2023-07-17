@@ -41,7 +41,7 @@ const BurgerIngredients: FC = () => {
     },
   ]);
 
-  const tabsRef = useRef(null);
+  const tabsRef = useRef<Map<string, number> | null>(null);
   const getRefs = () =>
     !tabsRef.current ? (tabsRef.current = new Map()) : tabsRef.current;
 
@@ -84,17 +84,15 @@ const BurgerIngredients: FC = () => {
             onChange={(inView, entry) => {
               const refs = getRefs();
               refs.set(index, entry.target);
-              if (inView) {
-                setCurrentTab(entry.target.dataset.type);
+              const target = entry.target as HTMLElement;
+              const datasetType = target.dataset.type;
+              if (inView && datasetType) {
+                setCurrentTab(datasetType);
               }
             }}
-            //threshold="0.2"
+            // threshold={0.3} поведение непредсказуемое
           >
-            <IngredientsType
-              className="pl-4 pr-4"
-              type={tab.type}
-              name={tab.name}
-            >
+            <IngredientsType type={tab.type} name={tab.name}>
               {tab.type === "bun"
                 ? bunList
                 : tab.type === "sauce"

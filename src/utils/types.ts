@@ -55,11 +55,16 @@ export type TUSer = {
   updatedAt?: string;
 };
 
-export type TLoginPromise = {
+export type TFormPromise = {
   accessToken: string;
   refreshToken: string;
   success: boolean;
   user: TUSer;
+};
+
+export type TFormInput = {
+  email?: string;
+  password?: string;
 };
 
 const orderType = PropTypes.shape({

@@ -39,8 +39,8 @@ const LoginPage: FC = () => {
           value={inputValues.email || ""}
           placeholder={"E-mail"}
           name={"email"}
-          error={!!errors.email}
-          errorText={errors.email}
+          // error={!!errors.email}
+          //errorText={errors.email}
           onChange={handleChange}
           required
         />
@@ -49,8 +49,8 @@ const LoginPage: FC = () => {
           onChange={handleChange}
           placeholder={"Пароль"}
           name={"password"}
-          error={!!errors.password}
-          errorText={errors.password}
+          // error={!!errors.password}
+          //errorText={errors.password}
           minLength={2}
           maxLength={20}
           required

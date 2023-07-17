@@ -1,8 +1,12 @@
-export const deleteCookie = (name) => {
+export type TProps = {
+  expires: string | number | Date;
+};
+
+export const deleteCookie = (name: string) => {
   document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
 };
 
-export const getCookie = (name) => {
+export const getCookie = (name: string) => {
   const regex = /([.$?*|{}()[\]\\/+^])/g;
 
   const matches = document.cookie.match(
@@ -11,7 +15,11 @@ export const getCookie = (name) => {
   return matches ? decodeURIComponent(matches[1]) : deleteCookie(name);
 };
 
-export const setCookie = (name, value, props = {}) => {
+export const setCookie = (
+  name: string,
+  value: string | number,
+  props: TProps
+) => {
   props = {
     path: "/",
     ...props,

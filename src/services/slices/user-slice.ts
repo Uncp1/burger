@@ -11,7 +11,8 @@ import {
 } from "../api/userApi";
 import { setCookie } from "../../utils/cookies";
 import { showMessageTimeout } from "../../utils/messages";
-import { TUSer } from "../../utils/types";
+import { TFormInput, TFormPromise, TUSer } from "../../utils/types";
+import { RootState } from "../store";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 interface IUserState {
@@ -68,7 +69,7 @@ const initialState: IUserState = {
   isPasswordChanged: false,
 };
 
-export const fetchLogin = createAsyncThunk(
+export const fetchLogin = createAsyncThunk<TFormPromise, TFormInput, {}>(
   "fetchLogin",
   ({ email, password }, { dispatch }) => {
     loginUser({ email, password })

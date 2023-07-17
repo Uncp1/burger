@@ -4,19 +4,19 @@ import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { useEffect, useCallback, ReactNode, FC } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../services/hooks/hooks";
 
 interface IModal {
   title: string;
   children: ReactNode;
-  handleModalClose: void;
+  handleModalClose: () => void;
 }
 const Modal: FC<IModal> = ({ title, children, handleModalClose }) => {
   const { modalIngredient, modalOrderDetails, notificationData, isModalOpen } =
-    useSelector((state) => state.modal);
+    useAppSelector((state) => state.modal);
 
   const handleEscape = useCallback(
-    (e) => {
+    (e: KeyboardEvent) => {
       e.preventDefault();
       e.key === "Escape" && handleModalClose();
     },

@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/loader/loader";
 import OrderList from "../../components/order-list/order-list";
 import styles from "./feed.module.css";
@@ -17,7 +16,9 @@ const FeedPage: FC = () => {
 
   useEffect(() => {
     dispatch(wsConnectionStart(wssAll));
-    return () => dispatch(wsConnectionClosed());
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
   }, [dispatch]);
 
   return orders && orders.length > 0 ? (

@@ -1,7 +1,13 @@
 import styles from "./ingredients-type.module.css";
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 
-const IngredientsType: FC = ({ type, name, children }: any) => {
+interface IIngredientsType {
+  type: string;
+  name: string;
+  children: ReactNode;
+}
+
+const IngredientsType: FC<IIngredientsType> = ({ type, name, children }) => {
   return (
     <>
       <h2 className="text text_type_main-medium" id={type}>
