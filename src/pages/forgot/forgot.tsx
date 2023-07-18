@@ -1,5 +1,5 @@
 import styles from "./forgot.module.css";
-import { fetchForgotPassword } from "../../services/slices/user-slice";
+import { fetchForgotPassword } from "../../services/slices/password-slice";
 import { FC, FormEvent, useCallback, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -11,7 +11,7 @@ import { useForm } from "../../services/hooks/useForm";
 
 const ForgotPasswordPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { inputValues, handleChange, errors, isValid, resetForm } = useForm();
+  const { inputValues, handleChange, isValid, resetForm } = useForm();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,8 +39,6 @@ const ForgotPasswordPage: FC = () => {
           value={inputValues.email || ""}
           placeholder={"E-mail"}
           name={"email"}
-          error={!!errors.email}
-          errorText={errors.email}
           onChange={handleChange}
           required
         />

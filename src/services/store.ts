@@ -2,9 +2,11 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { socketMiddleware } from "./middleware/socketMiddleware";
 import cartSlice from "./slices/cart-slice";
 import ingredientSlice from "./slices/ingredient-slice";
+import loginSlice from "./slices/login-slice";
 import modalSlice from "./slices/modal-slice";
 import orderSlice from "./slices/order-slice";
-import userSlice from "./slices/user-slice";
+import passwordSlice from "./slices/password-slice";
+import userSclice from "./slices/user-sclice";
 import webSocketSlice, { wsActions } from "./slices/webSocket-slice";
 
 const rootReducer = combineReducers({
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
   cart: cartSlice,
   modal: modalSlice,
   order: orderSlice,
-  user: userSlice,
+  user: userSclice,
+  login: loginSlice,
+  password: passwordSlice,
   websocket: webSocketSlice,
 });
 export const store = configureStore({

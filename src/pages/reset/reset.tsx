@@ -1,5 +1,5 @@
 import styles from "./reset.module.css";
-import { fetchResetPassword } from "../../services/slices/user-slice";
+import { fetchResetPassword } from "../../services/slices/password-slice";
 import { useForm } from "../../services/hooks/useForm";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
@@ -13,7 +13,7 @@ import { useAppDispatch } from "../../services/hooks/hooks";
 const ResetPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { inputValues, handleChange, errors } = useForm();
+  const { inputValues, handleChange } = useForm();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -35,8 +35,6 @@ const ResetPage: FC = () => {
           value={inputValues.password || ""}
           onChange={handleChange}
           name={"password"}
-          error={!!errors.password}
-          errorText={errors.password}
           minLength={2}
           maxLength={20}
           required

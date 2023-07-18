@@ -1,23 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { deleteCookie, getCookie } from "../../utils/cookies";
 import { showMessageTimeout } from "../../utils/messages";
-import { TUSer } from "../../utils/types";
+import { TFormInput, TFormPromise } from "../../utils/types";
 import { updateCookie } from "../../utils/update-cookie";
-import { loginUser, logoutUser } from "../api/userApi";
+import { loginUser, logoutUser, registerUser } from "../api/userApi";
 import { AppDispatch, RootState } from "../store";
-
-interface IFormPromise {
-  accessToken: string;
-  refreshToken: string;
-  success: boolean;
-  user: TUSer;
-}
-
-interface IFormInput {
-  email: string;
-  password: string;
-}
-
 interface ILoginState {
   accessToken: string | null;
   refreshToken: string | null;
@@ -30,9 +17,21 @@ interface ILoginState {
   errorMessage: string;
 }
 
+const initialState: ILoginState = {
+  user: {
+    email: null,
+    name: null,
+    password: null,
+  },
+  accessToken: null,
+  refreshToken: null,
+  isUserLoggedIn: !!getCookie("accessToken") || false,
+  errorMessage: "",
+};
+
 export const fetchLogin = createAsyncThunk<
-  IFormPromise,
-  IFormInput,
+  TFormPromise,
+  TFormInput,
   { state: RootState; dispatch: AppDispatch }
 >("fetchLogin", async (userData, { dispatch }) => {
   const { email, password } = userData;
@@ -56,8 +55,8 @@ export const fetchLogin = createAsyncThunk<
 });
 
 export const fetchLogout = createAsyncThunk<
-  IFormPromise,
-  { state: RootState; dispatch: AppDispatch }
+  TFormPromise,
+  { dispatch: AppDispatch }
 >("fetchLogout", async ({ dispatch }) => {
   try {
     const token = getCookie("refreshToken");
@@ -70,17 +69,36 @@ export const fetchLogout = createAsyncThunk<
   }
 });
 
-const initialState: ILoginState = {
-  user: {
-    email: null,
-    name: null,
-    password: null,
-  },
-  accessToken: null,
-  refreshToken: null,
-  isUserLoggedIn: !!getCookie("accessToken") || false,
-  errorMessage: "",
-};
+export const fetchRegister = createAsyncThunk<
+  TFormPromise,
+  TFormInput,
+  {
+    state: RootState;
+    dispatch: AppDispatch;
+  }
+>("fetchRegister", async (userData, { dispatch }) => {
+  const { name, email, password } = userData;
+  try {
+    const res = await registerUser({ name, email, password });
+    const { user, accessToken, refreshToken } = res;
+    updateCookie({ user, accessToken, refreshToken });
+    dispatch(
+      updateUser({
+        refreshToken: refreshToken,
+        accessToken: accessToken,
+        user: user,
+      })
+    );
+    showMessageTimeout(
+      "Пользователь успешно создан. Добро пожаловать",
+      dispatch
+    );
+    return res;
+  } catch (err) {
+    console.log(err);
+    return err;
+  }
+});
 
 const loginSlice = createSlice({
   name: "loginSlice",
@@ -105,9 +123,7 @@ const loginSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLogin.pending, (state) => {
-        state.errorMessage = "";
-      })
+      .addCase(fetchLogin.pending, (state) => {})
       .addCase(fetchLogin.fulfilled, (state, action) => {})
       .addCase(fetchLogin.rejected, (state, action) => {})
       //logout
@@ -117,7 +133,11 @@ const loginSlice = createSlice({
         deleteCookie("refreshToken");
         deleteCookie("expiresAt");
       })
-      .addCase(fetchLogout.rejected, () => {});
+      .addCase(fetchLogout.rejected, () => {})
+      //register
+      .addCase(fetchRegister.pending, (state, action) => {})
+      .addCase(fetchRegister.fulfilled, (state, action) => {})
+      .addCase(fetchRegister.rejected, (action) => {});
   },
 });
 

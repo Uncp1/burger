@@ -2,11 +2,15 @@ import { getCookie } from "./cookies";
 import { updateCookie } from "./update-cookie";
 import { serverConfig } from "./config";
 
-export const request = (endpoint, options, token) => {
+export const request = (
+  endpoint: string,
+  options?: RequestInit,
+  token?: string
+) => {
   return fetch(`${serverConfig.baseUrl}/${endpoint}`, {
     headers: {
       ...serverConfig.headers,
-      authorization: token || getCookie("accessToken"),
+      authorization: token || (getCookie("accessToken") as string),
     },
     ...options,
   }).then((res) => {
@@ -17,7 +21,10 @@ export const request = (endpoint, options, token) => {
   });
 };
 
-export const userDataRequest = async (endpoint, options) => {
+export const userDataRequest = async (
+  endpoint: string,
+  options?: RequestInit
+) => {
   const tokenUrl = `auth/token`;
   const access = getCookie("accessToken");
   const token = getCookie("refreshToken");
@@ -31,16 +38,16 @@ export const userDataRequest = async (endpoint, options) => {
       body: JSON.stringify({ token }),
     });
 
-    return res
-      .then((res) => {
+    
+      
         const { accessToken, refreshToken } = res;
         updateCookie({
           request: true,
           accessToken: accessToken,
           refreshToken: refreshToken,
-        });
+        })
         return request(endpoint, options, getCookie("accessToken"));
-      })
+     
       .catch((res) => {
         console.log(res);
       });

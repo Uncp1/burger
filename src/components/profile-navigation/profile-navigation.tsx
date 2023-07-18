@@ -3,19 +3,17 @@ import clsx from "clsx";
 import { FC, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { fetchLogout } from "../../services/slices/user-slice";
+import { fetchLogout } from "../../services/slices/login-slice";
 import { getCookie } from "../../utils/cookies";
 import styles from "./profile-navigation.module.css";
 
 const ProfileNavigation: FC = () => {
   const dispatch = useAppDispatch();
-  const { isUserLoggedIn } = useAppSelector((store) => store.user);
+  const { isUserLoggedIn } = useAppSelector((store) => store.login);
 
   const refreshToken = getCookie("refreshToken");
   const handleLogout = useCallback(() => {
-    isUserLoggedIn &&
-      refreshToken &&
-      dispatch(fetchLogout({ token: refreshToken }));
+    isUserLoggedIn && refreshToken && dispatch(fetchLogout({ dispatch }));
   }, [dispatch, isUserLoggedIn, refreshToken]);
   return (
     <nav>

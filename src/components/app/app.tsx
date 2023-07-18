@@ -17,7 +17,7 @@ import {
 } from "../../pages";
 import ModalNotification from "../modal-notification/modal-notification";
 import ProtectedRoute from "../protected-route/protected-route";
-import { fetchGetUser } from "../../services/slices/user-slice";
+import { fetchGetUser } from "../../services/slices/user-sclice";
 import Modal from "../modal/modal";
 import IngredientInfo from "../ingredient-info/ingredient-info";
 import OrderInfo from "../order-info/order-info";
@@ -32,7 +32,7 @@ const App: FC = () => {
   const { modalOrder, modalIngredient, modalOrderDetails } = useAppSelector(
     (state) => state.modal
   );
-  const { isTokenExpired, previousUrl } = useAuth();
+  const { previousUrl } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const background =

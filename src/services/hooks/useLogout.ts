@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { getCookie } from "../../utils/cookies";
-import { fetchLogout } from "../slices/user-slice";
+import { fetchLogout } from "../slices/login-slice";
 import { useAppDispatch, useAppSelector } from "./hooks";
 
 export const useLogout = () => {
@@ -9,9 +9,7 @@ export const useLogout = () => {
 
   const refreshToken = getCookie("refreshToken");
   const handleLogout = useCallback(() => {
-    isUserLoggedIn &&
-      refreshToken &&
-      dispatch(fetchLogout({ token: refreshToken }));
+    isUserLoggedIn && refreshToken && dispatch(fetchLogout({ dispatch }));
   }, [dispatch, isUserLoggedIn, refreshToken]);
 
   return { handleLogout };

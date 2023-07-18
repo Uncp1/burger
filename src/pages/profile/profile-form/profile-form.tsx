@@ -5,7 +5,7 @@ import {
 import { FC, FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../services/hooks/hooks";
 import { useForm } from "../../../services/hooks/useForm";
-import { fetchUpdateUser } from "../../../services/slices/user-slice";
+import { fetchUpdateUser } from "../../../services/slices/user-sclice";
 import styles from "./profile-form.module.css";
 
 const ProfileForm: FC = () => {
@@ -21,7 +21,11 @@ const ProfileForm: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (inputValues.password.length < 8) {
+    if (
+      inputValues.password &&
+      typeof inputValues.password.length === "number" &&
+      inputValues.password.length < 8
+    ) {
       dispatch(
         fetchUpdateUser({ name: inputValues.name, email: inputValues.email })
       );
@@ -36,9 +40,9 @@ const ProfileForm: FC = () => {
     }
   };
 
-  const inputNameRef = useRef(null);
-  const inputEmailRef = useRef(null);
-  const inputPasswordRef = useRef(null);
+  const inputNameRef = useRef<HTMLInputElement>(null);
+  const inputEmailRef = useRef<HTMLInputElement>(null);
+  const inputPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     user && resetForm({ name: user.name, email: user.email, password: "" });
@@ -46,7 +50,7 @@ const ProfileForm: FC = () => {
 
   const onIconNameClick = () => {
     setEdit({ ...isEdited, name: !isEdited.name });
-    setTimeout(() => inputNameRef.current.focus(), 0);
+    setTimeout(() => inputNameRef.current?.focus(), 0);
   };
 
   const onIconEmailClick = () => {

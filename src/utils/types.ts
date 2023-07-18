@@ -1,15 +1,3 @@
-import { type } from "os";
-import PropTypes from "prop-types";
-
-const ingredientType = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  isLocked: PropTypes.bool,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-});
-
 export type TIngredientType = {
   _id: string;
   name: string;
@@ -56,25 +44,23 @@ export type TUSer = {
 };
 
 export type TFormPromise = {
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
   success: boolean;
-  user: TUSer;
+  user?: TUSer;
 };
 
 export type TFormInput = {
   email?: string;
   password?: string;
+  name?: string;
+  token?: string;
 };
 
-const orderType = PropTypes.shape({
-  createdAt: PropTypes.string.isRequired,
-  ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
-  status: PropTypes.oneOf(["done", "pending", "created"]).isRequired,
-  updatedAt: PropTypes.string.isRequired,
-  _id: PropTypes.string.isRequired,
-});
-
-export { ingredientType, orderType };
+export type TWebsocketActions = {
+  wsInit: string;
+  onOpen: string;
+  onClose: string;
+  onError: string;
+  onMessage: string;
+};

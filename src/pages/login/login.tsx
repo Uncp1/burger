@@ -1,5 +1,5 @@
 import styles from "./login.module.css";
-import { fetchLogin } from "../../services/slices/user-slice";
+import { fetchLogin } from "../../services/slices/login-slice";
 import { FC, FormEvent, useCallback, useEffect } from "react";
 import { useForm } from "../../services/hooks/useForm";
 import {
@@ -11,7 +11,7 @@ import { NavLink } from "react-router-dom";
 import { useAppDispatch } from "../../services/hooks/hooks";
 
 const LoginPage: FC = () => {
-  const { inputValues, handleChange, errors, isValid, resetForm } = useForm();
+  const { inputValues, handleChange, isValid, resetForm } = useForm();
 
   useEffect(() => {
     resetForm();

@@ -20,25 +20,21 @@ export const setCookie = (
   value: string | number,
   props: TProps
 ) => {
-  props = {
-    path: "/",
-    ...props,
-  };
   let exp = props.expires;
   if (typeof exp == "number" && exp) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
   }
-  if (exp && exp.toUTCString) {
+  if (exp instanceof Date && exp && exp.toUTCString) {
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
   let updatedCookie = name + "=" + value;
   for (const propName in props) {
     updatedCookie += "; " + propName;
-    const propValue = props[propName];
-    if (propValue !== true) {
+    const propValue = props[propName as keyof TProps];
+    if (!!propValue) {
       updatedCookie += "=" + propValue;
     }
   }

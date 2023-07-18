@@ -1,7 +1,6 @@
 import { FormEvent, useCallback, useEffect } from "react";
 import styles from "./register.module.css";
-import { useDispatch } from "react-redux";
-import { fetchRegister } from "../../services/slices/user-slice";
+import { fetchRegister } from "../../services/slices/login-slice";
 import { useForm } from "../../services/hooks/useForm";
 import {
   Button,
@@ -10,10 +9,11 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
+import { useAppDispatch } from "../../services/hooks/hooks";
 
 const RegisterPage = () => {
-  const dispatch = useDispatch();
-  const { inputValues, handleChange, errors, isValid, resetForm } = useForm();
+  const dispatch = useAppDispatch();
+  const { inputValues, handleChange, resetForm } = useForm();
 
   useEffect(() => {
     resetForm();
@@ -53,8 +53,6 @@ const RegisterPage = () => {
           value={inputValues.email || ""}
           placeholder={"E-mail"}
           name={"email"}
-          error={!!errors.email}
-          errorText={errors.email}
           onChange={handleChange}
           required
         />
@@ -63,8 +61,6 @@ const RegisterPage = () => {
           onChange={handleChange}
           placeholder={"Пароль"}
           name={"password"}
-          error={!!errors.password}
-          errorText={errors.password}
           minLength={2}
           maxLength={20}
           required

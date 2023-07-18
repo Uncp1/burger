@@ -12,11 +12,13 @@ import { getCookie } from "../../../utils/cookies";
 const ProfileOrders = () => {
   const { orders } = useAppSelector((store) => store.websocket);
   const dispatch = useAppDispatch();
-  const tokenWithoutBearer = getCookie("accessToken").replace("Bearer ", "");
+  const tokenWithoutBearer = getCookie("accessToken")?.replace("Bearer ", "");
 
   useEffect(() => {
     dispatch(wsConnectionStart(`${wssProfile}?token=${tokenWithoutBearer}`));
-    return () => dispatch(wsConnectionClosed());
+    return () => {
+      dispatch(wsConnectionClosed());
+    };
   }, [dispatch, tokenWithoutBearer]);
 
   return (

@@ -4,17 +4,17 @@ import { getCookie } from "../../utils/cookies";
 import { useAppSelector } from "./hooks";
 
 export const useAuth = () => {
-  const { token } = useAppSelector((store) => store.user);
+  const accessToken = useAppSelector((store) => store.login);
 
   const location = useLocation();
   const isTokenExpired = useMemo(() => {
-    if (token) {
+    if (accessToken) {
       const expiresAt = getCookie("expiresAt");
-      return Date.now() >= expiresAt;
+      return Date.now() >= +expiresAt;
     } else {
       return true;
     }
-  }, [token]);
+  }, [accessToken]);
 
   const previousUrl = useMemo(
     () =>

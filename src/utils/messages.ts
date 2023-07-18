@@ -2,8 +2,9 @@ import {
   closeModal,
   openModalNotification,
 } from "../services/slices/modal-slice";
+import { AppDispatch } from "../services/store";
 
-export const showMessageTimeout = (message, dispatch) => {
+export const showMessageTimeout = (message: string, dispatch: AppDispatch) => {
   dispatch(openModalNotification(message));
   setTimeout(() => {
     dispatch(closeModal());

@@ -13,7 +13,7 @@ const OrderPage: FC = () => {
   const params = useParams();
 
   useEffect(() => {
-    dispatch(fetchGetOrder(params.id));
+    params.id && dispatch(fetchGetOrder(+params.id));
   }, [dispatch, params.id]);
 
   return order === null ? (
