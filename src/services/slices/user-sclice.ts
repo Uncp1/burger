@@ -43,6 +43,13 @@ export const fetchUpdateUser = createAsyncThunk<
   TFormInput,
   { state: RootState; dispatch: AppDispatch }
 >("fetchUpdateUser", async ({ name, email, password }) => {
+  if (
+    typeof name !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    throw new Error("Email, name or password are not strings");
+  }
   try {
     return await patchUser({ name, email, password });
   } catch (err) {

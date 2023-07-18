@@ -2,7 +2,7 @@ import { setCookie } from "./cookies";
 import { TUSer } from "./types";
 
 interface IUpdateCookie {
-  user: TUSer;
+  user?: TUSer;
   request?: boolean;
   accessToken: string;
   refreshToken: string;

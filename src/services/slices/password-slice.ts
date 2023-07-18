@@ -34,6 +34,9 @@ export const fetchForgotPassword = createAsyncThunk<
     dispatch: AppDispatch;
   }
 >("fetchForgotPassword", async ({ email }, { dispatch }) => {
+  if (typeof email !== "string") {
+    throw new Error("Email is not a string");
+  }
   try {
     const res = await forgotPassword({ email });
     showMessageTimeout(
@@ -56,6 +59,9 @@ export const fetchResetPassword = createAsyncThunk<
   }
 >("fetchResetPassword", async (userData, { dispatch }) => {
   const { password, token } = userData;
+  if (typeof token !== "string" || typeof password !== "string") {
+    throw new Error(" password is not a string");
+  }
   try {
     const res = await resetPassword({ password, token });
     showMessageTimeout("Пароль успешно востановлен", dispatch);

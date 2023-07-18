@@ -35,6 +35,9 @@ export const fetchLogin = createAsyncThunk<
   { state: RootState; dispatch: AppDispatch }
 >("fetchLogin", async (userData, { dispatch }) => {
   const { email, password } = userData;
+  if (typeof email !== "string" || typeof password !== "string") {
+    throw new Error("Email or password are not strings");
+  }
   try {
     const res = await loginUser({ email, password });
     const { user, accessToken, refreshToken } = res;
@@ -58,8 +61,11 @@ export const fetchLogout = createAsyncThunk<
   TFormPromise,
   { dispatch: AppDispatch }
 >("fetchLogout", async ({ dispatch }) => {
+  const token = getCookie("refreshToken");
+  if (typeof token !== "string") {
+    throw new Error("unexpected cookie error");
+  }
   try {
-    const token = getCookie("refreshToken");
     const res = await logoutUser({ token });
     dispatch(logOut());
     return res;
@@ -78,6 +84,13 @@ export const fetchRegister = createAsyncThunk<
   }
 >("fetchRegister", async (userData, { dispatch }) => {
   const { name, email, password } = userData;
+  if (
+    typeof name !== "string" ||
+    typeof email !== "string" ||
+    typeof password !== "string"
+  ) {
+    throw new Error("Email, name or password are not strings");
+  }
   try {
     const res = await registerUser({ name, email, password });
     const { user, accessToken, refreshToken } = res;
