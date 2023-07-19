@@ -1,6 +1,9 @@
+import { FC, PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children, redirect, anonymous }: any) => {
+const ProtectedRoute: FC<
+  PropsWithChildren<{ redirect: string; anonymous?: boolean }>
+> = ({ children, redirect, anonymous }) => {
   if (document.cookie && anonymous) {
     return <Navigate to={redirect} />;
   }
@@ -9,7 +12,7 @@ const ProtectedRoute = ({ children, redirect, anonymous }: any) => {
     return <Navigate to={redirect} />;
   }
 
-  return children;
+  return <> {children} </>;
 };
 
 export default ProtectedRoute;

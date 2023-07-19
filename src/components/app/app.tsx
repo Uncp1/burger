@@ -92,7 +92,7 @@ const App: FC = () => {
           <Route
             path="/profile/orders/:id"
             element={
-              <ProtectedRoute redirectTo="/login">
+              <ProtectedRoute redirect="/login">
                 <OrderPage />
               </ProtectedRoute>
             }

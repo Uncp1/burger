@@ -3,15 +3,12 @@ import clsx from "clsx";
 import { createPortal } from "react-dom";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../modal-overlay/modal-overlay";
-import { useEffect, useCallback, ReactNode, FC } from "react";
+import { useEffect, useCallback, FC, PropsWithChildren } from "react";
 import { useAppSelector } from "../../services/hooks/hooks";
 
-interface IModal {
-  title: string;
-  children: ReactNode;
-  handleModalClose: () => void;
-}
-const Modal: FC<IModal> = ({ title, children, handleModalClose }) => {
+const Modal: FC<
+  PropsWithChildren<{ title: string; handleModalClose: () => void }>
+> = ({ title, children, handleModalClose }) => {
   const { modalIngredient, modalOrderDetails, notificationData, isModalOpen } =
     useAppSelector((state) => state.modal);
 
