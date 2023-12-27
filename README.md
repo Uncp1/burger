@@ -7,15 +7,14 @@
 Работа выполнена на курсе [Web+][yandex-practicum-web-plus] от [Yandex Практикум][yandex-practicum-url] в соответствии
 со всеми пунктами [стандартов Яндекс.Практикума по оформлению HTML и CSS кода][yandex-styleguide].
 
-| Спринт | Технологии | Чек-листы | Макеты |
-| :----: | :--------: | :-------: | :----: |
 
-| 7 | [HTML5][tech-html], [CSS3][tech-css], [JS][tech-js], [React][tech-react] | [чек-лист 7 спринта][project-checklist-1] | [макет 7 спринта][project-figma-1] |
-| 8 | [JS][tech-js], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit] | [чек-лист 8 спринта][project-checklist-2] | [макет 8 спринта][project-figma-2] |
-
-| 9 | [JS][tech-js], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit], [React router][tech-react-router] | [второй чек-лист 9 спринта][project-checklist-3-1] | [макет 9 спринта][project-figma-3] |
-| 10 | [TypeScript][tech-ts], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit], [React router][tech-react-router] | [чек-лист 10 спринта][project-checklist-4] | |
-
+| Спринт | Технологии | Макеты и Чек-листы  |
+|---------|------|------------|
+| 7|   [HTML5][tech-html], [CSS3][tech-css], [JS][tech-js], [React][tech-react] |[макет 7 спринта][project-figma-1], [чек-лист 7 спринта][project-checklist-1]   |
+| 8 |  [JS][tech-js], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit]| [макет 8 спринта][project-figma-2], [чек-лист 8 спринта][project-checklist-2] |
+| 9 | [JS][tech-js], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit], [React router][tech-react-router] | [макет 9 спринта][project-figma-3], [второй чек-лист 9 спринта][project-checklist-3-1]| 
+| 10 | [TypeScript][tech-ts], [React][tech-react], [Redux][tech-redux], [Redux-toolkit][tech-redux-toolkit], [React router][tech-react-router]| [чек-лист 10 спринта][project-checklist-4] |
+                                 
 ## Доступные скрипты
 
 ### `npm start`
@@ -37,7 +36,7 @@
 
 ## Запустить проект
 
-- Клонировать проект - `git clone git@github.com:julfy-bs/stellar-burgers.git`
+- Клонировать проект - `git clone git@github.com:Uncp1/react-burger.git`
 - Установить зависимости `npm install`
 - Запустить сервер для разработки `npm run start`
 
