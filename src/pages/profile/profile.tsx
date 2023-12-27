@@ -1,8 +1,8 @@
-import styles from "./profile.module.css";
-import ProfileNavigation from "../../components/profile-navigation/profile-navigation";
-import { Outlet } from "react-router-dom";
-import Loader from "../../components/loader/loader";
-import { useAppSelector } from "../../services/hooks/hooks";
+import styles from './profile.module.css';
+import ProfileNavigation from '../../components/profile-navigation/profile-navigation';
+import { Outlet } from 'react-router-dom';
+import Loader from '../../components/loader/loader';
+import { useAppSelector } from '../../services/hooks/hooks';
 
 const ProfilePage = () => {
   const { isUserLoggedIn } = useAppSelector((store) => store.user);
@@ -21,7 +21,7 @@ const ProfilePage = () => {
       <Outlet />
     </main>
   ) : (
-    <Loader loadingText="Загрузка пррофиля" />
+    <Loader loadingText="Загрузка профиля" />
   );
 };
 

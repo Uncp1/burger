@@ -1,25 +1,25 @@
-import styles from "./burger-constructor.module.css";
+import styles from './burger-constructor.module.css';
 import {
   ConstructorElement,
   CurrencyIcon,
   Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useMemo, useCallback, FC } from "react";
-import { createOrder } from "../../services/slices/order-slice";
-import { useDrop } from "react-dnd";
-import { openModalOrder } from "../../services/slices/modal-slice";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { useMemo, useCallback, FC } from 'react';
+import { createOrder } from '../../services/slices/order-slice';
+import { useDrop } from 'react-dnd';
+import { openModalOrder } from '../../services/slices/modal-slice';
 import {
   addCartItem,
   emptyCart,
   removeCartItem,
   sortCartItem,
-} from "../../services/slices/cart-slice";
-import uuid from "react-uuid";
-import CartElement from "../cart-element/cart-element";
-import { useLocation, useNavigate } from "react-router-dom";
-import clsx from "clsx";
-import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { excludeUndefinedResult } from "../../utils/excludeUndefinedResult";
+} from '../../services/slices/cart-slice';
+import uuid from 'react-uuid';
+import CartElement from '../cart-element/cart-element';
+import { useLocation, useNavigate } from 'react-router-dom';
+import clsx from 'clsx';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
+import { excludeUndefinedResult } from '../../utils/excludeUndefinedResult';
 
 const BurgerConstructor: FC = () => {
   const dispatch = useAppDispatch();
@@ -35,28 +35,37 @@ const BurgerConstructor: FC = () => {
   );
 
   const redirectToLogin = useCallback(() => {
-    navigate("/login", {
+    navigate('/login', {
       replace: true,
       state: { background: location.pathname },
     });
   }, [location.pathname, navigate]);
 
-  const dispatchOrder = useCallback(() => {
+  const dispatchOrder = () => {
     dispatch(createOrder(cart)).then(() => {
       dispatch(openModalOrder());
-      dispatch(emptyCart());
+      //dispatch(emptyCart());
     });
-  }, [cart, dispatch]);
+  };
 
-  const handleCreateOrder = useCallback(
+  /* const handleCreateOrder = useCallback(
     () => (isUserLoggedIn ? dispatchOrder() : redirectToLogin()),
     [isUserLoggedIn, redirectToLogin, dispatchOrder]
-  );
+  ); */
+  const handleCreateOrder = () => {
+    dispatch(openModalOrder());
+    isUserLoggedIn
+      ? cart.bun !== null &&
+        dispatch(createOrder(cart)).then(() => {
+          dispatch(openModalOrder());
+        })
+      : redirectToLogin();
+  };
 
   const [{ isHover }, dropTarget] = useDrop({
-    accept: "ingredient",
+    accept: 'ingredient',
     drop(ingredient) {
-      if (typeof ingredient === "object" && ingredient !== null)
+      if (typeof ingredient === 'object' && ingredient !== null)
         dispatch(
           addCartItem({
             ...ingredient,
@@ -73,7 +82,7 @@ const BurgerConstructor: FC = () => {
     (id: string) => {
       const ingredient = excludeUndefinedResult(
         cart.ingredients.find((item) => item._id === id),
-        "Ingredient not found"
+        'Ingredient not found'
       );
       return {
         ingredient,
@@ -109,7 +118,7 @@ const BurgerConstructor: FC = () => {
     <section
       className={clsx(
         styles.cart,
-        "mt-25",
+        'mt-25',
         isHover && styles.cart__list_hover_active
       )}
       ref={dropTarget}
@@ -169,7 +178,7 @@ const BurgerConstructor: FC = () => {
           onClick={handleCreateOrder}
           disabled={isButtonDisabled}
         >
-          {orderFetchRequest ? "Оформляем заказ..." : "Оформить заказ"}
+          {orderFetchRequest ? 'Оформляем заказ...' : 'Оформить заказ'}
         </Button>
       </div>
     </section>

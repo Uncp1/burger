@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TCart, TOrderPromise, TOrderType } from "../../utils/types";
-import { getOrder, postOrder } from "../api/api";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TCart, TOrderPromise, TOrderType } from '../../utils/types';
+import { getOrder, postOrder } from '../api/api';
 
 export type OrderState = {
   order: TOrderType | null;
@@ -10,7 +10,7 @@ export type OrderState = {
 };
 
 export const createOrder = createAsyncThunk<TOrderPromise, TCart>(
-  "createOrder",
+  'createOrder',
   async (cart) => {
     try {
       if (cart.ingredients && cart.bun) {
@@ -27,7 +27,7 @@ export const createOrder = createAsyncThunk<TOrderPromise, TCart>(
 );
 
 export const fetchGetOrder = createAsyncThunk<TOrderPromise, number>(
-  "order/getOrder",
+  'order/getOrder',
   (orderNumber, { dispatch, rejectWithValue }) => {
     return getOrder({ orderNumber })
       .then((res) => {
@@ -47,7 +47,7 @@ const initialState: OrderState = {
 };
 
 const orderSlice = createSlice({
-  name: "orderSlice",
+  name: 'orderSlice',
   initialState: initialState,
   reducers: {
     setOrder(state, action) {
