@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { TIngredientType, TOrderType } from "../../utils/types";
+import { createSlice } from '@reduxjs/toolkit';
+import { TIngredientType, TOrderType } from '../../utils/types';
 
 export type ModalState = {
   modalIngredient: TIngredientType | null;
@@ -18,7 +18,7 @@ const initialState: ModalState = {
 };
 
 const modalSlice = createSlice({
-  name: "modalSlice",
+  name: 'modalSlice',
   initialState: initialState,
   reducers: {
     openModalIngredient(state, action) {
