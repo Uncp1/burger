@@ -41,23 +41,12 @@ const BurgerConstructor: FC = () => {
     });
   }, [location.pathname, navigate]);
 
-  const dispatchOrder = () => {
-    dispatch(createOrder(cart)).then(() => {
-      dispatch(openModalOrder());
-      //dispatch(emptyCart());
-    });
-  };
-
-  /* const handleCreateOrder = useCallback(
-    () => (isUserLoggedIn ? dispatchOrder() : redirectToLogin()),
-    [isUserLoggedIn, redirectToLogin, dispatchOrder]
-  ); */
-  const handleCreateOrder = () => {
-    dispatch(openModalOrder());
+const handleCreateOrder = () => {
     isUserLoggedIn
       ? cart.bun !== null &&
         dispatch(createOrder(cart)).then(() => {
           dispatch(openModalOrder());
+          dispatch(emptyCart());
         })
       : redirectToLogin();
   };

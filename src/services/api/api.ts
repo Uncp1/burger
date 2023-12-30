@@ -1,13 +1,20 @@
-import { request } from "../../utils/request";
+import { request } from '../../utils/request';
+import { TOrderPromise } from '../../utils/types';
 
 export const getIngredients = () => {
-  return request("ingredients");
+  return request('ingredients');
 };
 
-export const postOrder = ({ order }: { order: string[] }) => {
-  return request("orders", {
-    method: "POST",
-    body: JSON.stringify(order),
+export const postOrder = ({
+  order,
+}: {
+  order: string[];
+}): Promise<TOrderPromise> => {
+  return request('orders', {
+    body: JSON.stringify({
+      ingredients: order,
+    }),
+    method: 'POST',
   });
 };
 

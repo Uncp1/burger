@@ -1,12 +1,12 @@
 import {
   Button,
   Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC, FormEvent, useCallback, useEffect, useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../services/hooks/hooks";
-import { useForm } from "../../../services/hooks/useForm";
-import { fetchUpdateUser } from "../../../services/slices/user-sclice";
-import styles from "./profile-form.module.css";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { FC, FormEvent, useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../../services/hooks/hooks';
+import { useForm } from '../../../services/hooks/useForm';
+import { fetchUpdateUser } from '../../../services/slices/user-sclice';
+import styles from './profile-form.module.css';
 
 const ProfileForm: FC = () => {
   const [isEdited, setEdit] = useState({
@@ -23,7 +23,7 @@ const ProfileForm: FC = () => {
     e.preventDefault();
     if (
       inputValues.password &&
-      typeof inputValues.password.length === "number" &&
+      typeof inputValues.password.length === 'number' &&
       inputValues.password.length < 8
     ) {
       dispatch(
@@ -45,7 +45,7 @@ const ProfileForm: FC = () => {
   const inputPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    user && resetForm({ name: user.name, email: user.email, password: "" });
+    user && resetForm({ name: user.name, email: user.email, password: '' });
   }, [resetForm, user]); //обновляет данные при переходе
 
   const onIconNameClick = () => {
@@ -78,13 +78,11 @@ const ProfileForm: FC = () => {
       inputValues.password)
   );
 
-  const isSubmitActive = useCallback(
-    () => isValid && checkForEdit,
-    [isValid, checkForEdit]
-  );
-  const handleResetValue = useCallback(() => {
-    user && resetForm({ name: user.name, email: user.email, password: "" });
-  }, [resetForm, user]);
+  const isSubmitActive = () => isValid && checkForEdit;
+
+  const handleResetValue = () => {
+    user && resetForm({ name: user.name, email: user.email, password: '' });
+  };
 
   return (
     <section>
@@ -92,10 +90,10 @@ const ProfileForm: FC = () => {
         <Input
           onChange={handleChange}
           name="name"
-          type={"text"}
-          placeholder={"Имя"}
-          icon={"EditIcon"}
-          value={inputValues.name || ""}
+          type={'text'}
+          placeholder={'Имя'}
+          icon={'EditIcon'}
+          value={inputValues.name || ''}
           onIconClick={onIconNameClick}
           disabled={!isEdited.name}
           ref={inputNameRef}
@@ -105,9 +103,9 @@ const ProfileForm: FC = () => {
           //По какой-то причине EmailInput и PasswordInput не дружат с ref
           onChange={handleChange}
           name="email"
-          icon={"EditIcon"}
-          placeholder={"Почта"}
-          value={inputValues.email || ""}
+          icon={'EditIcon'}
+          placeholder={'Почта'}
+          value={inputValues.email || ''}
           onIconClick={onIconEmailClick}
           disabled={!isEdited.email}
           ref={inputEmailRef}
@@ -115,10 +113,10 @@ const ProfileForm: FC = () => {
         />
         <Input
           name="password"
-          placeholder={"Пароль"}
+          placeholder={'Пароль'}
           onChange={handleChange}
-          icon={"EditIcon"}
-          value={inputValues.password || ""}
+          icon={'EditIcon'}
+          value={inputValues.password || ''}
           onIconClick={onIconPasswordClick}
           disabled={!isEdited.password}
           ref={inputPasswordRef}
@@ -143,7 +141,7 @@ const ProfileForm: FC = () => {
               extraClass={styles.button}
               disabled={!isSubmitActive}
             >
-              {request.fetch ? "Сохранение..." : "Сохранить"}
+              {request.fetch ? 'Сохранение...' : 'Сохранить'}
             </Button>
           </div>
         )}

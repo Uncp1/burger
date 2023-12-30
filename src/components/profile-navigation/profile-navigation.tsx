@@ -1,20 +1,23 @@
-import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import clsx from "clsx";
-import { FC, useCallback } from "react";
-import { NavLink } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
-import { fetchLogout } from "../../services/slices/login-slice";
-import { getCookie } from "../../utils/cookies";
-import styles from "./profile-navigation.module.css";
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import clsx from 'clsx';
+import { FC } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
+import { fetchLogout } from '../../services/slices/login-slice';
+import { getCookie } from '../../utils/cookies';
+import styles from './profile-navigation.module.css';
 
 const ProfileNavigation: FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { isUserLoggedIn } = useAppSelector((store) => store.login);
 
-  const refreshToken = getCookie("refreshToken");
-  const handleLogout = useCallback(() => {
+  const refreshToken = getCookie('refreshToken');
+  const handleLogout = () => {
     isUserLoggedIn && refreshToken && dispatch(fetchLogout({ dispatch }));
-  }, [dispatch, isUserLoggedIn, refreshToken]);
+    navigate('/');
+  };
+
   return (
     <nav>
       <ul className={styles.list}>
@@ -24,8 +27,8 @@ const ProfileNavigation: FC = () => {
             to="/profile"
             className={({ isActive }) =>
               clsx(
-                "text",
-                "text_type_main-medium",
+                'text',
+                'text_type_main-medium',
                 isActive ? styles.link_active : styles.link
               )
             }
@@ -40,8 +43,8 @@ const ProfileNavigation: FC = () => {
             to="/profile/orders"
             className={({ isActive }) =>
               clsx(
-                "text",
-                "text_type_main-medium",
+                'text',
+                'text_type_main-medium',
                 isActive ? styles.link_active : styles.link
               )
             }

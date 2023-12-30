@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { deleteCookie, getCookie } from "../../utils/cookies";
-import { showMessageTimeout } from "../../utils/messages";
-import { TFormInput, TFormPromise } from "../../utils/types";
-import { updateCookie } from "../../utils/update-cookie";
-import { loginUser, logoutUser, registerUser } from "../api/userApi";
-import { AppDispatch, RootState } from "../store";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { deleteCookie, getCookie } from '../../utils/cookies';
+import { showMessageTimeout } from '../../utils/messages';
+import { TFormInput, TFormPromise } from '../../utils/types';
+import { updateCookie } from '../../utils/update-cookie';
+import { loginUser, logoutUser, registerUser } from '../api/userApi';
+import { AppDispatch, RootState } from '../store';
 interface ILoginState {
   accessToken: string | null;
   refreshToken: string | null;
@@ -18,38 +18,33 @@ interface ILoginState {
 }
 
 const initialState: ILoginState = {
-  user: {
-    email: null,
-    name: null,
-    password: null,
-  },
+  user:
+    {
+      email: null,
+      name: null,
+      password: null,
+    } || null,
   accessToken: null,
   refreshToken: null,
-  isUserLoggedIn: !!getCookie("accessToken") || false,
-  errorMessage: "",
+  isUserLoggedIn: !!getCookie('accessToken') || false,
+  errorMessage: '',
 };
 
 export const fetchLogin = createAsyncThunk<
   TFormPromise,
   TFormInput,
   { state: RootState; dispatch: AppDispatch }
->("fetchLogin", async (userData, { dispatch }) => {
+>('fetchLogin', async (userData, { dispatch }) => {
   const { email, password } = userData;
-  if (typeof email !== "string" || typeof password !== "string") {
-    throw new Error("Email or password are not strings");
+  if (typeof email !== 'string' || typeof password !== 'string') {
+    throw new Error('Email or password are not strings');
   }
   try {
     const res = await loginUser({ email, password });
     const { user, accessToken, refreshToken } = res;
     updateCookie({ user, accessToken, refreshToken });
-    dispatch(
-      updateUser({
-        refreshToken: refreshToken,
-        accessToken: accessToken,
-        user: user,
-      })
-    );
-    showMessageTimeout("Вход выполнен успешно", dispatch);
+
+    showMessageTimeout('Вход выполнен успешно', dispatch);
     return { user, accessToken, refreshToken, success: true };
   } catch (err) {
     console.log(err);
@@ -60,14 +55,13 @@ export const fetchLogin = createAsyncThunk<
 export const fetchLogout = createAsyncThunk<
   TFormPromise,
   { dispatch: AppDispatch }
->("fetchLogout", async ({ dispatch }) => {
-  const token = getCookie("refreshToken");
-  if (typeof token !== "string") {
-    throw new Error("unexpected cookie error");
+>('fetchLogout', async ({ dispatch }) => {
+  const token = getCookie('refreshToken');
+  if (typeof token !== 'string') {
+    throw new Error('unexpected cookie error');
   }
   try {
     const res = await logoutUser({ token });
-    dispatch(logOut());
     return res;
   } catch (err) {
     console.log(err);
@@ -82,28 +76,22 @@ export const fetchRegister = createAsyncThunk<
     state: RootState;
     dispatch: AppDispatch;
   }
->("fetchRegister", async (userData, { dispatch }) => {
+>('fetchRegister', async (userData, { dispatch }) => {
   const { name, email, password } = userData;
   if (
-    typeof name !== "string" ||
-    typeof email !== "string" ||
-    typeof password !== "string"
+    typeof name !== 'string' ||
+    typeof email !== 'string' ||
+    typeof password !== 'string'
   ) {
-    throw new Error("Email, name or password are not strings");
+    throw new Error('Email, name or password are not strings');
   }
   try {
     const res = await registerUser({ name, email, password });
     const { user, accessToken, refreshToken } = res;
     updateCookie({ user, accessToken, refreshToken });
-    dispatch(
-      updateUser({
-        refreshToken: refreshToken,
-        accessToken: accessToken,
-        user: user,
-      })
-    );
+
     showMessageTimeout(
-      "Пользователь успешно создан. Добро пожаловать",
+      'Пользователь успешно создан. Добро пожаловать',
       dispatch
     );
     return res;
@@ -114,37 +102,44 @@ export const fetchRegister = createAsyncThunk<
 });
 
 const loginSlice = createSlice({
-  name: "loginSlice",
+  name: 'loginSlice',
   initialState: initialState,
-  reducers: {
-    updateUser(state, action) {
-      state.user = action.payload.user;
-      state.isUserLoggedIn = !!document.cookie;
-      state.refreshToken = action.payload.refreshToken;
-      state.accessToken = action.payload.accessToken;
-    },
-    logOut: (state) => {
-      state.user = {
-        email: null,
-        name: null,
-        password: null,
-      };
-      state.accessToken = null;
-      state.refreshToken = null;
-      state.isUserLoggedIn = false;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchLogin.pending, (state) => {})
-      .addCase(fetchLogin.fulfilled, (state, action) => {})
+      .addCase(fetchLogin.fulfilled, (state, action) => {
+        const user = action.payload.user || {
+          email: null,
+          name: null,
+          password: null,
+        };
+
+        state.user = {
+          email: user.email || null,
+          name: user.name || null,
+          password: user.password || null,
+        };
+
+        state.isUserLoggedIn = !!document.cookie;
+        state.refreshToken = action.payload.refreshToken || null;
+        state.accessToken = action.payload.accessToken || null;
+      })
       .addCase(fetchLogin.rejected, (state, action) => {})
       //logout
       .addCase(fetchLogout.pending, (state) => {})
       .addCase(fetchLogout.fulfilled, (state, action) => {
-        deleteCookie("accessToken");
-        deleteCookie("refreshToken");
-        deleteCookie("expiresAt");
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
+        deleteCookie('expiresAt');
+        state.user = {
+          email: null,
+          name: null,
+          password: null,
+        };
+        state.accessToken = null;
+        state.refreshToken = null;
+        state.isUserLoggedIn = false;
       })
       .addCase(fetchLogout.rejected, () => {})
       //register
@@ -154,5 +149,4 @@ const loginSlice = createSlice({
   },
 });
 
-export const { updateUser, logOut } = loginSlice.actions;
 export default loginSlice.reducer;

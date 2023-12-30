@@ -1,13 +1,19 @@
 import styles from './profile.module.css';
 import ProfileNavigation from '../../components/profile-navigation/profile-navigation';
-import { Outlet } from 'react-router-dom';
-import Loader from '../../components/loader/loader';
+
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAppSelector } from '../../services/hooks/hooks';
+import { FC } from 'react';
 
-const ProfilePage = () => {
+
+const ProfilePage: FC = () => {
+  const navigate = useNavigate();
   const { isUserLoggedIn } = useAppSelector((store) => store.user);
+  if (!isUserLoggedIn) {
+    navigate('/login');
+  }
 
-  return isUserLoggedIn ? (
+  return (
     <main className={styles.container}>
       <div className={styles.menu}>
         <ProfileNavigation />
@@ -20,8 +26,6 @@ const ProfilePage = () => {
 
       <Outlet />
     </main>
-  ) : (
-    <Loader loadingText="Загрузка профиля" />
   );
 };
 

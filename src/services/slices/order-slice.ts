@@ -10,18 +10,29 @@ export type OrderState = {
 };
 
 export const createOrder = createAsyncThunk<TOrderPromise, TCart>(
-  'createOrder',
-  async (cart) => {
+  'order/createOrder',
+  async (cart, { rejectWithValue }) => {
+
     try {
-      if (cart.ingredients && cart.bun) {
-        const orderIds: string[] = cart.ingredients.map((item) => item._id);
-        orderIds.unshift(cart.bun._id);
-        orderIds.push(cart.bun._id);
-        return await postOrder({ order: orderIds });
+      if (!cart.ingredients || !cart.bun) {
+        throw new Error('Некорректное содержимое корзины');
       }
-    } catch (err) {
-      console.log(err);
-      return err;
+
+      const ingredientsIds: string[] = cart.ingredients.map((item) => item._id);
+      const orderIds: string[] = [
+        cart.bun._id,
+        ...ingredientsIds,
+        cart.bun._id,
+      ];
+
+      const res = await postOrder({ order: orderIds });
+      return res;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        return rejectWithValue(err.message);
+      } else {
+        return rejectWithValue('Неизвестная ошибка');
+      }
     }
   }
 );
@@ -35,7 +46,13 @@ export const fetchGetOrder = createAsyncThunk<TOrderPromise, number>(
         dispatch(setOrder(orders[0]));
         return res;
       })
-      .catch((e) => rejectWithValue(e));
+      .catch((err: unknown) => {
+        if (err instanceof Error) {
+          return rejectWithValue(err.message);
+        } else {
+          return rejectWithValue('Неизвестная ошибка');
+        }
+      });
   }
 );
 
