@@ -41,7 +41,7 @@ const BurgerConstructor: FC = () => {
     });
   }, [location.pathname, navigate]);
 
-  const handleCreateOrder = () => {
+const handleCreateOrder = () => {
     isUserLoggedIn
       ? cart.bun !== null &&
         dispatch(createOrder(cart)).then(() => {

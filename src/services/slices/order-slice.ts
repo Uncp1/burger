@@ -12,6 +12,7 @@ export type OrderState = {
 export const createOrder = createAsyncThunk<TOrderPromise, TCart>(
   'order/createOrder',
   async (cart, { rejectWithValue }) => {
+
     try {
       if (!cart.ingredients || !cart.bun) {
         throw new Error('Некорректное содержимое корзины');
