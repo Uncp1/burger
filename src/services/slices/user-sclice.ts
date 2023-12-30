@@ -1,8 +1,8 @@
-import { getCookie } from "../../utils/cookies";
-import { getUser, patchUser } from "../api/userApi";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { TFormInput, TFormPromise } from "../../utils/types";
-import { AppDispatch, RootState } from "../store";
+import { getCookie } from '../../utils/cookies';
+import { getUser, patchUser } from '../api/userApi';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TFormInput, TFormPromise } from '../../utils/types';
+import { AppDispatch, RootState } from '../store';
 
 interface IUserState {
   user: {
@@ -25,7 +25,7 @@ const initialState: IUserState = {
     name: null,
     password: null,
   },
-  isUserLoggedIn: !!getCookie("accessToken") || false,
+  isUserLoggedIn: !!getCookie('accessToken') || false,
   request: {
     fetch: false,
     error: false,
@@ -34,7 +34,7 @@ const initialState: IUserState = {
   },
 };
 
-export const fetchGetUser = createAsyncThunk("profile/fetchGetUser", () =>
+export const fetchGetUser = createAsyncThunk('profile/fetchGetUser', () =>
   getUser().catch((err) => console.log(err))
 );
 
@@ -42,13 +42,13 @@ export const fetchUpdateUser = createAsyncThunk<
   TFormPromise,
   TFormInput,
   { state: RootState; dispatch: AppDispatch }
->("fetchUpdateUser", async ({ name, email, password }) => {
+>('fetchUpdateUser', async ({ name, email, password }) => {
   if (
-    typeof name !== "string" ||
-    typeof email !== "string" ||
-    typeof password !== "string"
+    typeof name !== 'string' ||
+    typeof email !== 'string' ||
+    typeof password !== 'string'
   ) {
-    throw new Error("Email, name or password are not strings");
+    throw new Error('Email, name or password are not strings');
   }
   try {
     return await patchUser({ name, email, password });
@@ -59,7 +59,7 @@ export const fetchUpdateUser = createAsyncThunk<
 });
 
 const userSlice = createSlice({
-  name: "userSlice",
+  name: 'userSlice',
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -84,10 +84,18 @@ const userSlice = createSlice({
         state.request.fetch = true;
       })
       .addCase(fetchUpdateUser.fulfilled, (state, action) => {
-        const { user } = action.payload;
-        console.log(user);
         state.request.fetch = false;
-        //state.user = user;
+        const user = action.payload.user || {
+          email: null,
+          name: null,
+          password: null,
+        };
+
+        state.user = {
+          email: user.email || null,
+          name: user.name || null,
+          password: user.password || null,
+        };
       })
       .addCase(fetchUpdateUser.rejected, (state) => {});
   },
