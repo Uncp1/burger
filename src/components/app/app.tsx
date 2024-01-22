@@ -1,5 +1,5 @@
-import { FC, useCallback, useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { FC, useCallback, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   HomePage,
   LoginPage,
@@ -14,18 +14,18 @@ import {
   ProfileOrders,
   FeedPage,
   OrderPage,
-} from "../../pages";
-import ModalNotification from "../modal-notification/modal-notification";
-import ProtectedRoute from "../protected-route/protected-route";
-import { fetchGetUser } from "../../services/slices/user-sclice";
-import Modal from "../modal/modal";
-import IngredientInfo from "../ingredient-info/ingredient-info";
-import OrderInfo from "../order-info/order-info";
-import { fetchIngredients } from "../../services/slices/ingredient-slice";
-import { closeModal } from "../../services/slices/modal-slice";
-import { useAuth } from "../../services/hooks/useAuth";
-import OrderDetails from "../order-details/order-details";
-import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+} from '../../pages';
+import ModalNotification from '../modal-notification/modal-notification';
+import ProtectedRoute from '../protected-route/protected-route';
+import { fetchGetUser } from '../../services/slices/user-sclice';
+import Modal from '../modal/modal';
+import IngredientInfo from '../ingredient-info/ingredient-info';
+import OrderInfo from '../order-info/order-info';
+import { fetchIngredients } from '../../services/slices/ingredient-slice';
+import { closeModal } from '../../services/slices/modal-slice';
+import { useAuth } from '../../services/hooks/useAuth';
+import OrderDetails from '../order-details/order-details';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -55,6 +55,7 @@ const App: FC = () => {
     <>
       <Routes location={background || location}>
         <Route path="/" element={<LayoutPage />}>
+          <Route index path="/" element={<HomePage />} />
           <Route
             path="/login"
             element={
@@ -111,7 +112,6 @@ const App: FC = () => {
           <Route path="/ingredients/:id" element={<IngredientPage />} />
 
           <Route path="*" element={<NotFound404 />} />
-          <Route path="/" element={<HomePage />} />
         </Route>
       </Routes>
 
@@ -119,7 +119,7 @@ const App: FC = () => {
 
       <Modal
         handleModalClose={handleModalClose}
-        title={modalOrderDetails ? "Детали заказа" : "Детали ингредиента"}
+        title={modalOrderDetails ? 'Детали заказа' : 'Детали ингредиента'}
       >
         {background && modalIngredient && (
           <IngredientInfo ingredient={modalIngredient} />
