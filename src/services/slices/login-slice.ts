@@ -129,17 +129,17 @@ const loginSlice = createSlice({
       //logout
       .addCase(fetchLogout.pending, (state) => {})
       .addCase(fetchLogout.fulfilled, (state, action) => {
-        deleteCookie('accessToken');
-        deleteCookie('refreshToken');
-        deleteCookie('expiresAt');
+        state.isUserLoggedIn = false;
         state.user = {
           email: null,
           name: null,
           password: null,
         };
+        deleteCookie('accessToken');
+        deleteCookie('refreshToken');
+        deleteCookie('expiresAt');
         state.accessToken = null;
         state.refreshToken = null;
-        state.isUserLoggedIn = false;
       })
       .addCase(fetchLogout.rejected, () => {})
       //register

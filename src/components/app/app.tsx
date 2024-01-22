@@ -1,5 +1,5 @@
-import { FC, useCallback, useEffect } from "react";
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { FC, useCallback, useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import {
   HomePage,
   LoginPage,
@@ -14,18 +14,19 @@ import {
   ProfileOrders,
   FeedPage,
   OrderPage,
-} from "../../pages";
-import ModalNotification from "../modal-notification/modal-notification";
-import ProtectedRoute from "../protected-route/protected-route";
-import { fetchGetUser } from "../../services/slices/user-sclice";
-import Modal from "../modal/modal";
-import IngredientInfo from "../ingredient-info/ingredient-info";
-import OrderInfo from "../order-info/order-info";
-import { fetchIngredients } from "../../services/slices/ingredient-slice";
-import { closeModal } from "../../services/slices/modal-slice";
-import { useAuth } from "../../services/hooks/useAuth";
-import OrderDetails from "../order-details/order-details";
-import { useAppDispatch, useAppSelector } from "../../services/hooks/hooks";
+} from '../../pages';
+import ModalNotification from '../modal-notification/modal-notification';
+import ProtectedRoute from '../protected-route/protected-route';
+import { fetchGetUser } from '../../services/slices/user-sclice';
+import Modal from '../modal/modal';
+import IngredientInfo from '../ingredient-info/ingredient-info';
+import OrderInfo from '../order-info/order-info';
+import { fetchIngredients } from '../../services/slices/ingredient-slice';
+import { closeModal } from '../../services/slices/modal-slice';
+import { useAuth } from '../../services/hooks/useAuth';
+import OrderDetails from '../order-details/order-details';
+import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
+import { PATH } from '../../utils/config';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -54,9 +55,10 @@ const App: FC = () => {
   return (
     <>
       <Routes location={background || location}>
-        <Route path="/" element={<LayoutPage />}>
+        <Route path={PATH.HOME} element={<LayoutPage />}>
+          <Route index element={<HomePage />} />
           <Route
-            path="/login"
+            path={PATH.LOGIN}
             element={
               <ProtectedRoute redirect="/" anonymous={true}>
                 <LoginPage />
@@ -64,7 +66,7 @@ const App: FC = () => {
             }
           />
           <Route
-            path="/register"
+            path={PATH.REGISTER}
             element={
               <ProtectedRoute redirect="/" anonymous={true}>
                 <RegisterPage />
@@ -72,7 +74,7 @@ const App: FC = () => {
             }
           />
           <Route
-            path="/forgot-password"
+            path={PATH.FORGOT_PASSWORD}
             element={
               <ProtectedRoute redirect="/" anonymous={true}>
                 <ForgotPasswordPage />
@@ -80,17 +82,17 @@ const App: FC = () => {
             }
           />
           <Route
-            path="/reset"
+            path={PATH.RESET_PASSWORD}
             element={
               <ProtectedRoute redirect="/" anonymous={true}>
                 <ResetPage />
               </ProtectedRoute>
             }
           />
-          <Route path="/feed" element={<FeedPage />} />
-          <Route path="/feed/:id" element={<OrderPage />} />
+          <Route path={PATH.FEED} element={<FeedPage />} />
+          <Route path={PATH.FEED_ORDER} element={<OrderPage />} />
           <Route
-            path="/profile/orders/:id"
+            path={PATH.ORDER}
             element={
               <ProtectedRoute redirect="/login">
                 <OrderPage />
@@ -98,7 +100,7 @@ const App: FC = () => {
             }
           />
           <Route
-            path="/profile"
+            path={PATH.PROFILE}
             element={
               <ProtectedRoute redirect="/login" anonymous={false}>
                 <ProfilePage />
@@ -106,12 +108,11 @@ const App: FC = () => {
             }
           >
             <Route index element={<ProfileForm />} />
-            <Route path="/profile/orders" element={<ProfileOrders />} />
+            <Route path={PATH.ORDERS} element={<ProfileOrders />} />
           </Route>
-          <Route path="/ingredients/:id" element={<IngredientPage />} />
+          <Route path={PATH.INGREDIENT} element={<IngredientPage />} />
 
           <Route path="*" element={<NotFound404 />} />
-          <Route path="/" element={<HomePage />} />
         </Route>
       </Routes>
 
@@ -119,7 +120,7 @@ const App: FC = () => {
 
       <Modal
         handleModalClose={handleModalClose}
-        title={modalOrderDetails ? "Детали заказа" : "Детали ингредиента"}
+        title={modalOrderDetails ? 'Детали заказа' : 'Детали ингредиента'}
       >
         {background && modalIngredient && (
           <IngredientInfo ingredient={modalIngredient} />

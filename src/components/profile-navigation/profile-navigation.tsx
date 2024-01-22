@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../services/hooks/hooks';
 import { fetchLogout } from '../../services/slices/login-slice';
 import { getCookie } from '../../utils/cookies';
 import styles from './profile-navigation.module.css';
+import { PATH } from '../../utils/config';
 
 const ProfileNavigation: FC = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,8 @@ const ProfileNavigation: FC = () => {
   const refreshToken = getCookie('refreshToken');
   const handleLogout = () => {
     isUserLoggedIn && refreshToken && dispatch(fetchLogout({ dispatch }));
-    navigate('/');
+
+    navigate(PATH.HOME);
   };
 
   return (
